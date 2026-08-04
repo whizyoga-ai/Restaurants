@@ -670,9 +670,16 @@ section { padding: clamp(72px, 9vw, 132px) 0; }
 /* alternate the side the photo sits on, so the page reads as a sequence
    rather than a list with a picture column bolted to it */
 [data-season="winternight"] .dish:nth-of-type(odd) .dish__photo { order: 2; }
-[data-season="winternight"] .dish__head { padding: 0; }
+[data-season="winternight"] .dish__head { padding: 0; order: 1; }
 [data-season="winternight"] .dish__name { font-size: 1.85rem; }
-[data-season="winternight"] .dish__panel { grid-column: 1 / -1; }
+
+/* The panel spans both columns, so it must be placed LAST. Without an explicit
+   order it sits at 0 alongside the head, and on the alternating rows — where
+   the photo is pushed to order 2 — auto-placement ran head, then panel, then
+   photo. The full-width panel closed the row, so the photo dropped to a third
+   row on its own with a hole beside the text. Ordering it after everything
+   keeps both items on one row in both directions. */
+[data-season="winternight"] .dish__panel { grid-column: 1 / -1; order: 3; }
 [data-season="winternight"] .dish.is-open .dish__panel { max-height: 560px; }
 
 /* ------------------------------------ the serving-suggestion disclosure ---
@@ -896,6 +903,77 @@ footer { background: var(--paper-2); border-top: 1px solid var(--rule); padding:
 }
 [data-season="winternight"] .toast { color: #0E1210; }
 .toast.is-up { transform: translate(-50%, 0); }
+
+/* ==========================================================================
+   THE ASSISTANT
+
+   The widget is served from chat.brahmando.com and its markup is not ours to
+   change, but it renders into this page, so its own elements are reachable
+   from here. A 58px circle in a corner is invisible on a page this busy — it
+   was there the whole time and went unnoticed. Enlarged, given a resting
+   pulse, and paired with a label that says what it is.
+
+   Selectors target the widget's ids (#bc-bubble, #bc-panel). If that widget is
+   ever restyled upstream these rules go stale — they degrade to no effect
+   rather than breaking anything, and the label below is ours regardless.
+   ========================================================================== */
+
+#bc-bubble {
+  width: 74px !important;
+  height: 74px !important;
+  right: 26px !important;
+  bottom: 26px !important;
+  box-shadow: 0 10px 34px rgba(0,0,0,.34), 0 0 0 0 rgba(58,90,64,.5) !important;
+  animation: ll-chat-pulse 3.4s ease-out infinite;
+}
+#bc-bubble svg { width: 34px !important; height: 34px !important; }
+
+@keyframes ll-chat-pulse {
+  0%   { box-shadow: 0 10px 34px rgba(0,0,0,.34), 0 0 0 0   rgba(127,168,134,.55); }
+  70%  { box-shadow: 0 10px 34px rgba(0,0,0,.34), 0 0 0 18px rgba(127,168,134,0); }
+  100% { box-shadow: 0 10px 34px rgba(0,0,0,.34), 0 0 0 0   rgba(127,168,134,0); }
+}
+
+#bc-panel { width: min(410px, calc(100vw - 40px)) !important; bottom: 112px !important; }
+
+/* Our own label beside the bubble, so it is obvious what the circle does. */
+.chat-hint {
+  position: fixed;
+  right: 112px;
+  bottom: 44px;
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 15px 9px 11px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  box-shadow: var(--shadow);
+  font-size: .82rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: opacity .3s ease, transform .3s ease, border-color .2s ease;
+}
+.chat-hint:hover { border-color: var(--moss); }
+.chat-hint[hidden] { display: none; }
+.chat-hint.is-gone { opacity: 0; transform: translateX(10px); pointer-events: none; }
+
+.chat-hint__logo { width: 22px; height: 22px; border-radius: 50%; flex: 0 0 auto; }
+.chat-hint__txt b { display: block; font-weight: 500; line-height: 1.15; }
+.chat-hint__txt span { display: block; font-size: .68rem; color: var(--ink-3); }
+
+/* Brahmexa credit in the footer */
+.by-brahmexa { display: inline-flex; align-items: center; gap: 8px; }
+.by-brahmexa img { width: 20px; height: 20px; border-radius: 50%; }
+
+@media (max-width: 620px) {
+  .chat-hint { display: none; }         /* the enlarged bubble carries it alone */
+  #bc-bubble { width: 64px !important; height: 64px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #bc-bubble { animation: none; }
+}
 
 /* ============================================================== responsive */
 @media (max-width: 940px) {

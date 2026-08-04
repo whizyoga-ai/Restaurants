@@ -33,7 +33,7 @@ const MENU = [
   /* --- salads ----------------------------------------------------------- */
   {
     id: 'caesar',
-    photo: 'assets/images/dishes/salad-leafy.jpg',
+    photo: 'assets/images/dishes/salad-greens.jpg',
     course: 'salads',
     diet: ['high-protein'],
     en: {
@@ -73,7 +73,6 @@ const MENU = [
   },
   {
     id: 'mediterranean',
-    photo: 'assets/images/dishes/salad-greens.jpg',
     course: 'salads',
     diet: ['vegetarian', 'gluten-free'],
     en: {
@@ -274,6 +273,8 @@ const T = {
     hallNote: 'Mathöll Höfða hosts ten independent kitchens under one roof. Shared seating, separate counters.',
     builtBy: 'Site by Brahmexa',
     photoNote: 'Dish photographs are serving suggestions, cropped from house photography — not a shot of each individual plate.',
+    chatHintTitle: 'Ask about the menu',
+    chatHintSub: 'Allergens, nutrition, what is nearby',
     toastOrder: 'Order-ahead is not connected yet — please order at the counter for now.',
     toastSent: 'Opening your email app with the enquiry filled in.',
   },
@@ -322,6 +323,8 @@ const T = {
     hallNote: 'Mathöll Höfða hýsir tíu sjálfstæð eldhús undir einu þaki. Sameiginleg sæti, aðskilin afgreiðsluborð.',
     builtBy: 'Vefur frá Brahmexa',
     photoNote: 'Myndir af réttum eru til viðmiðunar, klipptar úr myndefni hússins — ekki mynd af hverjum einstökum rétti.',
+    chatHintTitle: 'Spurðu um matseðilinn',
+    chatHintSub: 'Ofnæmisvaldar, næring, hvað er nálægt',
     toastOrder: 'Forpöntun er ekki tengd enn — vinsamlegast pantaðu við afgreiðsluborðið.',
     toastSent: 'Opna póstforritið þitt með fyrirspurninni.',
   },
@@ -348,8 +351,8 @@ const VIEWS = [
                           is: ['Dagsljós',         'Fölt norrænt dagsljós'] },
   { id: 'fireandice',     en: ['Land of Fire and Ice', 'Basalt and ember'],
                           is: ['Eldur og Ís',      'Hraun og glóð'] },
-  { id: 'northernlights', en: ['Northern Lights',  'Aurora colours, by day'],
-                          is: ['Norðurljós',       'Norðurljósalitir að degi'] },
+  { id: 'northernlights', en: ['Northern Lights',  'An evening under the aurora'],
+                          is: ['Norðurljós',       'Kvöld undir norðurljósum'] },
   { id: 'menuboard',      en: ['The Menu',         'The whole card, up front'],
                           is: ['Matseðillinn',     'Allur seðillinn, fremst'] },
   { id: 'winternight',    en: ['Winter Night',     'The dark one'],
@@ -422,6 +425,47 @@ function wireChrome() {
     e.preventDefault();
     toast(t().toastOrder);
   }));
+
+  wireChatHint();
+}
+
+/**
+ * Show the label beside the assistant, once the widget has actually loaded.
+ *
+ * The widget is a third-party script from another origin; if it fails to load
+ * — blocked, offline, the service down — a label pointing at a bubble that is
+ * not there is worse than no label. So it only appears after #bc-bubble exists,
+ * and it hides itself again while the chat panel is open.
+ */
+function wireChatHint() {
+  const hint = $('#chatHint');
+  if (!hint) return;
+
+  const bubble = () => document.getElementById('bc-bubble');
+
+  const reveal = () => {
+    if (!bubble()) return false;
+    hint.hidden = false;
+    return true;
+  };
+
+  if (!reveal()) {
+    // Poll briefly rather than forever — the widget either arrives or it does not.
+    let tries = 0;
+    const timer = setInterval(() => {
+      if (reveal() || ++tries > 40) clearInterval(timer);
+    }, 250);
+  }
+
+  hint.addEventListener('click', () => {
+    bubble()?.click();                 // one code path for opening the panel
+    hint.classList.add('is-gone');
+  });
+
+  // If the visitor opens the chat by the bubble itself, retire the label too.
+  document.addEventListener('click', e => {
+    if (e.target.closest('#bc-bubble')) hint.classList.add('is-gone');
+  });
 }
 
 function wireViewPicker() {

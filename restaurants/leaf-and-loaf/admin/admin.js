@@ -220,13 +220,12 @@ const STORE_KEY = 'll-admin-menu-v2';
 /* Photos are the same crops the public site uses, one directory up. */
 const SEED = [
   { id: 'caesar', name: 'Leaf & Loaf Caesar', course: 'Salads', price: 3290,
-    photo: '../assets/images/dishes/salad-leafy.jpg',
+    photo: '../assets/images/dishes/salad-greens.jpg',
     recipe: 'chicken, 120\nlettuce, 80\nspinach, 40\nbacon, 25\ncroutons, 30\nparmesan, 20\ncaesar dressing, 30' },
   { id: 'quinoa', name: 'Quinoa & Beet', course: 'Salads', price: 3250,
     photo: '../assets/images/dishes/salad-bowls.jpg',
     recipe: 'beetroot, 120\nquinoa, 90\ngreens, 60\nfeta, 45\npistachios, 20\nvinaigrette, 25' },
   { id: 'medi', name: 'Mediterranean', course: 'Salads', price: 3150,
-    photo: '../assets/images/dishes/salad-greens.jpg',
     recipe: 'tomato, 140\ncucumber, 100\nolives, 40\nfeta, 50\npepper, 70\nolive oil, 15' },
   { id: 'foc-salmon', name: 'Smoked Salmon Focaccia', course: 'Focaccia', price: 3200,
     photo: '../assets/images/dishes/focaccia-salmon.jpg',
