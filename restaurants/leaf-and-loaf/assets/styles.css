@@ -308,8 +308,20 @@ section { padding: clamp(72px, 9vw, 132px) 0; }
   min-height: min(92vh, 900px);
   display: flex;
   align-items: flex-end;
-  padding: 0 0 clamp(56px, 8vw, 104px);
+  /* Top padding clears the fixed masthead. Without it the first line of the
+     title sits underneath the bar, and with align-items:flex-end any content
+     taller than min-height overflows off the TOP of a flex container — where
+     it cannot be scrolled back into view. */
+  padding: clamp(104px, 13vh, 152px) 0 clamp(56px, 8vw, 104px);
   overflow: hidden;
+}
+
+/* The menu view puts a whole menu card in the hero, so it is always taller
+   than the viewport. Anchor it to the top and let the section grow instead of
+   pinning it to the bottom and losing the top. */
+[data-season="menuboard"] .hero {
+  min-height: auto;
+  align-items: flex-start;
 }
 .hero__media { position: absolute; inset: 0; z-index: 0; }
 .hero__media img {

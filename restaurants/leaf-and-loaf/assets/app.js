@@ -336,16 +336,16 @@ const NEARBY = [
    The three added views are drawn in CSS rather than photographed — see the
    note in styles.css for why the available photographs could not be used. */
 const VIEWS = [
-  { id: 'daylight',       en: ['Dagsljós',    'Daylight — pale Nordic light'],
-                          is: ['Dagsljós',    'Fölt norrænt dagsljós'] },
-  { id: 'fireandice',     en: ['Eldur og Ís',  'Land of Fire and Ice — basalt and ember'],
-                          is: ['Eldur og Ís',  'Hraun og glóð'] },
-  { id: 'northernlights', en: ['Norðurljós',   'Northern Lights — aurora colours, by day'],
-                          is: ['Norðurljós',   'Norðurljósalitir að degi'] },
-  { id: 'menuboard',      en: ['Matseðillinn', 'The Menu — the whole card, up front'],
-                          is: ['Matseðillinn', 'Allur seðillinn, fremst'] },
-  { id: 'winternight',    en: ['Vetrarnótt',   'Winter Night — the dark one'],
-                          is: ['Vetrarnótt',   'Dökka útgáfan'] },
+  { id: 'daylight',       en: ['Daylight',         'Pale Nordic light'],
+                          is: ['Dagsljós',         'Fölt norrænt dagsljós'] },
+  { id: 'fireandice',     en: ['Land of Fire and Ice', 'Basalt and ember'],
+                          is: ['Eldur og Ís',      'Hraun og glóð'] },
+  { id: 'northernlights', en: ['Northern Lights',  'Aurora colours, by day'],
+                          is: ['Norðurljós',       'Norðurljósalitir að degi'] },
+  { id: 'menuboard',      en: ['The Menu',         'The whole card, up front'],
+                          is: ['Matseðillinn',     'Allur seðillinn, fremst'] },
+  { id: 'winternight',    en: ['Winter Night',     'The dark one'],
+                          is: ['Vetrarnótt',       'Dökka útgáfan'] },
 ];
 
 /* ------------------------------------------------------------------ state */
