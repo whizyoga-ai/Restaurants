@@ -33,6 +33,7 @@ const MENU = [
   /* --- salads ----------------------------------------------------------- */
   {
     id: 'caesar',
+    photo: 'assets/images/dishes/salad-leafy.jpg',
     course: 'salads',
     diet: ['high-protein'],
     en: {
@@ -52,6 +53,7 @@ const MENU = [
   },
   {
     id: 'quinoa-beet',
+    photo: 'assets/images/dishes/salad-bowls.jpg',
     course: 'salads',
     diet: ['vegetarian', 'gluten-free'],
     en: {
@@ -71,6 +73,7 @@ const MENU = [
   },
   {
     id: 'mediterranean',
+    photo: 'assets/images/dishes/salad-greens.jpg',
     course: 'salads',
     diet: ['vegetarian', 'gluten-free'],
     en: {
@@ -92,6 +95,7 @@ const MENU = [
   /* --- focaccia --------------------------------------------------------- */
   {
     id: 'focaccia-salmon',
+    photo: 'assets/images/dishes/focaccia-salmon.jpg',
     course: 'focaccia',
     diet: ['high-protein'],
     en: {
@@ -111,6 +115,7 @@ const MENU = [
   },
   {
     id: 'focaccia-chicken',
+    photo: 'assets/images/dishes/focaccia-sandwiches.jpg',
     course: 'focaccia',
     diet: ['high-protein'],
     en: {
@@ -130,6 +135,7 @@ const MENU = [
   },
   {
     id: 'focaccia-veg',
+    photo: 'assets/images/dishes/focaccia-plain.jpg',
     course: 'focaccia',
     diet: ['vegetarian'],
     en: {
@@ -267,6 +273,7 @@ const T = {
     footHours: 'Opening hours', footFind: 'Address', footHall: 'The food hall',
     hallNote: 'Mathöll Höfða hosts ten independent kitchens under one roof. Shared seating, separate counters.',
     builtBy: 'Site by Brahmexa',
+    photoNote: 'Dish photographs are serving suggestions, cropped from house photography — not a shot of each individual plate.',
     toastOrder: 'Order-ahead is not connected yet — please order at the counter for now.',
     toastSent: 'Opening your email app with the enquiry filled in.',
   },
@@ -314,6 +321,7 @@ const T = {
     footHours: 'Opnunartími', footFind: 'Heimilisfang', footHall: 'Mathöllin',
     hallNote: 'Mathöll Höfða hýsir tíu sjálfstæð eldhús undir einu þaki. Sameiginleg sæti, aðskilin afgreiðsluborð.',
     builtBy: 'Vefur frá Brahmexa',
+    photoNote: 'Myndir af réttum eru til viðmiðunar, klipptar úr myndefni hússins — ekki mynd af hverjum einstökum rétti.',
     toastOrder: 'Forpöntun er ekki tengd enn — vinsamlegast pantaðu við afgreiðsluborðið.',
     toastSent: 'Opna póstforritið þitt með fyrirspurninni.',
   },
@@ -569,7 +577,14 @@ function dishNode(d) {
   const tags = c.tags.map((tag, i) =>
     `<span class="tag${i === 0 ? '' : ' tag--muted'}">${esc(tag)}</span>`).join('');
 
-  el.innerHTML = `
+  /* The photo is a sibling of the head, not a child, so the image-led layouts
+     can put it beside the text or above it without restructuring the DOM per
+     view. Hidden by CSS everywhere except Eldur og Ís and Vetrarnótt. */
+  const photoHtml = d.photo
+    ? `<span class="dish__photo"><img src="${d.photo}" alt="${esc(c.name)}" loading="lazy" /></span>`
+    : '<span class="dish__photo dish__photo--none" aria-hidden="true"></span>';
+
+  el.innerHTML = photoHtml + `
     <button class="dish__head" type="button" aria-expanded="false">
       <span class="dish__name">${esc(c.name)}</span>
       ${priceHtml}
