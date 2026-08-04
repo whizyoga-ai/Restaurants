@@ -14,11 +14,35 @@ gh api repos/whizyoga-ai/Restaurants/pages/builds/latest --jq '.status, .error.m
 
 ## 2. Cloudflare DNS — needs you
 
-`manailab.com` sits on Cloudflare nameservers (`daisy` / `ricardo.ns.cloudflare.com`)
-with **no A or CNAME record**, so nothing resolves yet. I do not have a
-Cloudflare API token, so these records have to be added by hand.
+**Until this is done, the live URL is
+<https://whizyoga-ai.github.io/Restaurants/>.**
 
-In the Cloudflare dashboard, zone `manailab.com` → **DNS** → **Records**:
+### What is there now
+
+`manailab.com` already resolves, but **not to GitHub Pages**. It points at
+Cloudflare proxy IPs (`104.21.71.26`, `172.67.142.109`) in front of a
+pre-existing origin that serves a near-copy of the main Brahmexa site — 71 KB
+titled *"BRAHMEXA – The Business Brain Company"*, with no reference to this
+repository. Every path from here 404s on it:
+
+```
+https://manailab.com/restaurants/leaf-and-loaf/   404
+https://manailab.com/assets/manailab.css          404
+```
+
+That is why the Leaf & Loaf circle was invisible: the `CNAME` file claimed the
+domain with GitHub, but DNS never routed there, so
+`whizyoga-ai.github.io/Restaurants/` merely 301'd to a page that contains none
+of this.
+
+### Repointing it
+
+**This replaces whatever that origin serves at `manailab.com`.** Take a copy of
+it first if it matters — the origin is hidden behind Cloudflare's proxy, so it
+cannot be recovered from DNS afterwards.
+
+In the Cloudflare dashboard, zone `manailab.com` → **DNS** → **Records**,
+delete the two existing `A` records for `@`, then add:
 
 | Type | Name | Content | Proxy |
 |---|---|---|---|
@@ -28,27 +52,37 @@ In the Cloudflare dashboard, zone `manailab.com` → **DNS** → **Records**:
 | A | `@` | `185.199.111.153` | **DNS only** |
 | CNAME | `www` | `whizyoga-ai.github.io` | **DNS only** |
 
+Leave the `TXT` SPF record alone — it is mail, not web.
+
 Set the proxy to **DNS only** at first. GitHub cannot issue its Let's Encrypt
 certificate through Cloudflare's proxy, so an orange cloud here produces a
 redirect loop or a certificate error. Once GitHub reports the certificate as
 issued you may turn the proxy on, with SSL/TLS mode set to **Full (strict)**.
 
-Then check propagation and enable HTTPS enforcement:
+Then confirm it landed and enable HTTPS enforcement:
 
 ```bash
 nslookup manailab.com 8.8.8.8
 ```
 
 ```bash
-gh api -X PUT repos/whizyoga-ai/Restaurants/pages -f https_enforced=true
+gh api -X PUT repos/whizyoga-ai/Restaurants/pages -f cname=manailab.com -F https_enforced=true
 ```
+
+The `CNAME` file is committed and ready, so no code change is needed once DNS
+moves — but the Pages custom-domain setting was deliberately cleared while the
+domain pointed elsewhere, so the `gh api` line above is what re-arms it.
 
 ## 3. What lives where
 
 | URL | Content |
 |---|---|
-| `https://manailab.com/` | The Leaf & Loaf circle, then `https://saas.brahmexa.com/smb/` in a borderless iframe |
-| `https://manailab.com/restaurants/leaf-and-loaf/` | The Leaf & Loaf site |
+| `/` | Brahmexa SMB evaluation page: hero, the Leaf & Loaf showcase, 13 admin-interface cards, then `https://saas.brahmexa.com/smb/` embedded below |
+| `/restaurants/leaf-and-loaf/` | The Leaf & Loaf site |
+
+Relative to `https://whizyoga-ai.github.io/Restaurants/` today, and to
+`https://manailab.com/` once DNS moves. All internal links are relative so both
+work without edits.
 
 `saas.brahmexa.com` sends no `X-Frame-Options` and no frame-ancestors CSP, so
 the embed is allowed. If that ever changes the iframe goes blank — the landing
