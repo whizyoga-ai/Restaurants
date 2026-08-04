@@ -141,11 +141,62 @@
     }
   }
 
+  /* Which build wrote the stored transcript.
+
+     Read off this script's own ?v= token rather than hard-coded, so it is
+     correct on every deploy without being a second thing to remember. */
+  const BUILD = (function () {
+    try {
+      const src = (document.currentScript && document.currentScript.src) || '';
+      return (src.match(/[?&]v=([^&]+)/) || [])[1] || 'dev';
+    } catch (_) { return 'dev'; }
+  })();
+
+  /* A transcript outliving its build is a liability, not a convenience.
+
+     sessionStorage survives a refresh, so an answer stayed on screen long
+     after the code that produced it was replaced — including, for a while,
+     an invented bus route that the current build refuses to give. Anyone
+     scrolling up reads it as what the assistant says today.
+
+     So the transcript is stamped with the build and the time, and dropped
+     when either has moved on. Losing a few restored turns costs nothing;
+     showing a retracted answer as current costs the thing this whole
+     answer engine exists to protect. */
+  const MAX_AGE_MS = 4 * 60 * 60 * 1000;
+
+  /* Run once at boot, before a session id is loaded. Clears the transcript AND
+     the session id together, so a stale conversation is not left running on
+     the server under an id we would otherwise keep reusing. */
+  function dropStaleConversation() {
+    try {
+      const raw = JSON.parse(sessionStorage.getItem(CONV_KEY) || 'null');
+      if (!raw) return;
+      const stale = Array.isArray(raw)          // pre-stamp format, older build
+        || raw.v !== BUILD
+        || !(Date.now() - raw.ts < MAX_AGE_MS);
+      if (stale) {
+        sessionStorage.removeItem(CONV_KEY);
+        sessionStorage.removeItem(SESS_KEY);
+      }
+    } catch (_) {
+      try { sessionStorage.removeItem(CONV_KEY); sessionStorage.removeItem(SESS_KEY); } catch (__) {}
+    }
+  }
+
   const readConv = () => {
-    try { return JSON.parse(sessionStorage.getItem(CONV_KEY) || '[]'); } catch (_) { return []; }
+    try {
+      const raw = JSON.parse(sessionStorage.getItem(CONV_KEY) || 'null');
+      if (!raw || Array.isArray(raw) || raw.v !== BUILD) return [];
+      return Array.isArray(raw.turns) ? raw.turns : [];
+    } catch (_) { return []; }
   };
   const writeConv = turns => {
-    try { sessionStorage.setItem(CONV_KEY, JSON.stringify(turns.slice(-40))); } catch (_) {}
+    try {
+      sessionStorage.setItem(CONV_KEY, JSON.stringify({
+        v: BUILD, ts: Date.now(), turns: turns.slice(-40),
+      }));
+    } catch (_) {}
   };
 
   /* ---------------------------------------------------------------- build */
@@ -474,6 +525,10 @@
 
   /* ------------------------------------------------------------------ boot */
   function init() {
+    /* Before loadSession, not after: the orchestrator keys its own history by
+       session id, so reusing a stale id would leave the old conversation alive
+       on the server even with the local transcript cleared. */
+    dropStaleConversation();
     loadSession();
     build();
     // Follow the page's language toggle without a reload.
