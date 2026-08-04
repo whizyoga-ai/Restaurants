@@ -51,7 +51,7 @@
       <button class="tab" role="tab" aria-selected="false" data-panel="p-seo">Search &amp; ORBIT</button>
     </nav>
     <span class="bar__right">
-      <span class="who" id="whoami"></span>
+      <span class="who">Signed in as <b id="whoami"></b></span>
       <a class="btn btn--quiet" href="../">View site ↗</a>
       <button class="btn" id="signOut" type="button">Sign out</button>
     </span>
@@ -162,38 +162,26 @@
         </p>
       </div>
 
-      <ol class="flow">
-        <li class="flow__stage" data-lock="order-to-cash"
-            data-lock-note="Counter and ahead-of-time orders land in one queue, whether they came from the till, the website or a delivery partner.">
-          <span class="flow__n">1</span>
-          <b>Order</b>
-          <span class="flow__sub">counter · order-ahead · delivery apps</span>
-        </li>
-        <li class="flow__stage" data-lock="order-to-cash"
-            data-lock-note="The kitchen sees a ticket the moment the order is taken, grouped by course so the salad and the focaccia land together.">
-          <span class="flow__n">2</span>
-          <b>Kitchen ticket</b>
-          <span class="flow__sub">routing · course grouping · timing</span>
-        </li>
-        <li class="flow__stage" data-lock="order-to-cash"
-            data-lock-note="Card, cash and account. Office accounts do not pay at the counter — their orders go onto the monthly invoice instead.">
-          <span class="flow__n">3</span>
-          <b>Payment</b>
-          <span class="flow__sub">card · cash · on account</span>
-        </li>
-        <li class="flow__stage" data-lock="order-to-cash"
-            data-lock-note="One invoice per company per month, against the kennitala, instead of nine people expensing lunch separately.">
-          <span class="flow__n">4</span>
-          <b>Kennitala invoicing</b>
-          <span class="flow__sub">office accounts · monthly · greiðsluseðill</span>
-        </li>
-        <li class="flow__stage" data-lock="order-to-cash"
-            data-lock-note="Takings, covers and dish counts, closed off nightly and ready for the accountant without anyone retyping a spreadsheet.">
-          <span class="flow__n">5</span>
-          <b>Daily close</b>
-          <span class="flow__sub">takings · covers · dish counts</span>
-        </li>
-      </ol>
+      <div class="wfwrap">
+        <div class="wfstage">
+          <div class="wfstage__bar">
+            <b>Order-to-cash</b>
+            <span class="chip chip--live">Live simulation</span>
+          </div>
+          <div id="flowO2C"></div>
+        </div>
+        <div class="wf-log">
+          <h3>Run log</h3>
+          <ul class="wf-log__list" id="logO2C"></ul>
+          <div class="wf-log__foot">
+            <button class="btn btn--sm btn--wide" id="runO2C" type="button">Run it again</button>
+          </div>
+        </div>
+      </div>
+      <p class="hint" style="margin:-8px 0 22px">
+        Dashed nodes are subflows — click any node to see the steps inside it.
+        Nothing here touches a real till or a real bank account.
+      </p>
 
       <div class="teaser">
         <div>
@@ -222,6 +210,27 @@
           This is REACH working; only publishing is locked.
         </p>
       </div>
+
+      <div class="wfwrap">
+        <div class="wfstage">
+          <div class="wfstage__bar">
+            <b>Publish a new menu</b>
+            <span class="chip chip--live">Live simulation</span>
+          </div>
+          <div id="flowReach"></div>
+        </div>
+        <div class="wf-log">
+          <h3>Run log</h3>
+          <ul class="wf-log__list" id="logReach"></ul>
+          <div class="wf-log__foot">
+            <button class="btn btn--sm btn--wide" id="runReach" type="button">Run it again</button>
+          </div>
+        </div>
+      </div>
+      <p class="hint" style="margin:-8px 0 22px">
+        One menu change, four channels, in parallel. Click any node to see the
+        steps inside it. Nothing is actually posted anywhere.
+      </p>
 
       <div class="reach">
         <div class="reach__controls">
@@ -307,6 +316,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="workflow.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>

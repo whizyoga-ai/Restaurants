@@ -305,6 +305,7 @@ function enterConsole() {
   wireTabs();
   wireLocks();
   wireReach();
+  wireFlows();
   loadSeoPanel();
 }
 
@@ -313,7 +314,23 @@ function wireTabs() {
   $$('.tab').forEach(t => t.addEventListener('click', () => {
     $$('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
     $$('.panel').forEach(p => { p.hidden = p.id !== t.dataset.panel; });
+
+    // Start a flow the first time its tab is opened, never before — an SVG
+    // animating inside a hidden panel is wasted, and getTotalLength on a
+    // display:none path returns 0, which would put every packet at the origin.
+    if (t.dataset.panel === 'p-flow') flows.o2c?.play();
+    if (t.dataset.panel === 'p-reach') flows.reach?.play();
   }));
+}
+
+/* --------------------------------------------------------------- workflows */
+const flows = {};
+
+function wireFlows() {
+  if (!window.FLOWS) return;
+  const { FLOW_REACH, FLOW_O2C, mountFlow } = window.FLOWS;
+  flows.reach = mountFlow('#flowReach', '#logReach', '#runReach', FLOW_REACH);
+  flows.o2c = mountFlow('#flowO2C', '#logO2C', '#runO2C', FLOW_O2C);
 }
 
 /* ------------------------------------------------------------- menu studio */
@@ -514,6 +531,9 @@ const LOCK_COPY = {
     href: 'https://orbit.brahmexa.com/',
   },
 };
+
+/* Exposed so workflow.js can open it when a node on the canvas is clicked. */
+window.openLock = openLock;
 
 function openLock(kind, note) {
   const c = LOCK_COPY[kind];
