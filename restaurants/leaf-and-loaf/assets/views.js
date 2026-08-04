@@ -81,6 +81,23 @@ window.LL = (function () {
   }
 
   /**
+   * Format a króna amount the Icelandic way: 18300 -> "18.300".
+   *
+   * toLocaleString('is-IS') cannot be trusted for this. Browsers without
+   * Icelandic locale data fall back silently — Intl.NumberFormat('is-IS')
+   * resolves to en-US in Chromium here — so prices were rendering as "18,300"
+   * with a comma, which in Iceland reads as a decimal point. A comma in a
+   * price on an Icelandic restaurant's site is not a cosmetic difference.
+   *
+   * Grouping with a period unconditionally is correct for this one currency
+   * and cannot be undone by whatever locale data a visitor's browser happens
+   * to ship.
+   */
+  function isk(n) {
+    return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  /**
    * Build the picker menu and keep the button label in step.
    * onPick runs after the view has been applied, so a page can re-render
    * anything that depends on it.
@@ -135,7 +152,7 @@ window.LL = (function () {
 
   return {
     VIEWS,
-    restore, esc,
+    restore, esc, isk,
     get lang() { return lang; },
     get view() { return view; },
     setLang, toggleLang, setView,

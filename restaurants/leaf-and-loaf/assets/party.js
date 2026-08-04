@@ -174,7 +174,7 @@ const T = {
 /* ------------------------------------------------------------------ boot */
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-const isk = n => Number(n).toLocaleString('is-IS');
+const isk = n => LL.isk(n);   // period grouping, see views.js
 const esc = s => LL.esc(s);
 
 let lang = 'is';

@@ -232,7 +232,7 @@ const T = {
   en: {
     langLabel: 'ÍSL',
     place: 'Mathöll Höfða · Reykjavík',
-    navMenu: 'Menu', navOffice: 'Office lunch', navFind: 'Find us',
+    navMenu: 'Menu', navParty: 'Party orders', navOffice: 'Office lunch', navFind: 'Find us',
     order: 'Order ahead',
     heroEyebrow: 'Fresh food, honestly made',
     heroTitleA: 'Leaves, loaves and', heroTitleB: 'nothing hiding',
@@ -282,7 +282,7 @@ const T = {
   is: {
     langLabel: 'ENG',
     place: 'Mathöll Höfða · Reykjavík',
-    navMenu: 'Matseðill', navOffice: 'Hádegismatur', navFind: 'Finndu okkur',
+    navMenu: 'Matseðill', navParty: 'Veislur', navOffice: 'Hádegismatur', navFind: 'Finndu okkur',
     order: 'Panta fyrirfram',
     heroEyebrow: 'Ferskur matur, heiðarlega gerður',
     heroTitleA: 'Salat, brauð og', heroTitleB: 'ekkert falið',
@@ -359,7 +359,7 @@ let filter = 'all';
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const t  = () => T[lang];
-const isk = n => n.toLocaleString('is-IS');
+const isk = n => LL.isk(n);   // period grouping, see views.js
 
 /* -------------------------------------------------------------------- boot */
 document.addEventListener('DOMContentLoaded', () => {

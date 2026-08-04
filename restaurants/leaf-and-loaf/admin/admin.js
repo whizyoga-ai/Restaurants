@@ -261,7 +261,11 @@ const vatOf = gross => gross - netOf(gross);
 /* ------------------------------------------------------------------ boot */
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-const isk = n => Number(n).toLocaleString('is-IS');
+/* Period grouping, not toLocaleString('is-IS') — browsers without Icelandic
+   locale data fall back to en-US and render 18.300 as "18,300", where the
+   comma reads as a decimal point in Iceland. Same formatter as the public
+   site, kept local so the admin has no dependency on views.js. */
+const isk = n => String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 let MENU = [];
 let selectedId = null;
