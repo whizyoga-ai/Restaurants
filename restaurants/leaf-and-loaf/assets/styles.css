@@ -1081,6 +1081,180 @@ input[type="range"] { width: 100%; accent-color: var(--moss); }
   .stepper { grid-column: 3; grid-row: 1 / 3; }
 }
 
+/* ==========================================================================
+   THE ASSISTANT
+
+   Our own client (assets/assistant.js), replacing the shared
+   chat.brahmando.com widget on these pages. Themed from the same variables as
+   everything else, so it is moss on Dagsljós and aurora green at night without
+   a second stylesheet.
+   ========================================================================== */
+
+.llchat-launch {
+  position: fixed; right: 24px; bottom: 24px; z-index: 990;
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 54px; padding: 0 22px 0 18px;
+  border: 0; border-radius: 999px;
+  background: var(--moss); color: var(--paper);
+  font: inherit; font-size: .9rem; font-weight: 500; cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,.26);
+  transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, opacity .2s ease;
+}
+[data-season="winternight"] .llchat-launch,
+[data-season="northernlights"] .llchat-launch { color: #0B140F; }
+.llchat-launch:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,.34); }
+.llchat-launch.is-hidden { opacity: 0; pointer-events: none; transform: scale(.9); }
+
+.llchat-launch__dot {
+  width: 9px; height: 9px; border-radius: 50%; background: currentColor;
+  box-shadow: 0 0 0 0 currentColor; animation: llpulse 3s ease-out infinite;
+}
+@keyframes llpulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,255,255,.55); }
+  70%  { box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+
+.llchat {
+  position: fixed; right: 24px; bottom: 24px; z-index: 995;
+  display: flex; flex-direction: column;
+  width: 400px; height: 560px;
+  max-width: calc(100vw - 32px); max-height: calc(100vh - 48px);
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: 16px;
+  box-shadow: 0 28px 70px rgba(0,0,0,.30);
+  overflow: hidden;
+}
+.llchat[hidden] { display: none; }
+.llchat.is-resizing { user-select: none; }
+
+/* Top-left grip: the panel is pinned bottom-right, so this is the corner that
+   has to move for it to grow. */
+.llchat__grip {
+  position: absolute; top: 0; left: 0; width: 22px; height: 22px;
+  cursor: nwse-resize; z-index: 3;
+}
+.llchat__grip::before {
+  content: ''; position: absolute; top: 7px; left: 7px; width: 8px; height: 8px;
+  border-top: 2px solid var(--ink-3); border-left: 2px solid var(--ink-3);
+  border-radius: 2px 0 0 0; opacity: .6;
+}
+.llchat__grip:hover::before { opacity: 1; border-color: var(--moss); }
+
+.llchat__head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 12px 13px 26px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+.llchat__mark {
+  width: 28px; height: 28px; border-radius: 50%; flex: 0 0 auto;
+  background: var(--moss);
+}
+.llchat__id { margin-right: auto; min-width: 0; }
+.llchat__title { display: block; font-size: .88rem; font-weight: 600; }
+.llchat__sub { display: block; font-size: .68rem; color: var(--ink-3); }
+
+.llchat__icon {
+  width: 30px; height: 30px; flex: 0 0 auto;
+  border: 0; border-radius: 50%; background: transparent;
+  color: var(--ink-3); font-size: 1.05rem; line-height: 1; cursor: pointer;
+  transition: background .18s, color .18s;
+}
+.llchat__icon:hover { background: var(--moss-soft); color: var(--moss); }
+
+.llchat__list {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding: 16px; display: flex; flex-direction: column; gap: 10px;
+  scrollbar-width: thin;
+}
+
+.llmsg { display: flex; }
+.llmsg--user { justify-content: flex-end; }
+.llmsg__body {
+  max-width: 84%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: .88rem;
+  line-height: 1.6;
+}
+.llmsg--bot .llmsg__body {
+  background: var(--paper-2); color: var(--ink);
+  border-bottom-left-radius: 5px;
+}
+/* The visitor's own question, clearly theirs — the point of a transcript is
+   being able to see what you asked. */
+.llmsg--user .llmsg__body {
+  background: var(--moss); color: var(--paper);
+  border-bottom-right-radius: 5px;
+}
+[data-season="winternight"] .llmsg--user .llmsg__body,
+[data-season="northernlights"] .llmsg--user .llmsg__body { color: #0B140F; }
+.llmsg--error .llmsg__body { background: transparent; border: 1px dashed var(--rule-strong); color: var(--ink-2); }
+
+.llmsg__body p { margin: 0 0 .6em; }
+.llmsg__body p:last-child { margin-bottom: 0; }
+.llmsg__body ul { margin: .2em 0 .4em; padding-left: 1.1em; }
+.llmsg__body li { margin: .16em 0; }
+.llmsg__body strong { font-weight: 600; }
+
+.llthinking { display: inline-flex; gap: 4px; align-items: center; padding: 14px; }
+.llthinking span {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3);
+  animation: llbounce 1.3s ease-in-out infinite;
+}
+.llthinking span:nth-child(2) { animation-delay: .16s; }
+.llthinking span:nth-child(3) { animation-delay: .32s; }
+@keyframes llbounce { 0%,60%,100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-4px); } }
+
+.llchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.llchip {
+  border: 1px solid var(--rule-strong); border-radius: 999px;
+  background: transparent; color: var(--ink-2);
+  font: inherit; font-size: .76rem; padding: 6px 13px; cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.llchip:hover { border-color: var(--moss); color: var(--moss); background: var(--moss-soft); }
+
+.llchat__composer {
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 10px 12px; border-top: 1px solid var(--rule); background: var(--card);
+}
+.llchat__composer textarea {
+  flex: 1; resize: none; min-height: 40px; max-height: 120px;
+  padding: 10px 12px; border: 1px solid var(--rule-strong); border-radius: 12px;
+  background: var(--paper); color: var(--ink);
+  font: inherit; font-size: .88rem; line-height: 1.5;
+}
+.llchat__composer textarea:focus { outline: none; border-color: var(--moss); }
+.llchat__send {
+  width: 40px; height: 40px; flex: 0 0 auto;
+  border: 0; border-radius: 12px; background: var(--moss); color: var(--paper);
+  display: grid; place-items: center; cursor: pointer; transition: filter .2s, opacity .2s;
+}
+[data-season="winternight"] .llchat__send,
+[data-season="northernlights"] .llchat__send { color: #0B140F; }
+.llchat__send:hover { filter: brightness(1.1); }
+.llchat__send:disabled { opacity: .45; cursor: default; }
+
+.llchat__foot { padding: 8px 14px 10px; border-top: 1px solid var(--rule); background: var(--paper-2); text-align: center; }
+.llchat__foot a { display: inline-flex; align-items: center; gap: 6px; font-size: .7rem; color: var(--ink-3); }
+.llchat__foot a:hover { color: var(--moss); }
+.llchat__foot b { font-weight: 600; }
+.llchat__logo { border-radius: 50%; }
+
+@media (max-width: 560px) {
+  .llchat { right: 12px; left: 12px; bottom: 12px; width: auto !important; height: 76vh !important; }
+  .llchat__grip { display: none; }        /* no corner to drag when it is full width */
+  .llchat-launch { right: 14px; bottom: 14px; }
+  .llchat-launch__txt { display: none; }
+  .llchat-launch { padding: 0; width: 54px; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .llchat-launch__dot, .llthinking span { animation: none; }
+}
+
 /* ================================================================= 08 · footer */
 footer { background: var(--paper-2); border-top: 1px solid var(--rule); padding: 72px 0 32px; transition: background-color .5s ease; }
 .foot__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 44px; }

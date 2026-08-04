@@ -19,7 +19,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="assets/styles.css?v=20260804h" />
+  <link rel="stylesheet" href="assets/styles.css?v=20260805a" />
 
   <!-- Facts below are sourced from Mathöll Höfða's own site: the hall is at
        Bíldshöfða 9, 110 Reykjavík and is open daily 11:30–21:00. No phone
@@ -343,33 +343,16 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- Label beside the chat bubble. Clicking it opens the widget by clicking the
-     widget's own button, so there is one code path to open the panel. -->
-<button class="chat-hint" id="chatHint" type="button" hidden>
-  <img class="chat-hint__logo" src="assets/brahmexa-logo.png" alt="" width="22" height="22" />
-  <span class="chat-hint__txt">
-    <b data-t="chatHintTitle">Ask about the menu</b>
-    <span data-t="chatHintSub">Allergens, nutrition, what is nearby</span>
-  </span>
-</button>
 
-<script src="assets/views.js?v=20260804h"></script>
-<script src="assets/illus.js?v=20260804h"></script>
-<script src="assets/app.js?v=20260804h"></script>
+<script src="assets/views.js?v=20260805a"></script>
+<script src="assets/illus.js?v=20260805a"></script>
+<script src="assets/app.js?v=20260805a"></script>
 
 <!-- Leaf & Loaf assistant — Brahmando multi-tenant orchestrator.
      No API key in the browser: the embed endpoint is origin-checked and
      injects the tenant key server-side. -->
-<script src="https://chat.brahmando.com/widget/chatbot.js"
-        data-tenant="leafandloaf"
-        data-url="https://chat.brahmando.com"
-        data-api-key=""
-        data-title="Leaf &amp; Loaf Assistant"
-        data-theme="light"
-        data-primary-color="#3A5A40"
-        data-position="bottom-right"
-        data-samples="What is in the Caesar salad?|Which dishes are gluten free?|How much protein is in the quinoa bowl?|What is worth seeing near Bíldshöfði?">
-</script>
 
+
+<script src="assets/assistant.js?v=20260805a"></script>
 </body>
 </html>
