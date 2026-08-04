@@ -1132,6 +1132,14 @@ input[type="range"] { width: 100%; accent-color: var(--moss); }
 .llchat {
   position: fixed; right: 24px; bottom: 24px; z-index: 995;
   display: flex; flex-direction: column;
+  /* The panel is a <section>, so it was inheriting the page's own
+     `section { padding: clamp(72px, 9vw, 132px) 0 }` — 115px of dead space
+     above the header and below the footer at a 1280px viewport, with the
+     message list squeezed to 150px of a 560px panel. Reset it explicitly
+     rather than renaming the element, so any other page-level rule that
+     targets `section` cannot reach in here either. */
+  padding: 0;
+  margin: 0;
   width: 400px; height: 560px;
   max-width: calc(100vw - 32px); max-height: calc(100vh - 48px);
   background: var(--card);
