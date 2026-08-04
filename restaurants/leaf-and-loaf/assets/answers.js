@@ -388,6 +388,46 @@ window.LL_ANSWERS = (function () {
       },
     },
 
+    /* Getting here.
+
+       This rule exists because the model got it wrong in production. Asked
+       how to reach the hall by bus, it answered "bus number 1, get off at
+       Höfði or Höfðabakki, about 20 minutes" — inventing all three. The
+       knowledge pack tells it in plain words not to invent a route number
+       and to send people to straeto.is; it did it anyway, most likely by
+       reading "Route 1" out of the driving directions on the line above.
+
+       A wrong bus number puts someone on the wrong side of the city. So the
+       route is answered from fixed facts, and the one fact we genuinely do
+       not have is declined out loud, with the reason and the real source. */
+    {
+      test: q => has(q, 'bus', 'straeto', 'strætó', 'ruta', 'rúta', 'leid', 'leið',
+                        'get there', 'get to you', 'getting here', 'how do i get',
+                        'directions', 'drive', 'driving', 'park', 'parking',
+                        'airport', 'keflavik', 'keflavík', 'taxi', 'leigubil', 'leigubíl',
+                        /* "can I walk from town?" is the question with the worst
+                           wrong answer available: 6 km through an industrial
+                           district, in Icelandic weather. Answered, not guessed. */
+                        'walk', 'walking', 'on foot', 'ganga', 'gangandi', 'gonguleid', 'gönguleið',
+                        'hvernig kemst', 'komast', 'bilastaedi', 'bílastæði', 'flugvoll', 'flugvöll'),
+      run: (q, lang) => {
+        const v = M().venue;
+        return lang === 'en'
+          ? [
+              `We are at **${v.street}, ${v.city}**, in Höfði — a working district in eastern Reykjavík, about 6 km from the city centre. That is a 10 to 15 minute drive, not a walk.`,
+              `**By car** — easy off Vesturlandsvegur, and there is free parking at the hall.`,
+              `**From Keflavík Airport** — about 50 km, roughly 45 to 50 minutes.`,
+              `**By bus** — Strætó does serve Höfði, but route numbers and stops get changed and we would rather not send you to the wrong side of town on an out-of-date one. Put ${v.street} into **straeto.is** and it will give you today's route.`,
+            ].join('\n\n')
+          : [
+              `Við erum á **${v.street}, ${v.city}**, í Höfða — athafnahverfi í austurhluta Reykjavíkur, um 6 km frá miðbænum. Það er 10–15 mínútna akstur, ekki gönguleið.`,
+              `**Á bíl** — greið leið af Vesturlandsvegi og frí bílastæði við höllina.`,
+              `**Frá Keflavíkurflugvelli** — um 50 km, um 45–50 mínútur.`,
+              `**Með strætó** — Strætó ekur um Höfða, en leiðanúmer og stoppistöðvar breytast og við viljum ekki senda þig á rangan stað með úreltum upplýsingum. Sláðu ${v.street} inn á **straeto.is** og þú færð leiðina eins og hún er í dag.`,
+            ].join('\n\n');
+      },
+    },
+
     // --- ordering and catering ------------------------------------------- //
     {
       test: q => has(q, 'order ahead', 'collect', 'takeaway', 'take away', 'panta fyrirfram', 'saekja', 'sækja'),

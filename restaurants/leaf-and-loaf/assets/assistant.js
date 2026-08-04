@@ -60,7 +60,7 @@
       errOrigin: 'This assistant is not enabled for this address yet.',
       errServer: 'Something went wrong at our end. Please try again in a moment.',
       thinking: 'Thinking',
-      fromMenu: 'From the menu',
+      fromMenu: "From Leaf & Loaf's own records",
     },
     is: {
       launch: 'Spurðu um matseðilinn',
@@ -81,7 +81,7 @@
       errOrigin: 'Aðstoðin er ekki virk fyrir þetta vistfang enn.',
       errServer: 'Eitthvað fór úrskeiðis hjá okkur. Reyndu aftur eftir augnablik.',
       thinking: 'Hugsa',
-      fromMenu: 'Af matseðlinum',
+      fromMenu: 'Frá Leaf & Loaf sjálfum',
     },
   };
 
@@ -303,9 +303,11 @@
     const el = document.createElement('div');
     el.className = `llmsg llmsg--${role}` + (opts.error ? ' llmsg--error' : '');
 
-    /* Say where an answer came from. "From the menu" is a stronger claim than
-       anything the assistant can make, and a visitor deciding whether to trust
-       an allergen answer deserves to know which one they are reading. */
+    /* Say where an answer came from. Answers read out of the restaurant's own
+       data are a stronger claim than anything the assistant can make, and a
+       visitor deciding whether to trust an allergen answer deserves to know
+       which of the two they are reading. The label stays broader than "from
+       the menu" because this path now also covers hours, address and travel. */
     const tag = opts.source === 'menu'
       ? `<span class="llmsg__src">${esc(t().fromMenu)}</span>` : '';
 
