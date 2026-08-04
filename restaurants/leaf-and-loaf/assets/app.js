@@ -329,6 +329,25 @@ const NEARBY = [
   { en: 'Reykjavík city centre',          is: 'Miðborg Reykjavíkur',            dist: '~6 km' },
 ];
 
+/* ------------------------------------------------------------------- views
+   Five looks. Four are light; Vetrarnótt is kept because it was already
+   shipped and some people genuinely prefer a dark page at night.
+
+   The three added views are drawn in CSS rather than photographed — see the
+   note in styles.css for why the available photographs could not be used. */
+const VIEWS = [
+  { id: 'daylight',       en: ['Dagsljós',    'Daylight — pale Nordic light'],
+                          is: ['Dagsljós',    'Fölt norrænt dagsljós'] },
+  { id: 'fireandice',     en: ['Eldur og Ís',  'Land of Fire and Ice — basalt and ember'],
+                          is: ['Eldur og Ís',  'Hraun og glóð'] },
+  { id: 'northernlights', en: ['Norðurljós',   'Northern Lights — aurora colours, by day'],
+                          is: ['Norðurljós',   'Norðurljósalitir að degi'] },
+  { id: 'menuboard',      en: ['Matseðillinn', 'The Menu — the whole card, up front'],
+                          is: ['Matseðillinn', 'Allur seðillinn, fremst'] },
+  { id: 'winternight',    en: ['Vetrarnótt',   'Winter Night — the dark one'],
+                          is: ['Vetrarnótt',   'Dökka útgáfan'] },
+];
+
 /* ------------------------------------------------------------------ state */
 let lang = 'en';
 let season = 'daylight';
@@ -346,6 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFilters();
   renderMenu();
   renderNearby();
+  renderHeroMenu();
   wireQuoter();
   applyLang();
   updateStatus();
@@ -358,7 +378,7 @@ function restorePrefs() {
     const savedLang = localStorage.getItem('ll-lang');
     const savedSeason = localStorage.getItem('ll-season');
     if (savedLang === 'is' || savedLang === 'en') lang = savedLang;
-    if (savedSeason === 'winternight' || savedSeason === 'daylight') season = savedSeason;
+    if (VIEWS.some(v => v.id === savedSeason)) season = savedSeason;
     else if (window.matchMedia('(prefers-color-scheme: dark)').matches) season = 'winternight';
   } catch (_) { /* storage blocked — defaults are fine */ }
   document.documentElement.setAttribute('data-season', season);
@@ -381,18 +401,14 @@ function wireChrome() {
     renderFilters();
     renderMenu();
     renderNearby();
+    renderViewPicker();
+    renderHeroMenu();
     applyLang();
     updateStatus();
     updateQuote();
   });
 
-  $('#seasonBtn').addEventListener('click', () => {
-    season = season === 'daylight' ? 'winternight' : 'daylight';
-    savePref('ll-season', season);
-    document.documentElement.setAttribute('data-season', season);
-    paintSeasonBtn();
-  });
-  paintSeasonBtn();
+  wireViewPicker();
 
   $$('[data-order]').forEach(b => b.addEventListener('click', e => {
     e.preventDefault();
@@ -400,12 +416,92 @@ function wireChrome() {
   }));
 }
 
-function paintSeasonBtn() {
-  const btn = $('#seasonBtn');
-  const night = season === 'winternight';
-  btn.textContent = night ? '☾' : '☀';
-  btn.setAttribute('aria-label', night ? 'Switch to daylight palette' : 'Switch to winter-night palette');
-  btn.setAttribute('aria-pressed', String(night));
+function wireViewPicker() {
+  const pick = $('#viewPick');
+  const btn = $('#viewBtn');
+  const menu = $('#viewMenu');
+
+  const close = () => { pick.dataset.open = 'false'; btn.setAttribute('aria-expanded', 'false'); };
+  const open = () => { pick.dataset.open = 'true'; btn.setAttribute('aria-expanded', 'true'); };
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    pick.dataset.open === 'true' ? close() : open();
+  });
+
+  // Click-away and Escape, so the menu is never stuck open on a touch device.
+  document.addEventListener('click', e => { if (!pick.contains(e.target)) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+  menu.addEventListener('click', e => {
+    const opt = e.target.closest('.viewpick__opt');
+    if (!opt) return;
+    setView(opt.dataset.view);
+    close();
+    btn.focus();
+  });
+
+  renderViewPicker();
+}
+
+function renderViewPicker() {
+  const menu = $('#viewMenu');
+  menu.innerHTML = '';
+  VIEWS.forEach(v => {
+    const [name, note] = v[lang];
+    const b = document.createElement('button');
+    b.className = 'viewpick__opt';
+    b.type = 'button';
+    b.role = 'menuitemradio';
+    b.dataset.view = v.id;
+    b.setAttribute('aria-checked', String(v.id === season));
+    b.innerHTML =
+      `<span class="viewpick__sw sw--${v.id}" aria-hidden="true"></span>` +
+      `<span class="viewpick__txt"><b>${esc(name)}</b><span>${esc(note)}</span></span>`;
+    menu.appendChild(b);
+  });
+
+  const active = VIEWS.find(v => v.id === season) || VIEWS[0];
+  $('#viewBtnLabel').textContent = active[lang][0];
+}
+
+function setView(id) {
+  if (!VIEWS.some(v => v.id === id)) return;
+  season = id;
+  savePref('ll-season', season);
+  document.documentElement.setAttribute('data-season', season);
+  renderViewPicker();
+  renderHeroMenu();
+}
+
+/* The hero menu card, for the Matseðillinn view. Built from MENU so it cannot
+   drift out of step with the menu section further down the page. */
+function renderHeroMenu() {
+  const box = $('#heroMenu');
+  if (!box) return;
+  if (season !== 'menuboard') { box.innerHTML = ''; return; }
+
+  const head =
+    `<div class="hero-menu__head">
+       <h2>${esc(lang === 'en' ? 'Menu' : 'Matseðill')}</h2>
+       <p>${esc(VENUE.hall)} · ${esc(VENUE.opens)}–${esc(VENUE.closes)}</p>
+     </div>`;
+
+  const groups = COURSES.map(course => {
+    const rows = MENU.filter(d => d.course === course.id).map(d => {
+      const price = d.price === null
+        ? esc(t().counterPrice)
+        : `${isk(d.price)} ISK`;
+      return `<div class="hero-menu__row">
+                <span>${esc(d[lang].name)}</span>
+                <span class="dots"></span>
+                <span class="price">${price}</span>
+              </div>`;
+    }).join('');
+    return `<div class="hero-menu__group"><h3>${esc(course[lang][0])}</h3>${rows}</div>`;
+  }).join('');
+
+  box.innerHTML = head + groups;
 }
 
 /* --------------------------------------------------------- open / closed */

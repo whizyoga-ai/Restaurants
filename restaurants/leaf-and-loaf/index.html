@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Leaf &amp; Loaf — Salads &amp; Focaccia, Mathöll Höfða, Reykjavík</title>
-  <meta name="description" content="Fresh salads and artisan focaccia made to order inside Mathöll Höfða, Bíldshöfða 9, Reykjavík. Open daily 11:30–21:00. Gluten-free and vegetarian choices, and office lunch delivery." />
+  <!-- 152 characters. Google truncates around 160, and the admin console's
+       search panel flags anything longer — it caught this one at 180. -->
+  <meta name="description" content="Fresh salads and artisan focaccia, made to order inside Mathöll Höfða, Bíldshöfða 9, Reykjavík. Open daily 11:30–21:00. Gluten-free and vegetarian choices." />
   <meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#0E1210" media="(prefers-color-scheme: dark)" />
   <link rel="canonical" href="https://manailab.com/restaurants/leaf-and-loaf/" />
@@ -72,7 +74,13 @@
   </nav>
 
   <div class="tools">
-    <button class="pill" id="seasonBtn" type="button" aria-pressed="false">☀</button>
+    <div class="viewpick" id="viewPick" data-open="false">
+      <button class="pill" id="viewBtn" type="button"
+              aria-haspopup="true" aria-expanded="false" aria-controls="viewMenu">
+        <span id="viewBtnLabel">View</span>
+      </button>
+      <div class="viewpick__menu" id="viewMenu" role="menu" aria-label="Choose a view"></div>
+    </div>
     <button class="pill" id="langBtn" type="button" aria-label="Skipta um tungumál / Switch language">ÍSL</button>
     <button class="pill pill--solid" type="button" data-order>Order ahead</button>
   </div>
@@ -81,6 +89,12 @@
 <main>
   <!-- ========================================================== 02 · hero -->
   <section class="hero" id="top">
+    <!-- Drawn scenery for the three added views. Decorative only: aria-hidden
+         so a screen reader is not told about a background that says nothing. -->
+    <div class="scene scene--fire"   aria-hidden="true"></div>
+    <div class="scene scene--aurora" aria-hidden="true"></div>
+    <div class="scene scene--paper"  aria-hidden="true"></div>
+
     <div class="hero__media">
       <img src="assets/images/leaf_botanical_hero.jpg"
            alt="A bowl of leaves, herbs, radish, berries and Icelandic shrimp beside a slab of rosemary focaccia on a pale wooden table" />
@@ -97,6 +111,11 @@
         Vibrant salads and artisan focaccia, made to order inside Mathöll Höfða.
         Every dish lists what is in it and roughly what it gives you.
       </p>
+
+      <!-- Only rendered in the Matseðillinn view. Built from the same MENU
+           array the section below uses, so a price can never disagree with
+           itself between the hero and the menu. -->
+      <div class="hero-menu" id="heroMenu" aria-live="polite"></div>
 
       <div class="hero__ctas" style="margin-top:32px">
         <a class="pill pill--solid" href="#menu-section" data-t="ctaMenu">See the menu</a>

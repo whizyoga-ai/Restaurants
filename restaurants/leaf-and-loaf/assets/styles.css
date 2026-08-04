@@ -27,6 +27,73 @@
   color-scheme: light;
 }
 
+/* ------------------------------------------- palette: Eldur og Ís (fire & ice)
+   Volcanic ash and warm lava ember on pale stone. Light, per the brief.
+
+   The background is drawn, not photographed. The photographs available for this
+   project show a fine-dining room with a fireplace, which is not Leaf & Loaf —
+   a counter in a shared food hall — and dressing the site in someone else's
+   room is the same misrepresentation as inventing an address. Until there are
+   real photographs of Mathöll Höfða, the scenery here is deliberately
+   abstract: it evokes Iceland without claiming to BE anywhere. */
+[data-season="fireandice"] {
+  --paper:        #FAF7F4;
+  --paper-2:      #F0EBE6;
+  --card:         #FFFFFF;
+  --ink:          #241C18;
+  --ink-2:        #6A5B53;
+  --ink-3:        #9A8C84;
+  --rule:         #E4DBD3;
+  --rule-strong:  #CEC1B7;
+  --moss:         #B4482A;          /* lava ember */
+  --moss-soft:    #FBEDE7;
+  --berry:        #7C5A3C;
+  --shadow:       0 1px 2px rgba(36,28,24,.05), 0 12px 40px rgba(36,28,24,.07);
+  --hero-veil:    linear-gradient(180deg, rgba(250,247,244,.10) 0%, rgba(250,247,244,.58) 55%, rgba(250,247,244,1) 100%);
+  color-scheme: light;
+}
+
+/* --------------------------------------- palette: Norðurljós (northern lights)
+   Aurora is a night phenomenon, so a literal reading would be a dark theme.
+   This takes the aurora's COLOURS — mint, glacier teal, faint violet — and
+   floats them on near-white instead. Same feeling, still light. */
+[data-season="northernlights"] {
+  --paper:        #F7FBFA;
+  --paper-2:      #EDF5F3;
+  --card:         #FFFFFF;
+  --ink:          #16262B;
+  --ink-2:        #536A6F;
+  --ink-3:        #8AA0A3;
+  --rule:         #DCE9E7;
+  --rule-strong:  #C2D6D3;
+  --moss:         #1F7A6B;          /* aurora green, dark enough to read as text */
+  --moss-soft:    #E3F4F0;
+  --berry:        #6C4E8C;
+  --shadow:       0 1px 2px rgba(22,38,43,.05), 0 12px 40px rgba(22,38,43,.07);
+  --hero-veil:    linear-gradient(180deg, rgba(247,251,250,.08) 0%, rgba(247,251,250,.55) 55%, rgba(247,251,250,1) 100%);
+  color-scheme: light;
+}
+
+/* -------------------------------------------- palette: Matseðillinn (the menu)
+   Menu-forward. Warm paper, ink, and the menu itself promoted into the hero
+   instead of a photograph. */
+[data-season="menuboard"] {
+  --paper:        #FDFBF6;
+  --paper-2:      #F5F0E4;
+  --card:         #FFFFFF;
+  --ink:          #1E2119;
+  --ink-2:        #5C6153;
+  --ink-3:        #8E9384;
+  --rule:         #E5DFCE;
+  --rule-strong:  #CFC7B0;
+  --moss:         #4A5D3A;
+  --moss-soft:    #EEF1E6;
+  --berry:        #8C3B4A;
+  --shadow:       0 1px 2px rgba(30,33,25,.05), 0 12px 40px rgba(30,33,25,.07);
+  --hero-veil:    linear-gradient(180deg, rgba(253,251,246,.20) 0%, rgba(253,251,246,.86) 45%, rgba(253,251,246,1) 100%);
+  color-scheme: light;
+}
+
 /* ---------------------------------------------------- palette: winter night */
 [data-season="winternight"] {
   --paper:        #0E1210;
@@ -172,6 +239,42 @@ section { padding: clamp(72px, 9vw, 132px) 0; }
 
 .tools { display: flex; align-items: center; gap: 8px; }
 
+/* ------------------------------------------------------------- view picker */
+.viewpick { position: relative; }
+.viewpick__menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 232px; padding: 6px;
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  display: none;
+  z-index: 950;
+}
+.viewpick[data-open="true"] .viewpick__menu { display: block; }
+
+.viewpick__opt {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 10px; border: 0; border-radius: 7px;
+  background: transparent; text-align: left; cursor: pointer;
+  transition: background .18s ease;
+}
+.viewpick__opt:hover { background: var(--paper-2); }
+.viewpick__opt[aria-checked="true"] { background: var(--moss-soft); }
+
+.viewpick__sw {
+  flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%;
+  border: 1px solid var(--rule-strong);
+}
+.sw--daylight       { background: linear-gradient(140deg,#FBFAF7 40%,#3A5A40); }
+.sw--fireandice     { background: linear-gradient(140deg,#E8F1F4 42%,#B4482A); }
+.sw--northernlights { background: linear-gradient(140deg,#EAF6F3 42%,#1F7A6B); }
+.sw--menuboard      { background: linear-gradient(140deg,#F7F2E5 42%,#4A5D3A); }
+.sw--winternight    { background: linear-gradient(140deg,#0E1210 46%,#9DBFA3); }
+
+.viewpick__txt b { display: block; font-size: .84rem; font-weight: 500; line-height: 1.2; }
+.viewpick__txt span { display: block; font-size: .7rem; color: var(--ink-3); }
+
 .pill {
   display: inline-flex;
   align-items: center;
@@ -219,6 +322,113 @@ section { padding: clamp(72px, 9vw, 132px) 0; }
 
 .hero__veil { position: absolute; inset: 0; z-index: 1; background: var(--hero-veil); transition: background .5s ease; }
 .hero__inner { position: relative; z-index: 2; width: 100%; }
+
+/* ------------------------------------------------- drawn scenery per view
+   Pure CSS/SVG. Nothing loads, nothing can 404, and none of it claims to be a
+   photograph of a place. Hidden by default; each view switches on its own. */
+.scene { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity .7s ease; pointer-events: none; }
+[data-season="fireandice"]     .scene--fire   { opacity: 1; }
+[data-season="northernlights"] .scene--aurora { opacity: 1; }
+[data-season="menuboard"]      .scene--paper  { opacity: 1; }
+
+/* the photograph only shows for the two views that use one */
+[data-season="fireandice"]     .hero__media,
+[data-season="northernlights"] .hero__media,
+[data-season="menuboard"]      .hero__media { opacity: 0; }
+.hero__media { transition: opacity .7s ease; }
+
+/* Fire & Ice — glacier band above, basalt ridges below, one ember glow */
+.scene--fire {
+  background:
+    radial-gradient(760px 300px at 78% 74%, rgba(180,72,42,.20), transparent 68%),
+    linear-gradient(180deg, #E8F1F4 0%, #DCE6EA 34%, #C9BEB6 56%, #FAF7F4 100%);
+}
+.scene--fire::before,
+.scene--fire::after {
+  content: ''; position: absolute; left: -5%; right: -5%; bottom: 0; height: 46%;
+  background: #4A403B;
+  clip-path: polygon(0 62%, 12% 40%, 24% 55%, 37% 24%, 51% 48%, 63% 30%, 76% 52%, 88% 34%, 100% 58%, 100% 100%, 0 100%);
+  opacity: .16;
+}
+.scene--fire::after {
+  height: 34%; background: #241C18; opacity: .13;
+  clip-path: polygon(0 74%, 15% 52%, 31% 68%, 46% 44%, 60% 64%, 74% 46%, 87% 66%, 100% 50%, 100% 100%, 0 100%);
+}
+
+/* Northern Lights — aurora ribbons in the aurora's colours, on near-white */
+.scene--aurora {
+  background:
+    radial-gradient(900px 340px at 24% 20%, rgba(31,122,107,.20), transparent 66%),
+    radial-gradient(760px 300px at 74% 12%, rgba(108,78,140,.16), transparent 68%),
+    radial-gradient(680px 260px at 52% 34%, rgba(96,190,170,.18), transparent 70%),
+    linear-gradient(180deg, #EAF6F3 0%, #F2F9F7 48%, #F7FBFA 100%);
+}
+.scene--aurora::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(104deg,
+      transparent 0 38px,
+      rgba(31,122,107,.055) 38px 58px,
+      transparent 58px 96px);
+  mask-image: radial-gradient(720px 330px at 46% 22%, #000 0%, transparent 74%);
+  -webkit-mask-image: radial-gradient(720px 330px at 46% 22%, #000 0%, transparent 74%);
+}
+.scene--aurora::after {
+  content: ''; position: absolute; left: -4%; right: -4%; bottom: 0; height: 30%;
+  background: #16262B; opacity: .10;
+  clip-path: polygon(0 70%, 14% 46%, 28% 62%, 43% 38%, 58% 58%, 72% 42%, 86% 60%, 100% 46%, 100% 100%, 0 100%);
+}
+
+/* The Menu — warm paper with a faint rule grid, so the menu card sits on it */
+.scene--paper {
+  background:
+    radial-gradient(700px 280px at 20% 12%, rgba(74,93,58,.09), transparent 70%),
+    linear-gradient(180deg, #F7F2E5 0%, #FDFBF6 62%);
+}
+.scene--paper::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(180deg, transparent 0 33px, rgba(30,33,25,.045) 33px 34px);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 74%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 74%, transparent 100%);
+}
+
+/* ------------------------------------------------ the menu card in the hero */
+.hero-menu {
+  display: none;
+  margin-top: 34px;
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  padding: clamp(24px, 3.4vw, 40px);
+  max-width: 720px;
+}
+[data-season="menuboard"] .hero-menu { display: block; }
+[data-season="menuboard"] .hero__title { font-size: clamp(2.2rem, 4.6vw, 3.4rem); }
+
+.hero-menu__head {
+  text-align: center; padding-bottom: 14px; margin-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+}
+.hero-menu__head h2 { font-size: 1.5rem; letter-spacing: .04em; }
+.hero-menu__head p { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); margin-top: 4px; }
+
+.hero-menu__group { margin-top: 18px; }
+.hero-menu__group > h3 {
+  font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 6px;
+}
+.hero-menu__row {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 5px 0; font-size: .96rem;
+}
+.hero-menu__row .dots {
+  flex: 1; border-bottom: 1px dotted var(--rule-strong); transform: translateY(-4px);
+}
+.hero-menu__row .price {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.12rem; color: var(--moss);
+  font-variant-numeric: lining-nums tabular-nums; white-space: nowrap;
+}
 
 .hero__title {
   font-size: clamp(2.9rem, 7vw, 5.6rem);

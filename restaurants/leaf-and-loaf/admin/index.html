@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Leaf &amp; Loaf — Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- ============================================================== the gate -->
+<section class="gate" id="gate">
+  <form class="gate__card" id="gateForm">
+    <span class="gate__mark" aria-hidden="true"></span>
+    <h1>Leaf &amp; Loaf</h1>
+    <p class="gate__sub">Restaurant admin console</p>
+
+    <p class="note note--bad" id="gateErr" role="alert" hidden></p>
+
+    <label class="field">
+      <span>Username</span>
+      <input type="text" id="gu" autocomplete="username" autocapitalize="none" required autofocus />
+    </label>
+    <label class="field">
+      <span>Password</span>
+      <input type="password" id="gp" autocomplete="current-password" required />
+    </label>
+
+    <button class="btn btn--primary btn--wide" type="submit">Sign in</button>
+
+    <p class="gate__warn">
+      <b>Preview gate, not security.</b> This page is static, so the check runs
+      in your browser and anyone can read past it. Nothing behind it is
+      confidential. Real per-customer authentication lives in the Brahmexa
+      customer portal.
+    </p>
+  </form>
+</section>
+
+<!-- ============================================================ the console -->
+<div id="console" hidden>
+
+  <header class="bar">
+    <span class="bar__mark" aria-hidden="true"></span>
+    <span class="bar__brand"><b>Leaf &amp; Loaf</b><span>Admin console</span></span>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true"  data-panel="p-menu">Menu studio</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="p-flow">Order-to-cash</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="p-reach">REACH</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="p-seo">Search &amp; ORBIT</button>
+    </nav>
+    <span class="bar__right">
+      <span class="who" id="whoami"></span>
+      <a class="btn btn--quiet" href="../">View site ↗</a>
+      <button class="btn" id="signOut" type="button">Sign out</button>
+    </span>
+  </header>
+
+  <!-- ------------------------------------------------------- 1 · menu studio -->
+  <main class="panel" id="p-menu">
+    <div class="studio">
+
+      <aside class="col col--list">
+        <div class="col__head">
+          <h2>Dishes</h2>
+          <button class="btn btn--sm" id="addDish" type="button">+ Add</button>
+        </div>
+        <div class="dishlist" id="dishList"></div>
+        <button class="btn btn--sm btn--quiet" id="resetMenu" type="button">Reset to published menu</button>
+      </aside>
+
+      <section class="col col--edit" id="editor">
+        <div class="grid2">
+          <label class="field"><span>Name</span><input type="text" id="fName" /></label>
+          <label class="field"><span>Course</span>
+            <select id="fCourse">
+              <option>Salads</option><option>Focaccia</option><option>Drinks</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grid2">
+          <label class="field"><span>Price, ISK (incl. VAT)</span><input type="number" id="fPrice" min="0" step="10" /></label>
+          <div class="field">
+            <span>Photo</span>
+            <label class="filebtn">
+              <input type="file" id="fPhoto" accept="image/*" />
+              <span>Choose an image…</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="photo" id="photoPreview"><span class="ph">No photo yet</span></div>
+
+        <label class="field">
+          <span>Recipe — one ingredient per line, “name, grams”</span>
+          <textarea id="fRecipe" rows="7" spellcheck="false"
+            placeholder="chicken, 120&#10;lettuce, 80&#10;parmesan, 20"></textarea>
+        </label>
+        <p class="hint">
+          Nutrition and allergens below are computed from these lines as you
+          type. Anything not in the ingredient table is listed as unmatched
+          rather than silently ignored.
+        </p>
+        <p class="hint">
+          <b style="color:var(--amber)">These gram weights are illustrative.</b>
+          They are a plausible starting point, not this kitchen's actual
+          recipes, so the totals here will not match the published figures on
+          the customer site exactly. Replace them with the real quantities and
+          the two agree.
+        </p>
+      </section>
+
+      <aside class="col col--out">
+        <h2>Computed</h2>
+
+        <dl class="macros">
+          <div><dt>Energy</dt><dd id="nKcal">0</dd><span>kcal</span></div>
+          <div><dt>Protein</dt><dd id="nP">0</dd><span>g</span></div>
+          <div><dt>Carbs</dt><dd id="nC">0</dd><span>g</span></div>
+          <div><dt>Fat</dt><dd id="nF">0</dd><span>g</span></div>
+        </dl>
+
+        <div class="macrobar" aria-hidden="true">
+          <span class="mb mb--p" id="barP"></span>
+          <span class="mb mb--c" id="barC"></span>
+          <span class="mb mb--f" id="barF"></span>
+        </div>
+        <p class="legend"><i class="k k--p"></i>protein <i class="k k--c"></i>carbs <i class="k k--f"></i>fat</p>
+
+        <div class="tags" id="allergenTags"></div>
+        <p class="warnbox" id="unmatched" hidden></p>
+
+        <h2 style="margin-top:26px">Price</h2>
+        <dl class="kv">
+          <div><dt>Menu price</dt><dd id="vatGross">—</dd></div>
+          <div><dt>Net of VAT</dt><dd id="vatNet">—</dd></div>
+          <div><dt>VAT at 11%</dt><dd id="vatAmt">—</dd></div>
+        </dl>
+        <p class="hint">
+          Iceland charges the reduced 11% rate on food and menu prices are
+          quoted inclusive, so this splits the price you set rather than adding
+          tax on top.
+        </p>
+
+        <button class="btn btn--danger btn--sm" id="delDish" type="button" style="margin-top:20px">Delete dish</button>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ---------------------------------------------------- 2 · order-to-cash -->
+  <main class="panel" id="p-flow" hidden>
+    <div class="pitch">
+      <div class="pitch__head">
+        <span class="chip chip--lock">Not purchased</span>
+        <h2>From the counter to the bank, in one chain</h2>
+        <p>
+          This is the Brahmexa restaurant vertical. Every stage below is a real
+          workflow; the subflows are what actually runs inside them. Click any
+          stage to see what it covers.
+        </p>
+      </div>
+
+      <ol class="flow">
+        <li class="flow__stage" data-lock="order-to-cash"
+            data-lock-note="Counter and ahead-of-time orders land in one queue, whether they came from the till, the website or a delivery partner.">
+          <span class="flow__n">1</span>
+          <b>Order</b>
+          <span class="flow__sub">counter · order-ahead · delivery apps</span>
+        </li>
+        <li class="flow__stage" data-lock="order-to-cash"
+            data-lock-note="The kitchen sees a ticket the moment the order is taken, grouped by course so the salad and the focaccia land together.">
+          <span class="flow__n">2</span>
+          <b>Kitchen ticket</b>
+          <span class="flow__sub">routing · course grouping · timing</span>
+        </li>
+        <li class="flow__stage" data-lock="order-to-cash"
+            data-lock-note="Card, cash and account. Office accounts do not pay at the counter — their orders go onto the monthly invoice instead.">
+          <span class="flow__n">3</span>
+          <b>Payment</b>
+          <span class="flow__sub">card · cash · on account</span>
+        </li>
+        <li class="flow__stage" data-lock="order-to-cash"
+            data-lock-note="One invoice per company per month, against the kennitala, instead of nine people expensing lunch separately.">
+          <span class="flow__n">4</span>
+          <b>Kennitala invoicing</b>
+          <span class="flow__sub">office accounts · monthly · greiðsluseðill</span>
+        </li>
+        <li class="flow__stage" data-lock="order-to-cash"
+            data-lock-note="Takings, covers and dish counts, closed off nightly and ready for the accountant without anyone retyping a spreadsheet.">
+          <span class="flow__n">5</span>
+          <b>Daily close</b>
+          <span class="flow__sub">takings · covers · dish counts</span>
+        </li>
+      </ol>
+
+      <div class="teaser">
+        <div>
+          <h3>What it replaces</h3>
+          <ul class="ticks">
+            <li>A till that does not know what the kitchen is doing</li>
+            <li>Chasing nine people for last month's lunch money</li>
+            <li>Retyping the day's takings into a spreadsheet</li>
+            <li>Guessing which dishes actually sell</li>
+          </ul>
+        </div>
+        <button class="btn btn--primary" data-lock="order-to-cash" type="button">Turn this on →</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ------------------------------------------------------------ 3 · REACH -->
+  <main class="panel" id="p-reach" hidden>
+    <div class="pitch">
+      <div class="pitch__head">
+        <span class="chip chip--lock">Not purchased</span>
+        <h2>Your menu, already written as a campaign</h2>
+        <p>
+          Pick a dish. The copy below is generated from the item you edited in
+          the Menu studio — its real name, real price and computed nutrition.
+          This is REACH working; only publishing is locked.
+        </p>
+      </div>
+
+      <div class="reach">
+        <div class="reach__controls">
+          <label class="field"><span>Dish</span><select id="reachDish"></select></label>
+          <label class="field"><span>Tone</span>
+            <select id="reachTone">
+              <option value="warm">Warm</option>
+              <option value="brisk">Brisk</option>
+              <option value="proud">Proud</option>
+            </select>
+          </label>
+          <div class="channels">
+            <span class="ch">Instagram</span><span class="ch">Facebook</span><span class="ch">Google Business</span>
+          </div>
+          <button class="btn btn--primary btn--wide" data-lock="reach" type="button">Schedule this post →</button>
+        </div>
+
+        <div class="reach__preview">
+          <div class="post">
+            <div class="post__top"><span class="post__av"></span><b>Leaf &amp; Loaf</b><span>Reykjavík</span></div>
+            <div class="post__img"><span>your dish photo</span></div>
+            <pre class="post__body" id="reachPreview"></pre>
+            <p class="post__meta" id="reachMeta"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- -------------------------------------------------- 4 · search &amp; ORBIT -->
+  <main class="panel" id="p-seo" hidden>
+    <div class="pitch">
+      <div class="pitch__head">
+        <span class="chip chip--live">Read from your live page</span>
+        <h2>What search engines can see today</h2>
+        <p>
+          Fetched from your published site just now and inspected, not a stored
+          report. Green is working; amber is what ORBIT would add.
+        </p>
+      </div>
+
+      <div class="seo">
+        <div class="seo__score">
+          <span class="seo__num" id="seoScore">—</span>
+          <span class="seo__lab">checks passing</span>
+          <p class="hint" id="seoNote"></p>
+        </div>
+        <ul class="findings" id="seoFindings"></ul>
+      </div>
+
+      <div class="teaser">
+        <div>
+          <h3>What ORBIT adds</h3>
+          <ul class="ticks">
+            <li><b>Dishes and prices in search results.</b> Publishing the menu as structured data means Google can show the Caesar at 3.290 ISK, not just a link.</li>
+            <li><b>“Open now” instead of a guess.</b> Hours stay machine-readable, so the listing is right at 20:55 on a Sunday.</li>
+            <li><b>Prices that update themselves.</b> Change a price in the Menu studio and search follows, rather than showing last season's.</li>
+            <li><b>One page that stays correct.</b> No second copy of the menu drifting out of date on a listings site.</li>
+          </ul>
+        </div>
+        <button class="btn btn--primary" data-lock="orbit" type="button">See ORBIT →</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============================================================ lock modal -->
+<dialog class="lock" id="lockModal">
+  <button class="lock__x" id="lockClose" type="button" aria-label="Close">&times;</button>
+  <span class="chip chip--lock">Not purchased</span>
+  <h2 id="lockTitle"></h2>
+  <p id="lockBlurb"></p>
+  <ul class="ticks" id="lockList"></ul>
+  <div class="lock__cta">
+    <a class="btn btn--primary" id="lockLink" target="_blank" rel="noopener">See what it includes ↗</a>
+    <a class="btn" href="https://saas.brahmexa.com/portal/" target="_blank" rel="noopener">Talk to Brahmexa</a>
+  </div>
+  <p class="hint">
+    Nothing was charged and nothing was switched on. This panel is here so you
+    can see the shape of it before deciding.
+  </p>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>
