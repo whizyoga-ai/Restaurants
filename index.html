@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ManAI Lab — Brahmexa for small business</title>
+  <meta name="description" content="ManAI Lab — the Brahmexa SMB offering, and the restaurants we build. Leaf &amp; Loaf, Reykjavík." />
+  <meta name="theme-color" content="#05070C" />
+  <link rel="icon" href="assets/leaf-and-loaf-mark.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="assets/manailab.css" />
+</head>
+<body>
+
+  <!-- ============================================ the circle, before the frame -->
+  <header class="strip">
+    <span class="strip__label">Restaurants</span>
+
+    <a class="ll-logo" href="restaurants/leaf-and-loaf/" aria-label="Open the Leaf &amp; Loaf site">
+      <span class="ll-logo__mark">
+        <img class="ll-logo__img" src="assets/leaf-and-loaf-mark.svg" alt="Leaf &amp; Loaf" />
+      </span>
+      <span>
+        <span class="ll-logo__word">Leaf &amp; Loaf</span>
+        <span class="ll-logo__sub">Reykjavík · Iceland</span>
+      </span>
+    </a>
+
+    <span class="strip__spacer"></span>
+    <span class="strip__site"><b>ManAI</b> Lab</span>
+  </header>
+
+  <!-- ================================================ the Brahmexa SMB offering -->
+  <div class="smb" id="smb">
+    <iframe id="smbFrame"
+            src="https://saas.brahmexa.com/smb/"
+            title="Brahmexa SMB offering"
+            loading="eager"
+            referrerpolicy="no-referrer-when-downgrade"
+            allow="clipboard-write"></iframe>
+
+    <div class="smb__fallback">
+      <p>Loading the Brahmexa SMB offering…</p>
+      <p><a href="https://saas.brahmexa.com/smb/" target="_blank" rel="noopener">Open it directly ↗</a></p>
+    </div>
+  </div>
+
+  <script>
+    /* The fallback stays visible until the frame reports a load, so a blocked
+       or slow embed leaves the visitor with a working link rather than a void.
+       We cannot read into the frame (cross-origin) — load is all we get. */
+    (function () {
+      var frame = document.getElementById('smbFrame');
+      var box = document.getElementById('smb');
+      frame.addEventListener('load', function () { box.classList.add('is-loaded'); });
+      setTimeout(function () { box.classList.add('is-loaded'); }, 8000);
+    })();
+  </script>
+
+</body>
+</html>

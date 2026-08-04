@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" data-season="daylight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leaf &amp; Loaf — Salads &amp; Focaccia, Mathöll Höfða, Reykjavík</title>
+  <meta name="description" content="Fresh salads and artisan focaccia made to order inside Mathöll Höfða, Bíldshöfða 9, Reykjavík. Open daily 11:30–21:00. Gluten-free and vegetarian choices, and office lunch delivery." />
+  <meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0E1210" media="(prefers-color-scheme: dark)" />
+  <link rel="canonical" href="https://manailab.com/restaurants/leaf-and-loaf/" />
+
+  <meta property="og:type" content="restaurant" />
+  <meta property="og:title" content="Leaf &amp; Loaf — Mathöll Höfða, Reykjavík" />
+  <meta property="og:description" content="Vibrant salads and artisan focaccia, made to order. Every dish lists its ingredients and an estimated nutrition breakdown." />
+  <meta property="og:image" content="https://manailab.com/restaurants/leaf-and-loaf/assets/images/leaf_botanical_hero.jpg" />
+  <meta property="og:url" content="https://manailab.com/restaurants/leaf-and-loaf/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="assets/styles.css" />
+
+  <!-- Facts below are sourced from Mathöll Höfða's own site: the hall is at
+       Bíldshöfða 9, 110 Reykjavík and is open daily 11:30–21:00. No phone
+       number, rating or second location is claimed, because none is verified. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Leaf & Loaf",
+    "description": "Fresh salads and artisan focaccia sandwiches, made to order inside the Mathöll Höfða food hall in Reykjavík.",
+    "image": "https://manailab.com/restaurants/leaf-and-loaf/assets/images/leaf_botanical_hero.jpg",
+    "url": "https://manailab.com/restaurants/leaf-and-loaf/",
+    "servesCuisine": ["Healthy", "Salads", "Sandwiches", "Cafe"],
+    "priceRange": "2900–3290 ISK",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bíldshöfða 9",
+      "addressLocality": "Reykjavík",
+      "postalCode": "110",
+      "addressCountry": "IS"
+    },
+    "containedInPlace": {
+      "@type": "FoodEstablishment",
+      "name": "Mathöll Höfða",
+      "url": "https://www.mathollhofda.is/"
+    },
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "11:30",
+      "closes": "21:00"
+    }]
+  }
+  </script>
+</head>
+<body>
+
+<!-- ========================================================== 01 · masthead -->
+<header class="masthead">
+  <a class="brand" href="/">
+    <span class="ll-mark" aria-hidden="true">L&amp;L</span>
+    <span>
+      <span class="brand__name">Leaf &amp; Loaf</span><br />
+      <span class="brand__place" data-t="place">Mathöll Höfða · Reykjavík</span>
+    </span>
+  </a>
+
+  <nav class="nav" aria-label="Primary">
+    <a href="#menu-section" data-t="navMenu">Menu</a>
+    <a href="#office" data-t="navOffice">Office lunch</a>
+    <a href="#find" data-t="navFind">Find us</a>
+  </nav>
+
+  <div class="tools">
+    <button class="pill" id="seasonBtn" type="button" aria-pressed="false">☀</button>
+    <button class="pill" id="langBtn" type="button" aria-label="Skipta um tungumál / Switch language">ÍSL</button>
+    <button class="pill pill--solid" type="button" data-order>Order ahead</button>
+  </div>
+</header>
+
+<main>
+  <!-- ========================================================== 02 · hero -->
+  <section class="hero" id="top">
+    <div class="hero__media">
+      <img src="assets/images/leaf_botanical_hero.jpg"
+           alt="A bowl of leaves, herbs, radish, berries and Icelandic shrimp beside a slab of rosemary focaccia on a pale wooden table" />
+    </div>
+    <div class="hero__veil"></div>
+
+    <div class="hero__inner wrap">
+      <p class="eyebrow" data-t="heroEyebrow">Fresh food, honestly made</p>
+      <h1 class="hero__title">
+        <span data-t="heroTitleA">Leaves, loaves and</span><br />
+        <em data-t="heroTitleB">nothing hiding</em>
+      </h1>
+      <p class="lede" data-t="heroLede">
+        Vibrant salads and artisan focaccia, made to order inside Mathöll Höfða.
+        Every dish lists what is in it and roughly what it gives you.
+      </p>
+
+      <div class="hero__ctas" style="margin-top:32px">
+        <a class="pill pill--solid" href="#menu-section" data-t="ctaMenu">See the menu</a>
+        <a class="pill" href="https://www.google.com/maps/search/?api=1&amp;query=Math%C3%B6ll%20H%C3%B6f%C3%B0a%2C%20B%C3%ADldsh%C3%B6f%C3%B0a%209%2C%20110%20Reykjav%C3%ADk"
+           target="_blank" rel="noopener" data-t="ctaDirections">Directions</a>
+      </div>
+
+      <div class="hero__meta">
+        <span><span data-t="metaHours">Open daily</span> <strong>11:30 – 21:00</strong></span>
+        <span><span data-t="metaWhere">Inside</span> <strong>Mathöll Höfða, Bíldshöfða 9</strong></span>
+        <span><span data-t="metaPrice">Most dishes</span> <strong>2.900 – 3.290 ISK</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== 03 · today ribbon -->
+  <section class="ribbon">
+    <div class="ribbon__grid">
+      <div class="ribbon__cell">
+        <p class="eyebrow" data-t="ribbonStatus">Right now</p>
+        <p><span class="open-dot" id="statusDot"></span><span id="statusText">Open</span></p>
+      </div>
+      <div class="ribbon__cell">
+        <p class="eyebrow" data-t="ribbonHours">Opening hours</p>
+        <strong>11:30 – 21:00</strong>
+        <p data-t="everyDay">Every day of the week</p>
+      </div>
+      <div class="ribbon__cell">
+        <p class="eyebrow" data-t="ribbonFind">Where we are</p>
+        <strong>Bíldshöfða 9</strong>
+        <p>110 Reykjavík · Mathöll Höfða</p>
+      </div>
+      <div class="ribbon__cell">
+        <p class="eyebrow" data-t="ribbonDiet">Dietary</p>
+        <p data-t="dietLine">Gluten-free and vegetarian choices on every counter.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== 04 · menu -->
+  <section id="menu-section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-t="menuEyebrow">The menu</p>
+          <h2>
+            <span data-t="menuTitleA">Everything we make,</span><br />
+            <em data-t="menuTitleB">and what is in it</em>
+          </h2>
+        </div>
+        <p class="lede" style="max-width:34ch" data-t="menuLede">
+          Tap any dish to see its ingredients and an estimated nutrition breakdown.
+        </p>
+      </div>
+
+      <div class="filters" id="filters" role="group" aria-label="Dietary filters"></div>
+      <div id="menu"></div>
+    </div>
+  </section>
+
+  <!-- ==================================================== 05 · image slab -->
+  <section class="slab reveal">
+    <img src="assets/images/focaccia_burrata_dish.jpg"
+         alt="A slice of focaccia topped with burrata, smoked salmon, basil and cracked pepper on a pale ceramic plate" />
+    <div class="slab__quote">
+      <p data-t="slabQuote">Bread baked this morning. Leaves cut this hour.</p>
+    </div>
+  </section>
+
+  <!-- =================================================== 06 · office lunch -->
+  <section class="office" id="office">
+    <div class="wrap office__grid">
+      <div class="reveal">
+        <p class="eyebrow" data-t="officeEyebrow">For teams</p>
+        <h2 style="font-size:clamp(2rem,3.6vw,2.9rem);font-weight:300;margin:10px 0 18px">
+          <span data-t="officeTitleA">Lunch for the office,</span><br />
+          <em style="font-style:italic;color:var(--moss)" data-t="officeTitleB">without the fuss</em>
+        </h2>
+        <p class="lede" data-t="officeLede">
+          We deliver salad and focaccia trays to workplaces around Höfði, Borgartún and Grandi.
+          Kennitala invoicing, one delivery, no per-person admin.
+        </p>
+
+        <ul class="points">
+          <li><b data-t="p1t">Kennitala invoicing</b><span data-t="p1d">One monthly invoice to the company, not nine card payments.</span></li>
+          <li><b data-t="p2t">A standing order or a one-off</b><span data-t="p2d">Weekly, three days a week, or a single board meeting.</span></li>
+          <li><b data-t="p3t">Diets handled up front</b><span data-t="p3d">Tell us the counts for vegetarian, gluten free and high protein.</span></li>
+          <li><b data-t="p4t">Delivered around Höfði</b><span data-t="p4d">Bíldshöfði and the surrounding business district.</span></li>
+        </ul>
+
+        <img src="assets/images/corporate_catering_box.jpg"
+             alt="An office catering tray of salads, focaccia and fresh fruit"
+             style="margin-top:34px;border-radius:6px;border:1px solid var(--rule)" />
+      </div>
+
+      <div class="quoter reveal">
+        <h3 data-t="quoterTitle">Estimate a team order</h3>
+        <p class="hint" data-t="quoterHint">Indicative only. We confirm the real figure by email.</p>
+
+        <div class="field">
+          <label for="qPeople"><span data-t="people">People</span><b id="qPeopleOut">25</b></label>
+          <input type="range" id="qPeople" min="5" max="150" step="5" value="25" />
+        </div>
+
+        <div class="field">
+          <label for="qDays"><span data-t="perWeek">Days per week</span><b id="qDaysOut">3</b></label>
+          <input type="range" id="qDays" min="1" max="5" step="1" value="3" />
+        </div>
+
+        <div class="field">
+          <label for="qStyle"><span data-t="style">What they eat</span></label>
+          <select id="qStyle">
+            <option value="salad" data-t="styleSalad">Salad bowls</option>
+            <option value="focaccia" data-t="styleFocaccia">Focaccia trays</option>
+            <option value="mixed" selected data-t="styleMixed">A mix of both</option>
+          </select>
+        </div>
+
+        <dl class="readout">
+          <div><dt data-t="perPerson">Per person</dt><dd id="qPerson">—</dd></div>
+          <div><dt data-t="perMonth">Per month, roughly</dt><dd id="qMonth">—</dd></div>
+        </dl>
+
+        <form id="officeForm" novalidate>
+          <div class="form-row">
+            <div class="field">
+              <label for="fCompany" data-t="company">Company</label>
+              <input type="text" id="fCompany" required autocomplete="organization" />
+            </div>
+            <div class="field">
+              <label for="fKt" data-t="kt">Kennitala</label>
+              <input type="text" id="fKt" required inputmode="numeric" />
+            </div>
+            <div class="field">
+              <label for="fContact" data-t="contact">Your name</label>
+              <input type="text" id="fContact" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="fEmail" data-t="email">Work email</label>
+              <input type="email" id="fEmail" required autocomplete="email" />
+            </div>
+          </div>
+          <button class="pill pill--solid" type="submit" data-t="send">Send this enquiry</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== 07 · find us -->
+  <section id="find">
+    <div class="wrap find__grid">
+      <div class="reveal">
+        <p class="eyebrow" data-t="findEyebrow">Find us</p>
+        <h2 style="font-size:clamp(2rem,3.6vw,2.9rem);font-weight:300;margin:10px 0 18px">
+          <span data-t="findTitleA">Inside the food hall</span><br />
+          <em style="font-style:italic;color:var(--moss)" data-t="findTitleB">on Bíldshöfði</em>
+        </h2>
+        <p class="lede" data-t="findLede">
+          Leaf &amp; Loaf is one of ten kitchens in Mathöll Höfða.
+          Order at our counter, sit anywhere in the hall.
+        </p>
+
+        <address class="address">
+          <b>Mathöll Höfða</b><br />
+          Bíldshöfða 9<br />
+          110 Reykjavík, Ísland<br />
+          <b>11:30 – 21:00</b>, <span data-t="everyDay">every day of the week</span>
+        </address>
+
+        <p class="eyebrow" data-t="nearby">Nearby</p>
+        <ul class="near" id="nearby"></ul>
+      </div>
+
+      <div class="map-frame reveal">
+        <iframe id="mapFrame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                title="Map of Mathöll Höfða, Bíldshöfða 9"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-21.8215%2C64.1245%2C-21.7935%2C64.1345&amp;layer=mapnik&amp;marker=64.1295%2C-21.8075"></iframe>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================================================ 08 · footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <h4>Leaf &amp; Loaf</h4>
+        <p data-t="heroEyebrow">Fresh food, honestly made</p>
+      </div>
+      <div>
+        <h4 data-t="footFind">Address</h4>
+        <p>Mathöll Höfða<br />Bíldshöfða 9<br />110 Reykjavík</p>
+      </div>
+      <div>
+        <h4 data-t="footHours">Opening hours</h4>
+        <p>11:30 – 21:00<br /><span data-t="everyDay">Every day of the week</span></p>
+      </div>
+      <div>
+        <h4 data-t="footHall">The food hall</h4>
+        <p data-t="hallNote">Mathöll Höfða hosts ten independent kitchens under one roof. Shared seating, separate counters.</p>
+        <ul style="margin-top:10px">
+          <li><a href="https://www.mathollhofda.is/" target="_blank" rel="noopener">mathollhofda.is ↗</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__bottom">
+      <span>© 2026 Leaf &amp; Loaf</span>
+      <span><a href="https://brahmexa.com" target="_blank" rel="noopener" data-t="builtBy">Site by Brahmexa</a></span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/app.js"></script>
+
+<!-- Leaf & Loaf assistant — Brahmando multi-tenant orchestrator.
+     No API key in the browser: the embed endpoint is origin-checked and
+     injects the tenant key server-side. -->
+<script src="https://chat.brahmando.com/widget/chatbot.js"
+        data-tenant="leafandloaf"
+        data-url="https://chat.brahmando.com"
+        data-api-key=""
+        data-title="Leaf &amp; Loaf Assistant"
+        data-theme="light"
+        data-primary-color="#3A5A40"
+        data-position="bottom-right"
+        data-samples="What is in the Caesar salad?|Which dishes are gluten free?|How much protein is in the quinoa bowl?|What is worth seeing near Bíldshöfði?">
+</script>
+
+</body>
+</html>

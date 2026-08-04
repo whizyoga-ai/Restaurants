@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Leaf &amp; Loaf">
+  <title>Leaf &amp; Loaf</title>
+
+  <defs>
+    <!-- the disc breathes from deep moss at the rim to a lit centre, so the
+         mark reads with the same quiet depth as the Brahmexa emblem -->
+    <radialGradient id="ll-disc" cx="38%" cy="30%" r="82%">
+      <stop offset="0%"   stop-color="#5C8262"/>
+      <stop offset="58%"  stop-color="#3A5A40"/>
+      <stop offset="100%" stop-color="#253B2A"/>
+    </radialGradient>
+    <linearGradient id="ll-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#EFF4EC"/>
+      <stop offset="100%" stop-color="#C8DCC5"/>
+    </linearGradient>
+    <linearGradient id="ll-loaf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#F3E2C0"/>
+      <stop offset="100%" stop-color="#D8B87E"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="100" cy="100" r="100" fill="url(#ll-disc)"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#EFF4EC" stroke-opacity="0.20" stroke-width="1"/>
+
+  <!-- the loaf: a scored focaccia slab sitting on the lower third -->
+  <g transform="translate(0,6)">
+    <path d="M56 128 q44 -16 88 0 q6 2 5 9 q-3 20 -20 26 q-29 8 -58 0 q-17 -6 -20 -26 q-1 -7 5 -9 z"
+          fill="url(#ll-loaf)"/>
+    <path d="M74 134 q26 -8 52 0" fill="none" stroke="#B08F55" stroke-opacity="0.55" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M79 145 q21 -6 42 0" fill="none" stroke="#B08F55" stroke-opacity="0.40" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+
+  <!-- the leaf: one blade, rising, with a single vein -->
+  <path d="M100 34 q34 20 34 50 q0 30 -34 40 q-34 -10 -34 -40 q0 -30 34 -50 z"
+        fill="url(#ll-leaf)"/>
+  <path d="M100 44 v72" fill="none" stroke="#3A5A40" stroke-opacity="0.45" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M100 62 l14 -8 M100 78 l16 -9 M100 94 l14 -8" fill="none" stroke="#3A5A40" stroke-opacity="0.30" stroke-width="2" stroke-linecap="round"/>
+  <path d="M100 62 l-14 -8 M100 78 l-16 -9 M100 94 l-14 -8" fill="none" stroke="#3A5A40" stroke-opacity="0.30" stroke-width="2" stroke-linecap="round"/>
+</svg>
