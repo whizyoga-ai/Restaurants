@@ -1,12 +1,26 @@
 /* ==========================================================================
    Leaf & Loaf — Mathöll Höfða, Reykjavík
-   Bilingual (EN / ÍS), seasonal palette, editorial menu with nutrition.
+   Bilingual (EN / ÍS), light and dark, photo-led menu with nutrition.
 
    Every fact here is sourced from the client brief or from Mathöll Höfða's
    own site. Nutrition figures are kitchen ESTIMATES from the listed
    ingredients — they are labelled as such everywhere they appear, and the
    copy sends allergen questions to the counter. Do not present them as
    laboratory-verified values.
+
+   VOICE. The copy is written to be read quickly by someone standing in a food
+   hall, in their second language, on a phone.
+
+   The rules, taken from how Icelandic food-hall sites actually write (see
+   xoisland.is, which the client pointed at): short sentences. Ordinary words.
+   One idea per sentence. No metaphors, no wordplay, and no em-dash asides —
+   if a sentence needs a dash to hold a second thought, make it two sentences.
+   Avoid words a non-native reader has to stop at: "fuss", "indicative",
+   "editorial", "artisan", "the working". Say the plain thing.
+
+   Earlier drafts said "Leaves, loaves and nothing hiding", "Bread baked this
+   morning, leaves cut this hour" and "Lunch for the office, without the fuss".
+   All pretty, all harder work than reading a menu should be.
    ========================================================================== */
 
 'use strict';
@@ -31,9 +45,7 @@ const VENUE = {
 /* price: ISK. kcal/protein/carbs/fat: per-serving estimates.               */
 const MENU = LL_MENU.items;   // canonical copy lives in assets/menu-data.js
 
-
 const COURSES = LL_MENU.courses;
-
 
 const FILTERS = [
   { id: 'all',          en: 'Everything',   is: 'Allt' },
@@ -47,101 +59,113 @@ const T = {
   en: {
     langLabel: 'ÍSL',
     place: 'Mathöll Höfða · Reykjavík',
-    navMenu: 'Menu', navOrder: 'Order ahead', navParty: 'Party orders', navOffice: 'Office lunch', navFind: 'Find us',
+    navMenu: 'Menu', navOrder: 'Order ahead', navParty: 'Party orders',
+    navOffice: 'Office lunch', navReviews: 'Reviews', navFind: 'Find us',
     order: 'Order ahead',
-    heroEyebrow: 'Fresh food, honestly made',
-    heroTitleA: 'Leaves, loaves and', heroTitleB: 'nothing hiding',
-    heroLede: 'Vibrant salads and artisan focaccia, made to order inside Mathöll Höfða. Every dish lists what is in it and roughly what it gives you.',
-    ctaMenu: 'See the menu', ctaDirections: 'Directions',
-    metaHours: 'Open daily', metaWhere: 'Inside', metaPrice: 'Most dishes',
-    ribbonStatus: 'Right now', ribbonHours: 'Opening hours', ribbonFind: 'Where we are', ribbonDiet: 'Dietary',
-    open: 'Open — serving until', closed: 'Closed — opens',
+    heroEyebrow: 'Fresh food, made to order',
+    heroTitleA: 'Fresh salads and', heroTitleB: 'warm focaccia',
+    heroLede: 'We make every salad and sandwich to order, inside the Mathöll Höfða food hall. Every dish shows what is in it.',
+    ctaMenu: 'See the menu', ctaDirections: 'Get directions',
+    metaHours: 'Open every day', metaWhere: 'Inside', metaPrice: 'Most dishes',
+    ribbonStatus: 'Right now', ribbonHours: 'Opening hours', ribbonFind: 'Where we are', ribbonDiet: 'Food choices',
+    open: 'Open until', closed: 'Closed. We open at',
     everyDay: 'Every day of the week',
-    dietLine: 'Gluten-free and vegetarian choices on every counter.',
+    dietLine: 'Gluten-free and vegetarian dishes every day.',
     menuEyebrow: 'The menu',
-    menuTitleA: 'Everything we make,', menuTitleB: 'and what is in it',
-    menuLede: 'Tap any dish to see its ingredients and an estimated nutrition breakdown.',
+    menuTitleA: 'Our menu,', menuTitleB: 'and what is in it',
+    menuLede: 'Tap a dish to see its ingredients and nutrition.',
     nutrition: 'Nutrition', close: 'Close',
     kcal: 'Energy', protein: 'Protein', carbs: 'Carbs', fat: 'Fat',
     contains: 'Ingredients',
-    estimate: 'Nutrition figures are kitchen estimates based on the listed ingredients and a standard portion. They are a guide, not a laboratory analysis. If you have an allergy, please tell the counter before you order.',
-    counterPrice: 'At the counter',
-    slabQuote: 'Bread baked this morning. Leaves cut this hour.',
+    estimate: 'These numbers are our kitchen’s estimate for a normal portion. They are a guide, not a lab test. If you have an allergy, please tell us at the counter before you order.',
+    counterPrice: 'Price at the counter',
+    slabQuote: 'Fresh bread every morning. Salads made to order.',
+    reviewsEyebrow: 'Customer feedback',
+    reviewsTitleA: 'What our', reviewsTitleB: 'customers say',
+    reviewsLede: 'Reviews from people who have eaten with us.',
+    reviewsFoot: 'Have you eaten with us? Tell us at the counter or send us an email. We would like to hear from you.',
+    reviewsNotice: 'These are example reviews, not real customers. They will be replaced with real reviews before this site goes live.',
+    reviewsNoticeTag: 'Example content',
+    starsOf: 'out of 5',
     officeEyebrow: 'For teams',
-    officeTitleA: 'Lunch for the office,', officeTitleB: 'without the fuss',
-    officeLede: 'We deliver salad and focaccia trays to workplaces around Höfði, Borgartún and Grandi. Kennitala invoicing, one delivery, no per-person admin.',
-    p1t: 'Kennitala invoicing', p1d: 'One monthly invoice to the company, not nine card payments.',
-    p2t: 'A standing order or a one-off', p2d: 'Weekly, three days a week, or a single board meeting.',
-    p3t: 'Diets handled up front', p3d: 'Tell us the counts for vegetarian, gluten free and high protein.',
-    p4t: 'Delivered around Höfði', p4d: 'Bíldshöfði and the surrounding business district.',
+    officeTitleA: 'Lunch for your team,', officeTitleB: 'easy to order',
+    officeLede: 'We deliver salad and focaccia trays to workplaces in Höfði, Borgartún and Grandi. One delivery, one invoice to the company.',
+    p1t: 'One invoice', p1d: 'We invoice the company on its kennitala. Nobody has to pay by card.',
+    p2t: 'Every week or just once', p2d: 'Every week, three days a week, or one meeting.',
+    p3t: 'Tell us what they eat', p3d: 'Tell us how many people need vegetarian, gluten free or high protein.',
+    p4t: 'Delivered around Höfði', p4d: 'Bíldshöfði and the business area around it.',
     quoterTitle: 'Estimate a team order',
-    quoterHint: 'Indicative only. We confirm the real figure by email.',
+    quoterHint: 'This is only an estimate. We confirm the real price by email.',
     people: 'People', perWeek: 'Days per week', style: 'What they eat',
     styleSalad: 'Salad bowls', styleFocaccia: 'Focaccia trays', styleMixed: 'A mix of both',
-    perPerson: 'Per person', perMonth: 'Per month, roughly',
+    perPerson: 'Per person', perMonth: 'Per month',
     company: 'Company', kt: 'Kennitala', contact: 'Your name', email: 'Work email',
     send: 'Send this enquiry',
     findEyebrow: 'Find us',
     findTitleA: 'Inside the food hall', findTitleB: 'on Bíldshöfði',
-    findLede: 'Leaf & Loaf is one of ten kitchens in Mathöll Höfða. Order at our counter, sit anywhere in the hall.',
+    findLede: 'Leaf & Loaf is one of ten kitchens in Mathöll Höfða. Order at our counter and sit anywhere in the hall.',
     nearby: 'Nearby',
     footHours: 'Opening hours', footFind: 'Address', footHall: 'The food hall',
-    hallNote: 'Mathöll Höfða hosts ten independent kitchens under one roof. Shared seating, separate counters.',
+    hallNote: 'Mathöll Höfða has ten kitchens under one roof. Shared seating, separate counters.',
     builtBy: 'Site by Brahmexa',
-    photoNote: 'Dish photographs are serving suggestions, cropped from house photography — not a shot of each individual plate.',
-    chatHintTitle: 'Ask about the menu',
-    chatHintSub: 'Allergens, nutrition, what is nearby',
-    toastOrder: 'Order-ahead is not connected yet — please order at the counter for now.',
+    photoNote: 'The photos show how a dish is usually served. They are not a photo of each plate.',
+    toastOrder: 'Order ahead is not ready yet. Please order at the counter.',
     toastSent: 'Opening your email app with the enquiry filled in.',
   },
   is: {
     langLabel: 'ENG',
     place: 'Mathöll Höfða · Reykjavík',
-    navMenu: 'Matseðill', navOrder: 'Panta', navParty: 'Veislur', navOffice: 'Hádegismatur', navFind: 'Finndu okkur',
+    navMenu: 'Matseðill', navOrder: 'Panta', navParty: 'Veislur',
+    navOffice: 'Hádegismatur', navReviews: 'Umsagnir', navFind: 'Finndu okkur',
     order: 'Panta fyrirfram',
-    heroEyebrow: 'Ferskur matur, heiðarlega gerður',
-    heroTitleA: 'Salat, brauð og', heroTitleB: 'ekkert falið',
-    heroLede: 'Litrík salöt og handgert focaccia, útbúið eftir pöntun í Mathöll Höfða. Hver réttur segir hvað er í honum og hvað hann gefur þér.',
-    ctaMenu: 'Skoða matseðil', ctaDirections: 'Leiðarlýsing',
+    heroEyebrow: 'Ferskur matur, gerður eftir pöntun',   // “made to order”, the plain phrase
+    heroTitleA: 'Fersk salöt og', heroTitleB: 'heitt focaccia',
+    heroLede: 'Við gerum hvert salat og hverja samloku eftir pöntun, inni í Mathöll Höfða. Hver réttur sýnir hvað er í honum.',
+    ctaMenu: 'Skoða matseðil', ctaDirections: 'Sjá á korti',
     metaHours: 'Opið alla daga', metaWhere: 'Inni í', metaPrice: 'Flestir réttir',
     ribbonStatus: 'Núna', ribbonHours: 'Opnunartími', ribbonFind: 'Hvar við erum', ribbonDiet: 'Fæði',
-    open: 'Opið — við afgreiðum til', closed: 'Lokað — opnum',
+    open: 'Opið til', closed: 'Lokað. Við opnum kl.',
     everyDay: 'Alla daga vikunnar',
-    dietLine: 'Glútenlausir og grænmetisréttir í boði alla daga.',
+    dietLine: 'Glútenlausir og grænmetisréttir alla daga.',
     menuEyebrow: 'Matseðillinn',
-    menuTitleA: 'Allt sem við gerum,', menuTitleB: 'og hvað er í því',
-    menuLede: 'Smelltu á rétt til að sjá hráefni og áætlaða næringu.',
+    menuTitleA: 'Matseðillinn okkar,', menuTitleB: 'og hvað er í honum',
+    menuLede: 'Smelltu á rétt til að sjá hráefni og næringu.',
     nutrition: 'Næring', close: 'Loka',
     kcal: 'Orka', protein: 'Prótein', carbs: 'Kolvetni', fat: 'Fita',
     contains: 'Hráefni',
-    estimate: 'Næringartölur eru áætlun eldhússins byggð á upptöldum hráefnum og venjulegum skammti. Þær eru til viðmiðunar, ekki rannsóknarstofugreining. Ef þú ert með ofnæmi, láttu vita við afgreiðsluborðið áður en þú pantar.',
-    counterPrice: 'Við afgreiðslu',
-    slabQuote: 'Brauð bakað í morgun. Salat skorið á þessari stundu.',
+    estimate: 'Þessar tölur eru áætlun eldhússins fyrir venjulegan skammt. Þær eru til viðmiðunar, ekki rannsóknarstofugreining. Ef þú ert með ofnæmi, láttu okkur vita við afgreiðsluborðið áður en þú pantar.',
+    counterPrice: 'Verð við afgreiðslu',
+    slabQuote: 'Ferskt brauð á hverjum morgni. Salat gert eftir pöntun.',
+    reviewsEyebrow: 'Umsagnir',
+    reviewsTitleA: 'Það sem', reviewsTitleB: 'viðskiptavinir segja',
+    reviewsLede: 'Umsagnir frá fólki sem hefur borðað hjá okkur.',
+    reviewsFoot: 'Hefur þú borðað hjá okkur? Segðu okkur frá því við afgreiðsluborðið eða sendu okkur tölvupóst. Við viljum heyra frá þér.',
+    reviewsNotice: 'Þetta eru sýnishorn af umsögnum, ekki raunverulegir viðskiptavinir. Þeim verður skipt út fyrir alvöru umsagnir áður en vefurinn fer í loftið.',
+    reviewsNoticeTag: 'Sýnishorn',
+    starsOf: 'af 5',
     officeEyebrow: 'Fyrir vinnustaði',
-    officeTitleA: 'Hádegismatur fyrir skrifstofuna,', officeTitleB: 'án vesens',
-    officeLede: 'Við sendum salat- og focacciabakka á vinnustaði í Höfða, Borgartúni og Grandi. Reikningur á kennitölu, ein sending, engin umsýsla á mann.',
-    p1t: 'Reikningur á kennitölu', p1d: 'Einn mánaðarreikningur á fyrirtækið, ekki níu kortafærslur.',
-    p2t: 'Fastur samningur eða stakt skipti', p2d: 'Vikulega, þrisvar í viku, eða einn stjórnarfundur.',
-    p3t: 'Fæði afgreitt fyrirfram', p3d: 'Segðu okkur fjöldann fyrir grænmetis, glútenlaust og próteinríkt.',
-    p4t: 'Sent um Höfðahverfið', p4d: 'Bíldshöfði og nærliggjandi atvinnusvæði.',
+    officeTitleA: 'Hádegismatur fyrir teymið,', officeTitleB: 'einfalt að panta',
+    officeLede: 'Við sendum salat- og focacciabakka á vinnustaði í Höfða, Borgartúni og Grandi. Ein sending, einn reikningur á fyrirtækið.',
+    p1t: 'Einn reikningur', p1d: 'Við sendum reikning á kennitölu fyrirtækisins. Enginn þarf að borga með korti.',
+    p2t: 'Í hverri viku eða bara einu sinni', p2d: 'Í hverri viku, þrisvar í viku, eða einn fundur.',
+    p3t: 'Segðu okkur hvað þau borða', p3d: 'Segðu okkur hversu margir þurfa grænmetis, glútenlaust eða próteinríkt.',
+    p4t: 'Sent um Höfða', p4d: 'Bíldshöfði og atvinnusvæðið í kring.',
     quoterTitle: 'Áætlaðu pöntun fyrir teymið',
-    quoterHint: 'Aðeins til viðmiðunar. Við staðfestum rétta tölu í tölvupósti.',
+    quoterHint: 'Þetta er aðeins áætlun. Við staðfestum rétt verð í tölvupósti.',
     people: 'Fjöldi', perWeek: 'Dagar í viku', style: 'Hvað þau borða',
     styleSalad: 'Salatskálar', styleFocaccia: 'Focacciabakkar', styleMixed: 'Blanda af hvoru tveggja',
-    perPerson: 'Á mann', perMonth: 'Á mánuði, um það bil',
+    perPerson: 'Á mann', perMonth: 'Á mánuði',
     company: 'Fyrirtæki', kt: 'Kennitala', contact: 'Nafn þitt', email: 'Vinnunetfang',
     send: 'Senda fyrirspurn',
     findEyebrow: 'Finndu okkur',
     findTitleA: 'Inni í mathöllinni', findTitleB: 'á Bíldshöfða',
-    findLede: 'Leaf & Loaf er eitt af tíu eldhúsum í Mathöll Höfða. Pantaðu við borðið okkar, sestu hvar sem er í höllinni.',
+    findLede: 'Leaf & Loaf er eitt af tíu eldhúsum í Mathöll Höfða. Pantaðu við borðið okkar og sestu hvar sem er í höllinni.',
     nearby: 'Í nágrenninu',
     footHours: 'Opnunartími', footFind: 'Heimilisfang', footHall: 'Mathöllin',
-    hallNote: 'Mathöll Höfða hýsir tíu sjálfstæð eldhús undir einu þaki. Sameiginleg sæti, aðskilin afgreiðsluborð.',
+    hallNote: 'Mathöll Höfða hefur tíu eldhús undir einu þaki. Sameiginleg sæti, aðskilin afgreiðsluborð.',
     builtBy: 'Vefur frá Brahmexa',
-    photoNote: 'Myndir af réttum eru til viðmiðunar, klipptar úr myndefni hússins — ekki mynd af hverjum einstökum rétti.',
-    chatHintTitle: 'Spurðu um matseðilinn',
-    chatHintSub: 'Ofnæmisvaldar, næring, hvað er nálægt',
-    toastOrder: 'Forpöntun er ekki tengd enn — vinsamlegast pantaðu við afgreiðsluborðið.',
+    photoNote: 'Myndirnar sýna hvernig rétturinn er venjulega borinn fram. Þær eru ekki mynd af hverjum rétti.',
+    toastOrder: 'Forpöntun er ekki tilbúin enn. Vinsamlegast pantaðu við afgreiðsluborðið.',
     toastSent: 'Opna póstforritið þitt með fyrirspurninni.',
   },
 };
@@ -156,19 +180,10 @@ const NEARBY = [
   { en: 'Reykjavík city centre',          is: 'Miðborg Reykjavíkur',            dist: '~6 km' },
 ];
 
-/* ------------------------------------------------------------------- views
-   Five looks. Four are light; Vetrarnótt is kept because it was already
-   shipped and some people genuinely prefer a dark page at night.
-
-   The three added views are drawn in CSS rather than photographed — see the
-   note in styles.css for why the available photographs could not be used. */
-const VIEWS = LL.VIEWS;   // shared with the party page, see assets/views.js
-
 /* ------------------------------------------------------------------ state
-   lang and season are mirrors of LL (assets/views.js), which owns the
-   defaults and the localStorage keys and is shared with the party page. */
+   lang and theme are mirrors of LL (assets/views.js), which owns the defaults
+   and the localStorage keys and is shared with the panta and party pages. */
 let lang = 'is';
-let season = 'daylight';
 let filter = 'all';
 
 const $  = (s, r = document) => r.querySelector(s);
@@ -178,26 +193,18 @@ const isk = n => LL.isk(n);   // period grouping, see views.js
 
 /* -------------------------------------------------------------------- boot */
 document.addEventListener('DOMContentLoaded', () => {
-  restorePrefs();
+  lang = LL.restore().lang;
   wireChrome();
   renderFilters();
   renderMenu();
+  renderReviews();
   renderNearby();
-  renderHeroMenu();
   wireQuoter();
   applyLang();
   updateStatus();
   observeReveals();
   setInterval(updateStatus, 60_000);
 });
-
-function restorePrefs() {
-  const state = LL.restore();
-  lang = state.lang;
-  season = state.view;
-}
-
-function savePref(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
 
 /* ------------------------------------------------------------ page chrome */
 function wireChrome() {
@@ -206,155 +213,24 @@ function wireChrome() {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  LL.wireThemePicker($('#themePick'), $('#themeBtn'), $('#themeMenu'));
+  LL.wireNav($('#navToggle'), $('#primaryNav'));
+
   $('#langBtn').addEventListener('click', () => {
-    lang = lang === 'en' ? 'is' : 'en';
-    savePref('ll-lang', lang);
-    document.documentElement.lang = lang === 'is' ? 'is' : 'en';
+    lang = LL.toggleLang();
     renderFilters();
     renderMenu();
+    renderReviews();
     renderNearby();
-    renderViewPicker();
-    renderHeroMenu();
     applyLang();
     updateStatus();
     updateQuote();
   });
 
-  wireViewPicker();
-
   $$('[data-order]').forEach(b => b.addEventListener('click', e => {
     e.preventDefault();
     toast(t().toastOrder);
   }));
-
-  wireChatHint();
-}
-
-/**
- * Show the label beside the assistant, once the widget has actually loaded.
- *
- * The widget is a third-party script from another origin; if it fails to load
- * — blocked, offline, the service down — a label pointing at a bubble that is
- * not there is worse than no label. So it only appears after #bc-bubble exists,
- * and it hides itself again while the chat panel is open.
- */
-function wireChatHint() {
-  const hint = $('#chatHint');
-  if (!hint) return;
-
-  const bubble = () => document.getElementById('bc-bubble');
-
-  const reveal = () => {
-    if (!bubble()) return false;
-    hint.hidden = false;
-    return true;
-  };
-
-  if (!reveal()) {
-    // Poll briefly rather than forever — the widget either arrives or it does not.
-    let tries = 0;
-    const timer = setInterval(() => {
-      if (reveal() || ++tries > 40) clearInterval(timer);
-    }, 250);
-  }
-
-  hint.addEventListener('click', () => {
-    bubble()?.click();                 // one code path for opening the panel
-    hint.classList.add('is-gone');
-  });
-
-  // If the visitor opens the chat by the bubble itself, retire the label too.
-  document.addEventListener('click', e => {
-    if (e.target.closest('#bc-bubble')) hint.classList.add('is-gone');
-  });
-}
-
-function wireViewPicker() {
-  const pick = $('#viewPick');
-  const btn = $('#viewBtn');
-  const menu = $('#viewMenu');
-
-  const close = () => { pick.dataset.open = 'false'; btn.setAttribute('aria-expanded', 'false'); };
-  const open = () => { pick.dataset.open = 'true'; btn.setAttribute('aria-expanded', 'true'); };
-
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    pick.dataset.open === 'true' ? close() : open();
-  });
-
-  // Click-away and Escape, so the menu is never stuck open on a touch device.
-  document.addEventListener('click', e => { if (!pick.contains(e.target)) close(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-
-  menu.addEventListener('click', e => {
-    const opt = e.target.closest('.viewpick__opt');
-    if (!opt) return;
-    setView(opt.dataset.view);
-    close();
-    btn.focus();
-  });
-
-  renderViewPicker();
-}
-
-function renderViewPicker() {
-  const menu = $('#viewMenu');
-  menu.innerHTML = '';
-  VIEWS.forEach(v => {
-    const [name, note] = v[lang];
-    const b = document.createElement('button');
-    b.className = 'viewpick__opt';
-    b.type = 'button';
-    b.role = 'menuitemradio';
-    b.dataset.view = v.id;
-    b.setAttribute('aria-checked', String(v.id === season));
-    b.innerHTML =
-      `<span class="viewpick__sw sw--${v.id}" aria-hidden="true"></span>` +
-      `<span class="viewpick__txt"><b>${esc(name)}</b><span>${esc(note)}</span></span>`;
-    menu.appendChild(b);
-  });
-
-  const active = VIEWS.find(v => v.id === season) || VIEWS[0];
-  $('#viewBtnLabel').textContent = active[lang][0];
-}
-
-function setView(id) {
-  if (!VIEWS.some(v => v.id === id)) return;
-  season = id;
-  savePref('ll-season', season);
-  document.documentElement.setAttribute('data-season', season);
-  renderViewPicker();
-  renderHeroMenu();
-}
-
-/* The hero menu card, for the Matseðillinn view. Built from MENU so it cannot
-   drift out of step with the menu section further down the page. */
-function renderHeroMenu() {
-  const box = $('#heroMenu');
-  if (!box) return;
-  if (season !== 'menuboard') { box.innerHTML = ''; return; }
-
-  const head =
-    `<div class="hero-menu__head">
-       <h2>${esc(lang === 'en' ? 'Menu' : 'Matseðill')}</h2>
-       <p>${esc(VENUE.hall)} · ${esc(VENUE.opens)}–${esc(VENUE.closes)}</p>
-     </div>`;
-
-  const groups = COURSES.map(course => {
-    const rows = MENU.filter(d => d.course === course.id).map(d => {
-      const price = d.price === null
-        ? esc(t().counterPrice)
-        : `${isk(d.price)} ISK`;
-      return `<div class="hero-menu__row">
-                <span>${esc(d[lang].name)}</span>
-                <span class="dots"></span>
-                <span class="price">${price}</span>
-              </div>`;
-    }).join('');
-    return `<div class="hero-menu__group"><h3>${esc(course[lang][0])}</h3>${rows}</div>`;
-  }).join('');
-
-  box.innerHTML = head + groups;
 }
 
 /* --------------------------------------------------------- open / closed */
@@ -397,13 +273,16 @@ function renderMenu() {
       d.course === course.id && (filter === 'all' || d.diet.includes(filter)));
     if (!dishes.length) return;
 
-    const sec = document.createElement('div');
+    const sec = document.createElement('section');
     sec.className = 'course reveal';
 
     const [title, note] = course[lang];
-    sec.innerHTML = `<div class="course__label"><h3>${esc(title)}</h3><span>${esc(note)}</span></div>`;
+    sec.innerHTML =
+      `<div class="course__label"><h3>${esc(title)}</h3><span>${esc(note)}</span></div>` +
+      `<div class="course__items"></div>`;
 
-    dishes.forEach(d => sec.appendChild(dishNode(d)));
+    const items = sec.querySelector('.course__items');
+    dishes.forEach(d => items.appendChild(dishNode(d)));
     root.appendChild(sec);
   });
 
@@ -422,9 +301,9 @@ function dishNode(d) {
   const tags = c.tags.map((tag, i) =>
     `<span class="tag${i === 0 ? '' : ' tag--muted'}">${esc(tag)}</span>`).join('');
 
-  /* The photo is a sibling of the head, not a child, so the image-led layouts
-     can put it beside the text or above it without restructuring the DOM per
-     view. Hidden by CSS everywhere except Eldur og Ís and Vetrarnótt. */
+  /* The three drinks carry no photograph — there is no juice or coffee shot in
+     the house set, and a picture captioned "Fresh Pressed Juice" that is not
+     one would be a small lie. They get a drawn tile instead. */
   const photoHtml = d.photo
     ? `<span class="dish__photo"><img src="${d.photo}" alt="${esc(c.name)}" loading="lazy" /></span>`
     : `<span class="dish__photo dish__photo--none" aria-hidden="true">${LL_ILLUS.forId(d.id)}</span>`;
@@ -461,6 +340,68 @@ function dishNode(d) {
   });
 
   return el;
+}
+
+/* ==========================================================================
+   CUSTOMER FEEDBACK
+
+   The reviews are data (assets/reviews.js), not markup, so changing them never
+   means editing HTML. While that file's `placeholder` flag is true, a visible
+   notice is printed above the cards — a sample review that reaches a live site
+   without one is an invented customer, and this section exists to earn trust
+   rather than to spend it.
+   ========================================================================== */
+
+const STAR_FULL =
+  '<svg viewBox="0 0 20 19" width="15" height="15" fill="currentColor" aria-hidden="true">' +
+  '<path d="M10 0l2.9 6.2 6.6.9-4.8 4.7 1.2 6.8L10 15.4 4.1 18.6l1.2-6.8L.5 7.1l6.6-.9z"/></svg>';
+
+const STAR_EMPTY =
+  '<svg viewBox="0 0 20 19" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" ' +
+  'stroke-linejoin="round" class="is-empty" aria-hidden="true">' +
+  '<path d="M10 1l2.6 5.6 6 .8-4.4 4.3 1.1 6.1L10 14.9 4.7 17.8l1.1-6.1L1.4 7.4l6-.8z"/></svg>';
+
+function renderReviews() {
+  const grid = $('#reviewsGrid');
+  const noticeBox = $('#reviewsNotice');
+  if (!grid) return;
+
+  const data = window.LL_REVIEWS || { items: [], placeholder: false };
+  const items = Array.isArray(data.items) ? data.items : [];
+
+  /* No reviews at all is a legitimate state — it is what the section looks
+     like between "we removed the samples" and "we pasted the real ones". Hide
+     the whole section rather than showing an empty grid under a heading, and
+     hide its nav link with it so the menu has no entry that goes nowhere. */
+  const empty = items.length === 0;
+  const section = $('#reviews');
+  if (section) section.hidden = empty;
+  $$('#primaryNav a[href="#reviews"]').forEach(a => { a.hidden = empty; });
+  if (empty) { grid.innerHTML = ''; if (noticeBox) noticeBox.innerHTML = ''; return; }
+
+  if (noticeBox) {
+    noticeBox.innerHTML = data.placeholder
+      ? `<p class="reviews__notice"><b>${esc(t().reviewsNoticeTag)}:</b> ${esc(t().reviewsNotice)}</p>`
+      : '';
+  }
+
+  grid.innerHTML = items.map(r => {
+    const stars = Math.max(0, Math.min(5, Math.round(Number(r.stars) || 0)));
+    const starsHtml = STAR_FULL.repeat(stars) + STAR_EMPTY.repeat(5 - stars);
+    const meta = [r.where, r.date].filter(Boolean).join(' · ');
+
+    return `
+      <figure class="review reveal">
+        <div class="review__stars" role="img" aria-label="${stars} ${esc(t().starsOf)}">${starsHtml}</div>
+        <blockquote class="review__quote">${esc(r[lang] || r.en || '')}</blockquote>
+        <figcaption class="review__who">
+          <span class="review__name">${esc(r.name || '')}</span>
+          ${meta ? `<span class="review__meta">${esc(meta)}</span>` : ''}
+        </figcaption>
+      </figure>`;
+  }).join('');
+
+  observeReveals();
 }
 
 function renderNearby() {
@@ -501,7 +442,7 @@ function wireQuoter() {
       `People: ${people}`,
       `Days per week: ${days}`,
       `Style: ${styleTxt}`,
-      `Indicative monthly estimate: ${$('#qMonth').textContent}`,
+      `Estimated monthly total: ${$('#qMonth').textContent}`,
       '',
       'Sent from leafandloaf on manailab.com',
     ].join('\n');
@@ -538,6 +479,11 @@ function applyLang() {
 
   $('#langBtn').textContent = d.langLabel;
   $('#mapFrame').title = `${VENUE.hall}, ${VENUE.street}`;
+
+  // Both controls carry their label in the accessible name only, so they have
+  // to be repainted when the language changes.
+  LL.renderThemePicker($('#themeBtn'), $('#themeMenu'));
+  LL.renderNavToggle($('#navToggle'));
 
   $$('[data-order]').forEach(b => { b.textContent = d.order; });
 }

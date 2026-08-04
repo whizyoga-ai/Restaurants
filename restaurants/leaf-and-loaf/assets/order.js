@@ -57,10 +57,10 @@ const VAT_RATE = 0.11;   // Iceland's reduced rate on food; menu prices include 
 const T = {
   en: {
     navMenu: 'Menu', navOrder: 'Order ahead', navParty: 'Party orders',
-    navOffice: 'Office lunch', navFind: 'Find us',
+    navOffice: 'Office lunch', navReviews: 'Reviews', navFind: 'Find us',
     eyebrow: 'Order ahead',
     titleA: 'Made to order,', titleB: 'ready when you are',
-    lede: 'Choose what you want and when you will collect it. We start it so it is finished as you arrive, not before — nothing sits under a lamp.',
+    lede: 'Choose what you want and when you will collect it. We make it fresh so it is ready when you arrive.',
     pickTitle: 'Choose your dishes',
     whenTitle: 'When will you collect it?',
     whenLabel: 'Collection time', today: 'Today',
@@ -70,18 +70,18 @@ const T = {
     send: 'Send the order',
     payNote: 'No payment is taken here. You pay at the counter when you collect. Sending opens your email app with the order filled in.',
     toIntegrate: 'To be integrated',
-    toIntegrateBody: 'Today this order arrives by email. Once Order-to-Cash is switched on it goes straight to the kitchen screen, takes card payment, and lands on the daily close — no inbox in the middle.',
-    closedNow: 'We are closed now — this will be for the next opening.',
+    toIntegrateBody: 'Today this order arrives by email. Once Order-to-Cash is switched on, it goes straight to the kitchen screen, takes card payment, and appears in the daily sales report. No email in the middle.',
+    closedNow: 'We are closed now. This order will be for the next opening.',
     hoursNote: 'Collection between 11:30 and 21:00, every day. Give us 20 minutes.',
     remove: 'Remove',
     hallLink: 'See the whole of Mathöll Höfða',
   },
   is: {
     navMenu: 'Matseðill', navOrder: 'Panta', navParty: 'Veislur',
-    navOffice: 'Hádegismatur', navFind: 'Finndu okkur',
+    navOffice: 'Hádegismatur', navReviews: 'Umsagnir', navFind: 'Finndu okkur',
     eyebrow: 'Panta fyrirfram',
     titleA: 'Útbúið eftir pöntun,', titleB: 'tilbúið þegar þú kemur',
-    lede: 'Veldu það sem þú vilt og hvenær þú sækir. Við byrjum þannig að það sé nýtilbúið þegar þú kemur — ekkert bíður undir lampa.',
+    lede: 'Veldu það sem þú vilt og hvenær þú sækir. Við gerum það ferskt svo það sé tilbúið þegar þú kemur.',
     pickTitle: 'Veldu réttina',
     whenTitle: 'Hvenær sækir þú?',
     whenLabel: 'Afhendingartími', today: 'Í dag',
@@ -91,8 +91,8 @@ const T = {
     send: 'Senda pöntun',
     payNote: 'Engin greiðsla fer fram hér. Þú greiðir við afgreiðsluborðið þegar þú sækir. Sending opnar póstforritið þitt með pöntuninni.',
     toIntegrate: 'Á eftir að samþætta',
-    toIntegrateBody: 'Í dag berst pöntunin í tölvupósti. Þegar Order-to-Cash er virkjað fer hún beint á eldhússkjáinn, tekur við kortagreiðslu og skilar sér í dagsuppgjörið — enginn pósthólfsmilliliður.',
-    closedNow: 'Það er lokað núna — þetta verður fyrir næstu opnun.',
+    toIntegrateBody: 'Í dag berst pöntunin í tölvupósti. Þegar Order-to-Cash er virkjað fer hún beint á eldhússkjáinn, tekur við kortagreiðslu og skilar sér í dagsuppgjörið. Enginn tölvupóstur á milli.',
+    closedNow: 'Það er lokað núna. Þessi pöntun verður fyrir næstu opnun.',
     hoursNote: 'Afhending milli 11:30 og 21:00, alla daga. Gefðu okkur 20 mínútur.',
     remove: 'Fjarlægja',
     hallLink: 'Sjá alla Mathöll Höfða',
@@ -110,11 +110,11 @@ const cart = new Map();          // id -> quantity
 
 document.addEventListener('DOMContentLoaded', () => {
   lang = LL.restore().lang;
-  LL.wirePicker($('#viewPick'), $('#viewBtn'), $('#viewMenu'), $('#viewBtnLabel'));
+  LL.wireThemePicker($('#themePick'), $('#themeBtn'), $('#themeMenu'));
+  LL.wireNav($('#navToggle'), $('#primaryNav'));
 
   $('#langBtn').addEventListener('click', () => {
     lang = LL.toggleLang();
-    LL.renderPicker($('#viewMenu'), $('#viewBtnLabel'));
     render();
   });
 
@@ -164,6 +164,10 @@ function buildTimes() {
 /* ------------------------------------------------------------------ render */
 function render() {
   $('#langBtn').textContent = lang === 'en' ? 'ÍSL' : 'ENG';
+  // Both carry their label in the accessible name only, so they need
+  // repainting whenever the language changes.
+  LL.renderThemePicker($('#themeBtn'), $('#themeMenu'));
+  LL.renderNavToggle($('#navToggle'));
   $$('[data-t]').forEach(el => {
     const k = el.dataset.t;
     if (t()[k] !== undefined) el.textContent = t()[k];

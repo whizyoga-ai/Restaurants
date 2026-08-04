@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="is" data-season="daylight">
+<html lang="is" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Veisluþjónusta — Leaf &amp; Loaf, Mathöll Höfða</title>
   <meta name="description" content="Salatskálar og focacciabakkar fyrir veislur og fundi í Reykjavík. Verð beint af matseðlinum, sent um Höfða, reikningur á kennitölu." />
   <meta name="theme-color" content="#FBFAF7" />
   <link rel="canonical" href="https://manailab.com/restaurants/leaf-and-loaf/party/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="../assets/styles.css?v=20260805i" />
+  <link rel="stylesheet" href="../assets/styles.css?v=20260806b" />
 </head>
 <body class="party">
 
@@ -22,33 +22,33 @@
     </span>
   </a>
 
-  <nav class="nav" aria-label="Primary">
+  <nav class="nav" id="primaryNav" aria-label="Primary">
     <a href="../#menu-section" data-t="navMenu">Matseðill</a>
     <a href="../panta/" data-t="navOrder">Panta</a>
     <a href="./" aria-current="page" data-t="navParty">Veislur</a>
     <a href="../#office" data-t="navOffice">Hádegismatur</a>
+    <a href="../#reviews" data-t="navReviews">Umsagnir</a>
     <a href="../#find" data-t="navFind">Finndu okkur</a>
   </nav>
 
   <div class="tools">
-    <div class="viewpick" id="viewPick" data-open="false">
-      <button class="pill" id="viewBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="viewMenu">
-        <span id="viewBtnLabel">Dagsljós</span>
-      </button>
-      <div class="viewpick__menu" id="viewMenu" role="menu" aria-label="Choose a view"></div>
+    <div class="themepick" id="themePick" data-open="false">
+      <button class="icon-btn themepick__btn" id="themeBtn" type="button"
+              aria-haspopup="true" aria-expanded="false" aria-controls="themeMenu"></button>
+      <div class="themepick__menu" id="themeMenu" role="menu"></div>
     </div>
     <button class="pill" id="langBtn" type="button" aria-label="Skipta um tungumál / Switch language">ENG</button>
     <a class="pill pill--solid" href="#enquiry" data-t="ctaEnquire">Senda fyrirspurn</a>
+    <button class="icon-btn navtoggle" id="navToggle" type="button"
+            aria-expanded="false" aria-controls="primaryNav">
+      <span class="navtoggle__bars" aria-hidden="true"></span>
+    </button>
   </div>
 </header>
 
 <main>
   <!-- ============================================================= 01 · hero -->
   <section class="hero hero--party" id="top">
-    <div class="scene scene--fire"   aria-hidden="true"></div>
-    <div class="scene scene--aurora" aria-hidden="true"></div>
-    <div class="scene scene--paper"  aria-hidden="true"></div>
-
     <div class="hero__media">
       <img src="../assets/images/corporate_catering_box.jpg"
            alt="A long table laid with salad bowls, focaccia sandwiches and berries on a wooden board" />
@@ -112,15 +112,15 @@
     <div class="wrap">
       <div class="section-head reveal">
         <div>
-          <p class="eyebrow" data-t="termsEyebrow">Praktíska hliðin</p>
-          <h2><span data-t="termsTitle">Það sem við myndum semja um</span></h2>
+          <p class="eyebrow" data-t="termsEyebrow">Gott að vita</p>
+          <h2><span data-t="termsTitle">Það sem við semjum um</span></h2>
         </div>
       </div>
 
       <ul class="terms">
         <li class="reveal"><b data-t="t1t">Tveggja virkra daga fyrirvari</b><span data-t="t1d">Fyrr ef við getum.</span></li>
         <li class="reveal"><b data-t="t2t">Sending um Reykjavík</b><span data-t="t2d">Frítt innan Höfðahverfis.</span></li>
-        <li class="reveal"><b data-t="t3t">Reikningur á kennitölu</b><span data-t="t3d">Einn reikningur á fyrirtækið.</span></li>
+        <li class="reveal"><b data-t="t3t">Einn reikningur</b><span data-t="t3d">Einn reikningur á fyrirtækið.</span></li>
         <li class="reveal"><b data-t="t4t">Ofnæmi fyrst</b><span data-t="t4d">Segðu okkur frá því í fyrirspurninni.</span></li>
       </ul>
 
@@ -185,13 +185,13 @@
   </div>
 </footer>
 
-<script src="../assets/views.js?v=20260805i"></script>
-<script src="../assets/menu-data.js?v=20260805i"></script>
-<script src="../assets/answers.js?v=20260805i"></script>
-<script src="../assets/illus.js?v=20260805i"></script>
-<script src="../assets/party.js?v=20260805i"></script>
+<script src="../assets/views.js?v=20260806b"></script>
+<script src="../assets/menu-data.js?v=20260806b"></script>
+<script src="../assets/answers.js?v=20260806b"></script>
+<script src="../assets/illus.js?v=20260806b"></script>
+<script src="../assets/party.js?v=20260806b"></script>
 
 
-<script src="../assets/assistant.js?v=20260805i"></script>
+<script src="../assets/assistant.js?v=20260806b"></script>
 </body>
 </html>

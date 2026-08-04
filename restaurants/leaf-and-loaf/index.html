@@ -1,35 +1,42 @@
 <!DOCTYPE html>
-<html lang="en" data-season="daylight">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Leaf &amp; Loaf — Salads &amp; Focaccia, Mathöll Höfða, Reykjavík</title>
   <!-- 152 characters. Google truncates around 160, and the admin console's
        search panel flags anything longer — it caught this one at 180. -->
-  <meta name="description" content="Fresh salads and artisan focaccia, made to order inside Mathöll Höfða, Bíldshöfða 9, Reykjavík. Open daily 11:30–21:00. Gluten-free and vegetarian choices." />
+  <meta name="description" content="Fresh salads and focaccia sandwiches, made to order inside Mathöll Höfða, Bíldshöfða 9, Reykjavík. Open daily 11:30–21:00. Gluten-free and vegetarian choices." />
   <meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#0E1210" media="(prefers-color-scheme: dark)" />
   <link rel="canonical" href="https://manailab.com/restaurants/leaf-and-loaf/" />
 
   <meta property="og:type" content="restaurant" />
   <meta property="og:title" content="Leaf &amp; Loaf — Mathöll Höfða, Reykjavík" />
-  <meta property="og:description" content="Vibrant salads and artisan focaccia, made to order. Every dish lists its ingredients and an estimated nutrition breakdown." />
+  <meta property="og:description" content="Fresh salads and focaccia sandwiches, made to order. Every dish shows its ingredients and an estimated nutrition breakdown." />
   <meta property="og:image" content="https://manailab.com/restaurants/leaf-and-loaf/assets/images/leaf_botanical_hero.jpg" />
   <meta property="og:url" content="https://manailab.com/restaurants/leaf-and-loaf/" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="assets/styles.css?v=20260805i" />
+  <link rel="stylesheet" href="assets/styles.css?v=20260806b" />
 
   <!-- Facts below are sourced from Mathöll Höfða's own site: the hall is at
        Bíldshöfða 9, 110 Reykjavík and is open daily 11:30–21:00. No phone
-       number, rating or second location is claimed, because none is verified. -->
+       number, rating or second location is claimed, because none is verified.
+
+       NOTE ON REVIEWS: there is deliberately no aggregateRating here. Google
+       shows star ratings in search results from this block, and the reviews in
+       assets/reviews.js are samples until the client replaces them. Publishing
+       a rating built from sample text would be a fabricated claim in search
+       results, which is worse than one on a page. Add aggregateRating only
+       once the reviews are real and the figure is the true average. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Restaurant",
     "name": "Leaf & Loaf",
-    "description": "Fresh salads and artisan focaccia sandwiches, made to order inside the Mathöll Höfða food hall in Reykjavík.",
+    "description": "Fresh salads and focaccia sandwiches, made to order inside the Mathöll Höfða food hall in Reykjavík.",
     "image": "https://manailab.com/restaurants/leaf-and-loaf/assets/images/leaf_botanical_hero.jpg",
     "url": "https://manailab.com/restaurants/leaf-and-loaf/",
     "servesCuisine": ["Healthy", "Salads", "Sandwiches", "Cafe"],
@@ -67,36 +74,36 @@
     </span>
   </a>
 
-  <nav class="nav" aria-label="Primary">
+  <!-- Below 940px this becomes a drawer opened by the button at the end of
+       .tools. It used to simply disappear, which left a phone visitor with no
+       way to reach any page but this one. -->
+  <nav class="nav" id="primaryNav" aria-label="Primary">
     <a href="#menu-section" data-t="navMenu">Menu</a>
     <a href="panta/" data-t="navOrder">Order ahead</a>
     <a href="party/" data-t="navParty">Party orders</a>
     <a href="#office" data-t="navOffice">Office lunch</a>
+    <a href="#reviews" data-t="navReviews">Reviews</a>
     <a href="#find" data-t="navFind">Find us</a>
   </nav>
 
   <div class="tools">
-    <div class="viewpick" id="viewPick" data-open="false">
-      <button class="pill" id="viewBtn" type="button"
-              aria-haspopup="true" aria-expanded="false" aria-controls="viewMenu">
-        <span id="viewBtnLabel">View</span>
-      </button>
-      <div class="viewpick__menu" id="viewMenu" role="menu" aria-label="Choose a view"></div>
+    <div class="themepick" id="themePick" data-open="false">
+      <button class="icon-btn themepick__btn" id="themeBtn" type="button"
+              aria-haspopup="true" aria-expanded="false" aria-controls="themeMenu"></button>
+      <div class="themepick__menu" id="themeMenu" role="menu"></div>
     </div>
     <button class="pill" id="langBtn" type="button" aria-label="Skipta um tungumál / Switch language">ÍSL</button>
     <a class="pill pill--solid" href="panta/" data-t="navOrder">Order ahead</a>
+    <button class="icon-btn navtoggle" id="navToggle" type="button"
+            aria-expanded="false" aria-controls="primaryNav">
+      <span class="navtoggle__bars" aria-hidden="true"></span>
+    </button>
   </div>
 </header>
 
 <main>
   <!-- ========================================================== 02 · hero -->
   <section class="hero" id="top">
-    <!-- Drawn scenery for the three added views. Decorative only: aria-hidden
-         so a screen reader is not told about a background that says nothing. -->
-    <div class="scene scene--fire"   aria-hidden="true"></div>
-    <div class="scene scene--aurora" aria-hidden="true"></div>
-    <div class="scene scene--paper"  aria-hidden="true"></div>
-
     <div class="hero__media">
       <img src="assets/images/leaf_botanical_hero.jpg"
            alt="A bowl of leaves, herbs, radish, berries and Icelandic shrimp beside a slab of rosemary focaccia on a pale wooden table" />
@@ -104,29 +111,24 @@
     <div class="hero__veil"></div>
 
     <div class="hero__inner wrap">
-      <p class="eyebrow" data-t="heroEyebrow">Fresh food, honestly made</p>
+      <p class="eyebrow" data-t="heroEyebrow">Fresh food, made to order</p>
       <h1 class="hero__title">
-        <span data-t="heroTitleA">Leaves, loaves and</span><br />
-        <em data-t="heroTitleB">nothing hiding</em>
+        <span data-t="heroTitleA">Fresh salads and</span><br />
+        <em data-t="heroTitleB">warm focaccia</em>
       </h1>
       <p class="lede" data-t="heroLede">
-        Vibrant salads and artisan focaccia, made to order inside Mathöll Höfða.
-        Every dish lists what is in it and roughly what it gives you.
+        We make every salad and sandwich to order, inside the Mathöll Höfða food hall.
+        Every dish shows what is in it.
       </p>
 
-      <!-- Only rendered in the Matseðillinn view. Built from the same MENU
-           array the section below uses, so a price can never disagree with
-           itself between the hero and the menu. -->
-      <div class="hero-menu" id="heroMenu" aria-live="polite"></div>
-
-      <div class="hero__ctas" style="margin-top:32px">
+      <div class="hero__ctas" style="margin-top:30px">
         <a class="pill pill--solid" href="#menu-section" data-t="ctaMenu">See the menu</a>
         <a class="pill" href="https://www.google.com/maps/search/?api=1&amp;query=Math%C3%B6ll%20H%C3%B6f%C3%B0a%2C%20B%C3%ADldsh%C3%B6f%C3%B0a%209%2C%20110%20Reykjav%C3%ADk"
-           target="_blank" rel="noopener" data-t="ctaDirections">Directions</a>
+           target="_blank" rel="noopener" data-t="ctaDirections">Get directions</a>
       </div>
 
       <div class="hero__meta">
-        <span><span data-t="metaHours">Open daily</span> <strong>11:30 – 21:00</strong></span>
+        <span><span data-t="metaHours">Open every day</span> <strong>11:30 – 21:00</strong></span>
         <span><span data-t="metaWhere">Inside</span> <strong>Mathöll Höfða, Bíldshöfða 9</strong></span>
         <span><span data-t="metaPrice">Most dishes</span> <strong>2.900 – 3.290 ISK</strong></span>
       </div>
@@ -151,8 +153,8 @@
         <p>110 Reykjavík · Mathöll Höfða</p>
       </div>
       <div class="ribbon__cell">
-        <p class="eyebrow" data-t="ribbonDiet">Dietary</p>
-        <p data-t="dietLine">Gluten-free and vegetarian choices on every counter.</p>
+        <p class="eyebrow" data-t="ribbonDiet">Food choices</p>
+        <p data-t="dietLine">Gluten-free and vegetarian dishes every day.</p>
       </div>
     </div>
   </section>
@@ -164,20 +166,20 @@
         <div>
           <p class="eyebrow" data-t="menuEyebrow">The menu</p>
           <h2>
-            <span data-t="menuTitleA">Everything we make,</span><br />
+            <span data-t="menuTitleA">Our menu,</span><br />
             <em data-t="menuTitleB">and what is in it</em>
           </h2>
         </div>
         <p class="lede" style="max-width:34ch" data-t="menuLede">
-          Tap any dish to see its ingredients and an estimated nutrition breakdown.
+          Tap a dish to see its ingredients and nutrition.
         </p>
       </div>
 
       <div class="filters" id="filters" role="group" aria-label="Dietary filters"></div>
       <div id="menu"></div>
       <p class="photo-note" data-t="photoNote">
-        Dish photographs are serving suggestions, cropped from house photography
-        — not a shot of each individual plate.
+        The photos show how a dish is usually served. They are not a photo of
+        each plate.
       </p>
     </div>
   </section>
@@ -187,39 +189,68 @@
     <img src="assets/images/focaccia_burrata_dish.jpg"
          alt="A slice of focaccia topped with burrata, smoked salmon, basil and cracked pepper on a pale ceramic plate" />
     <div class="slab__quote">
-      <p data-t="slabQuote">Bread baked this morning. Leaves cut this hour.</p>
+      <p data-t="slabQuote">Fresh bread every morning. Salads made to order.</p>
     </div>
   </section>
 
-  <!-- =================================================== 06 · office lunch -->
+  <!-- ================================================== 06 · what people say
+       The reviews themselves live in assets/reviews.js, which is the only file
+       anyone needs to open to change them. Read the header of that file before
+       the site goes live — the entries in it are samples today, and the page
+       prints a visible notice saying so until they are replaced. -->
+  <section class="reviews" id="reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-t="reviewsEyebrow">Customer feedback</p>
+          <h2>
+            <span data-t="reviewsTitleA">What our</span><br />
+            <em data-t="reviewsTitleB">customers say</em>
+          </h2>
+        </div>
+        <p class="lede" style="max-width:34ch" data-t="reviewsLede">
+          Reviews from people who have eaten with us.
+        </p>
+      </div>
+
+      <div id="reviewsNotice"></div>
+      <div class="reviews__grid" id="reviewsGrid"></div>
+      <p class="reviews__foot" data-t="reviewsFoot">
+        Have you eaten with us? Tell us at the counter or send us an email.
+        We would like to hear from you.
+      </p>
+    </div>
+  </section>
+
+  <!-- =================================================== 07 · office lunch -->
   <section class="office" id="office">
     <div class="wrap office__grid">
       <div class="reveal">
         <p class="eyebrow" data-t="officeEyebrow">For teams</p>
-        <h2 style="font-size:clamp(2rem,3.6vw,2.9rem);font-weight:300;margin:10px 0 18px">
-          <span data-t="officeTitleA">Lunch for the office,</span><br />
-          <em style="font-style:italic;color:var(--moss)" data-t="officeTitleB">without the fuss</em>
+        <h2 class="section-h2">
+          <span data-t="officeTitleA">Lunch for your team,</span><br />
+          <em data-t="officeTitleB">easy to order</em>
         </h2>
         <p class="lede" data-t="officeLede">
-          We deliver salad and focaccia trays to workplaces around Höfði, Borgartún and Grandi.
-          Kennitala invoicing, one delivery, no per-person admin.
+          We deliver salad and focaccia trays to workplaces in Höfði, Borgartún and Grandi.
+          One delivery, one invoice to the company.
         </p>
 
         <ul class="points">
-          <li><b data-t="p1t">Kennitala invoicing</b><span data-t="p1d">One monthly invoice to the company, not nine card payments.</span></li>
-          <li><b data-t="p2t">A standing order or a one-off</b><span data-t="p2d">Weekly, three days a week, or a single board meeting.</span></li>
-          <li><b data-t="p3t">Diets handled up front</b><span data-t="p3d">Tell us the counts for vegetarian, gluten free and high protein.</span></li>
-          <li><b data-t="p4t">Delivered around Höfði</b><span data-t="p4d">Bíldshöfði and the surrounding business district.</span></li>
+          <li><b data-t="p1t">One invoice</b><span data-t="p1d">We invoice the company on its kennitala. Nobody has to pay by card.</span></li>
+          <li><b data-t="p2t">Every week or just once</b><span data-t="p2d">Every week, three days a week, or one meeting.</span></li>
+          <li><b data-t="p3t">Tell us what they eat</b><span data-t="p3d">Tell us how many people need vegetarian, gluten free or high protein.</span></li>
+          <li><b data-t="p4t">Delivered around Höfði</b><span data-t="p4d">Bíldshöfði and the business area around it.</span></li>
         </ul>
 
         <img src="assets/images/corporate_catering_box.jpg"
              alt="An office catering tray of salads, focaccia and fresh fruit"
-             style="margin-top:34px;border-radius:6px;border:1px solid var(--rule)" />
+             style="margin-top:32px;border-radius:12px;border:1px solid var(--rule)" />
       </div>
 
       <div class="quoter reveal">
         <h3 data-t="quoterTitle">Estimate a team order</h3>
-        <p class="hint" data-t="quoterHint">Indicative only. We confirm the real figure by email.</p>
+        <p class="hint" data-t="quoterHint">This is only an estimate. We confirm the real price by email.</p>
 
         <div class="field">
           <label for="qPeople"><span data-t="people">People</span><b id="qPeopleOut">25</b></label>
@@ -242,7 +273,7 @@
 
         <dl class="readout">
           <div><dt data-t="perPerson">Per person</dt><dd id="qPerson">—</dd></div>
-          <div><dt data-t="perMonth">Per month, roughly</dt><dd id="qMonth">—</dd></div>
+          <div><dt data-t="perMonth">Per month</dt><dd id="qMonth">—</dd></div>
         </dl>
 
         <form id="officeForm" novalidate>
@@ -270,18 +301,18 @@
     </div>
   </section>
 
-  <!-- ======================================================== 07 · find us -->
+  <!-- ======================================================== 08 · find us -->
   <section id="find">
     <div class="wrap find__grid">
       <div class="reveal">
         <p class="eyebrow" data-t="findEyebrow">Find us</p>
-        <h2 style="font-size:clamp(2rem,3.6vw,2.9rem);font-weight:300;margin:10px 0 18px">
+        <h2 class="section-h2">
           <span data-t="findTitleA">Inside the food hall</span><br />
-          <em style="font-style:italic;color:var(--moss)" data-t="findTitleB">on Bíldshöfði</em>
+          <em data-t="findTitleB">on Bíldshöfði</em>
         </h2>
         <p class="lede" data-t="findLede">
           Leaf &amp; Loaf is one of ten kitchens in Mathöll Höfða.
-          Order at our counter, sit anywhere in the hall.
+          Order at our counter and sit anywhere in the hall.
         </p>
 
         <address class="address">
@@ -304,13 +335,13 @@
   </section>
 </main>
 
-<!-- ============================================================ 08 · footer -->
+<!-- ============================================================ 09 · footer -->
 <footer>
   <div class="wrap">
     <div class="foot__grid">
       <div>
         <h4>Leaf &amp; Loaf</h4>
-        <p data-t="heroEyebrow">Fresh food, honestly made</p>
+        <p data-t="heroEyebrow">Fresh food, made to order</p>
       </div>
       <div>
         <h4 data-t="footFind">Address</h4>
@@ -322,7 +353,7 @@
       </div>
       <div>
         <h4 data-t="footHall">The food hall</h4>
-        <p data-t="hallNote">Mathöll Höfða hosts ten independent kitchens under one roof. Shared seating, separate counters.</p>
+        <p data-t="hallNote">Mathöll Höfða has ten kitchens under one roof. Shared seating, separate counters.</p>
         <ul style="margin-top:10px">
           <li><a href="https://www.mathollhofda.is/" target="_blank" rel="noopener">mathollhofda.is ↗</a></li>
         </ul>
@@ -344,17 +375,18 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 
-<script src="assets/views.js?v=20260805i"></script>
-<script src="assets/menu-data.js?v=20260805i"></script>
-<script src="assets/answers.js?v=20260805i"></script>
-<script src="assets/illus.js?v=20260805i"></script>
-<script src="assets/app.js?v=20260805i"></script>
+<script src="assets/views.js?v=20260806b"></script>
+<script src="assets/menu-data.js?v=20260806b"></script>
+<script src="assets/reviews.js?v=20260806b"></script>
+<script src="assets/answers.js?v=20260806b"></script>
+<script src="assets/illus.js?v=20260806b"></script>
+<script src="assets/app.js?v=20260806b"></script>
 
 <!-- Leaf & Loaf assistant — Brahmando multi-tenant orchestrator.
      No API key in the browser: the embed endpoint is origin-checked and
      injects the tenant key server-side. -->
 
 
-<script src="assets/assistant.js?v=20260805i"></script>
+<script src="assets/assistant.js?v=20260806b"></script>
 </body>
 </html>

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="is" data-season="daylight">
+<html lang="is" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Panta — Leaf &amp; Loaf, Mathöll Höfða</title>
   <meta name="description" content="Pantaðu fyrirfram hjá Leaf &amp; Loaf í Mathöll Höfða. Veldu réttina, veldu afhendingartíma og greiddu við afgreiðsluborðið." />
   <meta name="theme-color" content="#FBFAF7" />
   <link rel="canonical" href="https://manailab.com/restaurants/leaf-and-loaf/panta/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="../assets/styles.css?v=20260805i" />
+  <link rel="stylesheet" href="../assets/styles.css?v=20260806b" />
 </head>
 <body>
 
@@ -22,29 +22,30 @@
     </span>
   </a>
 
-  <nav class="nav" aria-label="Primary">
+  <nav class="nav" id="primaryNav" aria-label="Primary">
     <a href="../#menu-section" data-t="navMenu">Matseðill</a>
     <a href="./" aria-current="page" data-t="navOrder">Panta</a>
     <a href="../party/" data-t="navParty">Veislur</a>
+    <a href="../#reviews" data-t="navReviews">Umsagnir</a>
     <a href="../#find" data-t="navFind">Finndu okkur</a>
   </nav>
 
   <div class="tools">
-    <div class="viewpick" id="viewPick" data-open="false">
-      <button class="pill" id="viewBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="viewMenu">
-        <span id="viewBtnLabel">Dagsljós</span>
-      </button>
-      <div class="viewpick__menu" id="viewMenu" role="menu" aria-label="Choose a view"></div>
+    <div class="themepick" id="themePick" data-open="false">
+      <button class="icon-btn themepick__btn" id="themeBtn" type="button"
+              aria-haspopup="true" aria-expanded="false" aria-controls="themeMenu"></button>
+      <div class="themepick__menu" id="themeMenu" role="menu"></div>
     </div>
     <button class="pill" id="langBtn" type="button" aria-label="Skipta um tungumál / Switch language">ENG</button>
+    <button class="icon-btn navtoggle" id="navToggle" type="button"
+            aria-expanded="false" aria-controls="primaryNav">
+      <span class="navtoggle__bars" aria-hidden="true"></span>
+    </button>
   </div>
 </header>
 
 <main>
   <section class="hero hero--party" id="top">
-    <div class="scene scene--fire"   aria-hidden="true"></div>
-    <div class="scene scene--aurora" aria-hidden="true"></div>
-    <div class="scene scene--paper"  aria-hidden="true"></div>
     <div class="hero__media">
       <img src="../assets/images/leaf_botanical_hero.jpg" alt="" />
     </div>
@@ -136,11 +137,11 @@
   </div>
 </footer>
 
-<script src="../assets/views.js?v=20260805i"></script>
-<script src="../assets/menu-data.js?v=20260805i"></script>
-<script src="../assets/answers.js?v=20260805i"></script>
-<script src="../assets/illus.js?v=20260805i"></script>
-<script src="../assets/order.js?v=20260805i"></script>
-<script src="../assets/assistant.js?v=20260805i"></script>
+<script src="../assets/views.js?v=20260806b"></script>
+<script src="../assets/menu-data.js?v=20260806b"></script>
+<script src="../assets/answers.js?v=20260806b"></script>
+<script src="../assets/illus.js?v=20260806b"></script>
+<script src="../assets/order.js?v=20260806b"></script>
+<script src="../assets/assistant.js?v=20260806b"></script>
 </body>
 </html>
