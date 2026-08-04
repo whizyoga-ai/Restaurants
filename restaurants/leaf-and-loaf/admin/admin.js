@@ -211,17 +211,32 @@ function estimate(lines) {
 }
 
 /* --------------------------------------------------------------- storage */
-const STORE_KEY = 'll-admin-menu-v1';
+/* v2: the seed gained photos and two more dishes. The key is versioned because
+   loadMenu() prefers whatever is in localStorage, so anyone who had opened the
+   console before would otherwise keep a photoless four-dish menu forever and
+   never see the change. */
+const STORE_KEY = 'll-admin-menu-v2';
 
+/* Photos are the same crops the public site uses, one directory up. */
 const SEED = [
   { id: 'caesar', name: 'Leaf & Loaf Caesar', course: 'Salads', price: 3290,
+    photo: '../assets/images/dishes/salad-leafy.jpg',
     recipe: 'chicken, 120\nlettuce, 80\nspinach, 40\nbacon, 25\ncroutons, 30\nparmesan, 20\ncaesar dressing, 30' },
   { id: 'quinoa', name: 'Quinoa & Beet', course: 'Salads', price: 3250,
+    photo: '../assets/images/dishes/salad-bowls.jpg',
     recipe: 'beetroot, 120\nquinoa, 90\ngreens, 60\nfeta, 45\npistachios, 20\nvinaigrette, 25' },
   { id: 'medi', name: 'Mediterranean', course: 'Salads', price: 3150,
+    photo: '../assets/images/dishes/salad-greens.jpg',
     recipe: 'tomato, 140\ncucumber, 100\nolives, 40\nfeta, 50\npepper, 70\nolive oil, 15' },
   { id: 'foc-salmon', name: 'Smoked Salmon Focaccia', course: 'Focaccia', price: 3200,
+    photo: '../assets/images/dishes/focaccia-salmon.jpg',
     recipe: 'focaccia, 140\nsalmon, 70\ngreens, 30\nlemon, 10' },
+  { id: 'foc-chicken', name: 'Chicken Focaccia', course: 'Focaccia', price: 3050,
+    photo: '../assets/images/dishes/focaccia-sandwiches.jpg',
+    recipe: 'focaccia, 140\nchicken, 90\ngreens, 30\nolive oil, 8' },
+  { id: 'foc-veg', name: 'Roasted Vegetable Focaccia', course: 'Focaccia', price: 2900,
+    photo: '../assets/images/dishes/focaccia-plain.jpg',
+    recipe: 'focaccia, 145\npepper, 80\ncucumber, 40\ngreens, 30\nolive oil, 12' },
 ];
 
 function loadMenu() {
@@ -383,6 +398,7 @@ function wireEditor() {
       if (!saveMenu(MENU)) toast('Photo too large to store locally — not saved.');
       $('#photoPreview').innerHTML = `<img src="${reader.result}" alt="">`;
       renderList();
+      syncReach();          // the new picture shows up in the REACH mock-up too
     };
     reader.readAsDataURL(file);
   });
@@ -419,6 +435,25 @@ function commit() {
   d.recipe = $('#fRecipe').value;
   saveMenu(MENU);
   renderList();
+  syncReach();
+}
+
+/**
+ * Push Menu studio edits into the REACH panel.
+ *
+ * The campaign copy is generated from the dish's name, price and computed
+ * nutrition, so an edit here should be visible there — otherwise the claim
+ * that REACH writes from your own menu is only true until you touch it.
+ * Selection is preserved across the rebuild so the option list can change
+ * (rename, add, delete) without the preview jumping to another dish.
+ */
+function syncReach() {
+  const sel = $('#reachDish');
+  if (!sel) return;                        // REACH not wired yet during boot
+  const keep = sel.value;
+  populateReachDishes();
+  if (MENU.some(d => d.id === keep)) sel.value = keep;
+  renderCampaign();
 }
 
 function recalc() {
@@ -492,6 +527,16 @@ function renderCampaign() {
   const tags = ['#Reykjavík', '#MathöllHöfða', '#LeafAndLoaf',
     n.allergens.includes('gluten') ? '' : '#GlutenFree',
     d.course === 'Salads' ? '#SaladBowl' : '#Focaccia'].filter(Boolean).join(' ');
+
+  /* The post carries the dish's own photo — including one uploaded a minute
+     ago in the Menu studio, since both read the same record. Seeing your own
+     picture in the mock-up is most of what sells this panel. */
+  const img = $('#reachImg');
+  if (d.photo) {
+    img.innerHTML = `<img src="${escapeHtml(d.photo)}" alt="${escapeHtml(d.name)}" />`;
+  } else {
+    img.innerHTML = '<span>No photo on this dish yet — add one in the Menu studio</span>';
+  }
 
   $('#reachPreview').textContent = `${caption}\n\n${tags}`;
   $('#reachMeta').textContent =
