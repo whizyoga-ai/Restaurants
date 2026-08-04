@@ -73,6 +73,7 @@ const MENU = [
   },
   {
     id: 'mediterranean',
+    photo: 'assets/images/dishes/salad-table.jpg',
     course: 'salads',
     diet: ['vegetarian', 'gluten-free'],
     en: {
@@ -346,21 +347,12 @@ const NEARBY = [
 
    The three added views are drawn in CSS rather than photographed — see the
    note in styles.css for why the available photographs could not be used. */
-const VIEWS = [
-  { id: 'daylight',       en: ['Daylight',         'Pale Nordic light'],
-                          is: ['Dagsljós',         'Fölt norrænt dagsljós'] },
-  { id: 'fireandice',     en: ['Land of Fire and Ice', 'Basalt and ember'],
-                          is: ['Eldur og Ís',      'Hraun og glóð'] },
-  { id: 'northernlights', en: ['Northern Lights',  'An evening under the aurora'],
-                          is: ['Norðurljós',       'Kvöld undir norðurljósum'] },
-  { id: 'menuboard',      en: ['The Menu',         'The whole card, up front'],
-                          is: ['Matseðillinn',     'Allur seðillinn, fremst'] },
-  { id: 'winternight',    en: ['Winter Night',     'The dark one'],
-                          is: ['Vetrarnótt',       'Dökka útgáfan'] },
-];
+const VIEWS = LL.VIEWS;   // shared with the party page, see assets/views.js
 
-/* ------------------------------------------------------------------ state */
-let lang = 'en';
+/* ------------------------------------------------------------------ state
+   lang and season are mirrors of LL (assets/views.js), which owns the
+   defaults and the localStorage keys and is shared with the party page. */
+let lang = 'is';
 let season = 'daylight';
 let filter = 'all';
 
@@ -385,15 +377,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function restorePrefs() {
-  try {
-    const savedLang = localStorage.getItem('ll-lang');
-    const savedSeason = localStorage.getItem('ll-season');
-    if (savedLang === 'is' || savedLang === 'en') lang = savedLang;
-    if (VIEWS.some(v => v.id === savedSeason)) season = savedSeason;
-    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) season = 'winternight';
-  } catch (_) { /* storage blocked — defaults are fine */ }
-  document.documentElement.setAttribute('data-season', season);
-  document.documentElement.lang = lang === 'is' ? 'is' : 'en';
+  const state = LL.restore();
+  lang = state.lang;
+  season = state.view;
 }
 
 function savePref(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }

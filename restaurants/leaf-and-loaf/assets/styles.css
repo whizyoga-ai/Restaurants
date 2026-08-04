@@ -583,6 +583,35 @@ section { padding: clamp(72px, 9vw, 132px) 0; }
 .dish__photo { display: none; }
 .dish__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* The three drinks have no photograph — there is no juice or coffee shot in
+   the house set, and a picture of a water carafe captioned "Fresh Pressed
+   Juice" would be a small lie. A flat grey box read as a broken image, so the
+   empty tile is drawn instead: a tinted panel with the house leaf on it. The
+   absence now looks chosen, which it is. */
+.dish__photo--none {
+  position: relative;
+  background:
+    radial-gradient(120% 100% at 30% 10%, var(--moss-soft), transparent 70%),
+    var(--paper-2);
+}
+.dish__photo--none::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 44px 44px;
+  opacity: .30;
+  /* one leaf blade with a centre vein, in the theme's own accent colour */
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 60' fill='none'>\
+<path d='M24 3 q17 12 17 27 q0 16-17 27 q-17-11-17-27 q0-15 17-27z' \
+fill='none' stroke='%233A5A40' stroke-width='2.4'/>\
+<path d='M24 10 v40' stroke='%233A5A40' stroke-width='2' stroke-linecap='round'/>\
+<path d='M24 22 l9-5 M24 33 l10-6 M24 22 l-9-5 M24 33 l-10-6' \
+stroke='%233A5A40' stroke-width='1.8' stroke-linecap='round'/></svg>");
+}
+
 /* ------------------------------------------------ 2 · Eldur og Ís — gallery */
 [data-season="fireandice"] .course {
   display: grid;
