@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ManAI Lab — Brahmexa for small business</title>
-  <meta name="description" content="ManAI Lab — the Brahmexa SMB offering, and the restaurants we build. Leaf &amp; Loaf, Reykjavík." />
+  <title>Brahmexa for small business — see it working before you buy</title>
+  <meta name="description" content="An evaluation page for businesses considering Brahmexa. Open a solution we have actually built, click through the admin interfaces, and browse the full SMB offering — before you become a customer." />
   <meta name="theme-color" content="#05070C" />
   <link rel="icon" href="assets/leaf-and-loaf-mark.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,50 +13,268 @@
 </head>
 <body>
 
-  <!-- ============================================ the circle, before the frame -->
-  <header class="strip">
-    <span class="strip__label">Restaurants</span>
+<!-- ============================================================== 01 · header -->
+<header class="topbar">
+  <a class="wordmark" href="./">
+    <b>Brahmexa</b><span>SMB</span>
+  </a>
+  <nav class="topnav" aria-label="Primary">
+    <a href="#showcase">Built solutions</a>
+    <a href="#interfaces">Admin interfaces</a>
+    <a href="#offering">The offering</a>
+  </nav>
+  <a class="btn btn--primary" href="https://saas.brahmexa.com/portal/" target="_blank" rel="noopener">Open the portal</a>
+</header>
 
-    <a class="ll-logo" href="restaurants/leaf-and-loaf/" aria-label="Open the Leaf &amp; Loaf site">
-      <span class="ll-logo__mark">
-        <img class="ll-logo__img" src="assets/leaf-and-loaf-mark.svg" alt="Leaf &amp; Loaf" />
-      </span>
-      <span>
-        <span class="ll-logo__word">Leaf &amp; Loaf</span>
-        <span class="ll-logo__sub">Reykjavík · Iceland</span>
-      </span>
-    </a>
+<main>
+  <!-- ============================================================= 02 · hero -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Evaluation workspace</p>
+      <h1>See what we would build for you, <em>before you buy anything</em></h1>
+      <p class="lede">
+        Most software asks you to sign first and discover second. This page does it the
+        other way round. Open a solution we have actually built, click through the same
+        admin interfaces you would run your business on, and read the whole small-business
+        offering — without talking to anyone.
+      </p>
 
-    <span class="strip__spacer"></span>
-    <span class="strip__site"><b>ManAI</b> Lab</span>
-  </header>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="#showcase">See a built solution</a>
+        <a class="btn" href="#interfaces">Try the admin interfaces</a>
+      </div>
 
-  <!-- ================================================ the Brahmexa SMB offering -->
-  <div class="smb" id="smb">
-    <iframe id="smbFrame"
-            src="https://saas.brahmexa.com/smb/"
-            title="Brahmexa SMB offering"
-            loading="eager"
-            referrerpolicy="no-referrer-when-downgrade"
-            allow="clipboard-write"></iframe>
+      <p class="assure">
+        <span>No sign-up to look around</span>
+        <span>Every link below opens the real thing</span>
+        <span>Built on Brahmando agents, MCP servers and workflows</span>
+      </p>
+    </div>
+  </section>
 
-    <div class="smb__fallback">
-      <p>Loading the Brahmexa SMB offering…</p>
-      <p><a href="https://saas.brahmexa.com/smb/" target="_blank" rel="noopener">Open it directly ↗</a></p>
+  <!-- ======================================================== 03 · showcase -->
+  <section class="band band--panel" id="showcase">
+    <div class="wrap">
+      <div class="band-head">
+        <p class="eyebrow">Built solutions</p>
+        <h2>A whole business, running on it</h2>
+        <p>
+          Not a screenshot and not a slide. This is a complete customer-facing site with a
+          live AI assistant, built on the Brahmexa restaurant vertical. Open it and use it
+          the way one of your customers would.
+        </p>
+      </div>
+
+      <article class="showcase">
+        <a class="ll-logo" href="restaurants/leaf-and-loaf/" aria-label="Open the Leaf &amp; Loaf site">
+          <span class="ll-logo__mark">
+            <img class="ll-logo__img" src="assets/leaf-and-loaf-mark.svg" alt="Leaf &amp; Loaf" />
+          </span>
+        </a>
+
+        <div class="showcase__body">
+          <h3>Leaf &amp; Loaf <span>— Reykjavík</span></h3>
+          <p class="showcase__where">Mathöll Höfða · Iceland · Restaurant vertical</p>
+          <p>
+            A salad and focaccia counter inside a Reykjavík food hall. Bilingual English and
+            Icelandic, a menu that opens to per-dish nutrition, an office-lunch estimator with
+            kennitala invoicing, and an AI assistant that knows the menu, the allergens and
+            what is worth visiting nearby.
+          </p>
+          <div class="chips">
+            <span class="chip chip--live">Live site</span>
+            <span class="chip">AI assistant</span>
+            <span class="chip">Bilingual EN / ÍS</span>
+            <span class="chip">Nutrition &amp; allergens</span>
+            <span class="chip">B2B lunch estimator</span>
+          </div>
+        </div>
+
+        <div class="showcase__cta">
+          <a class="btn btn--primary" href="restaurants/leaf-and-loaf/">Open the site →</a>
+          <a class="btn" href="https://saas.brahmexa.com/smb/restaurant/" target="_blank" rel="noopener">The vertical it runs on</a>
+        </div>
+      </article>
+
+      <p class="disclosure">
+        Leaf &amp; Loaf is a proposal built for a prospective client in Reykjavík, not a signed
+        customer, and it is shown here with that in mind. The restaurant, its address and its
+        menu are real; the site is our proposed solution for it.
+      </p>
+    </div>
+  </section>
+
+  <!-- =============================================== 04 · admin interfaces -->
+  <section class="band" id="interfaces">
+    <div class="wrap">
+      <div class="band-head">
+        <p class="eyebrow">Admin interfaces</p>
+        <h2>The consoles you would actually use</h2>
+        <p>
+          Every card opens the real interface, not a mock. Look at how the work is organised
+          before you decide whether it fits the way you run things.
+        </p>
+      </div>
+
+      <p class="subhead">Accelerators — for any small business</p>
+      <div class="grid">
+        <a class="card" href="https://saas.brahmexa.com/reach/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">📣</span><span class="card__name">REACH</span><span class="card__arrow">↗</span></span>
+          <p>Digital marketing. Campaigns across channels, from brief to flyer to send.</p>
+        </a>
+        <a class="card" href="https://orbit.brahmexa.com/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">🛰️</span><span class="card__name">ORBIT</span><span class="card__arrow">↗</span></span>
+          <p>Intelligent web hosting, with events and ticketing built in.</p>
+        </a>
+        <a class="card" href="https://brahmexa.com/nexus.php" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">🧠</span><span class="card__name">NEXUS</span><span class="card__arrow">↗</span></span>
+          <p>The AI business brain — your operation, made answerable.</p>
+        </a>
+        <a class="card" href="https://saas.brahmexa.com/comet/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">☄️</span><span class="card__name">COMET</span><span class="card__arrow">↗</span></span>
+          <p>Commerce orchestration. Describe a store, launch a store.</p>
+        </a>
+        <a class="card" href="https://saas.brahmexa.com/smb/lens/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">🔬</span><span class="card__name">LENS</span><span class="card__arrow">↗</span></span>
+          <p>Operational data intelligence and investigation.</p>
+        </a>
+        <a class="card" href="https://saas.brahmexa.com/smb/space/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">✦</span><span class="card__name">SPACE</span><span class="card__arrow">↗</span></span>
+          <p>The workspace the accelerators are provisioned into.</p>
+        </a>
+      </div>
+
+      <p class="subhead">Industry verticals — for a specific trade</p>
+      <div class="grid">
+        <a class="card" href="https://saas.brahmexa.com/smb/restaurant/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">🍽️</span><span class="card__name">Restaurant</span><span class="card__arrow">↗</span></span>
+          <p>Order-to-cash. The vertical behind Leaf &amp; Loaf above.</p>
+          <span class="card__tag card__tag--live">Live</span>
+        </a>
+        <a class="card" href="https://saas.brahmexa.com/smb/hvac/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">❄️</span><span class="card__name">HVAC Support</span><span class="card__arrow">↗</span></span>
+          <p>Service marketplace for heating and cooling trades.</p>
+          <span class="card__tag card__tag--live">Live</span>
+        </a>
+        <a class="card" href="https://saas.brahmexa.com/smb/hospital/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">🏥</span><span class="card__name">Hospital</span><span class="card__arrow">↗</span></span>
+          <p>Bed turnaround and escalations.</p>
+        </a>
+      </div>
+
+      <p class="subhead">Platform — what it is all built on</p>
+      <div class="grid">
+        <a class="card" href="https://saas.brahmexa.com/smb/agents.html" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">🤖</span><span class="card__name">Agents</span><span class="card__arrow">↗</span></span>
+          <p>Hermes, Mercury and the rest of the catalog.</p>
+        </a>
+        <a class="card" href="https://saas.brahmexa.com/smb/mcp.html" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">🔌</span><span class="card__name">MCP Servers</span><span class="card__arrow">↗</span></span>
+          <p>DikeAI and Narada — how agents reach your systems.</p>
+        </a>
+        <a class="card" href="https://saas.brahmexa.com/smb/workflows.html" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">⚡</span><span class="card__name">Workflows</span><span class="card__arrow">↗</span></span>
+          <p>Nandi and Rhythm — the automation underneath.</p>
+        </a>
+        <a class="card" href="https://saas.brahmexa.com/portal/" target="_blank" rel="noopener">
+          <span class="card__top"><span class="card__glyph">🔐</span><span class="card__name">Portal</span><span class="card__arrow">↗</span></span>
+          <p>Where a Brahmexa workspace is administered day to day.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================= 05 · the SMB offering -->
+  <section class="band band--panel" id="offering">
+    <div class="wrap">
+      <div class="band-head">
+        <p class="eyebrow">The full offering</p>
+        <h2>Everything Brahmexa offers a small business</h2>
+        <p>
+          The complete SMB catalogue, live from
+          <code>saas.brahmexa.com</code>, embedded below so you can read it without
+          leaving this page.
+        </p>
+      </div>
+
+      <div class="embed-shell" id="smb">
+        <div class="embed-bar">
+          <span class="dot" aria-hidden="true"></span>
+          <span>saas.brahmexa.com/smb/</span>
+          <a href="https://saas.brahmexa.com/smb/" target="_blank" rel="noopener">Open in a new tab ↗</a>
+        </div>
+        <iframe id="smbFrame"
+                src="https://saas.brahmexa.com/smb/"
+                title="Brahmexa SMB offering"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="embed-fallback" id="smbFallback" hidden>
+          The embedded catalogue did not load.
+          <a href="https://saas.brahmexa.com/smb/" target="_blank" rel="noopener">Open it directly ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================================================== 06 · footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <h4>Built solutions</h4>
+        <ul>
+          <li><a href="restaurants/leaf-and-loaf/">Leaf &amp; Loaf — Reykjavík</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Accelerators</h4>
+        <ul>
+          <li><a href="https://saas.brahmexa.com/reach/" target="_blank" rel="noopener">REACH</a></li>
+          <li><a href="https://orbit.brahmexa.com/" target="_blank" rel="noopener">ORBIT</a></li>
+          <li><a href="https://brahmexa.com/nexus.php" target="_blank" rel="noopener">NEXUS</a></li>
+          <li><a href="https://saas.brahmexa.com/comet/" target="_blank" rel="noopener">COMET</a></li>
+          <li><a href="https://saas.brahmexa.com/smb/lens/" target="_blank" rel="noopener">LENS</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="https://saas.brahmexa.com/smb/agents.html" target="_blank" rel="noopener">Agents</a></li>
+          <li><a href="https://saas.brahmexa.com/smb/mcp.html" target="_blank" rel="noopener">MCP servers</a></li>
+          <li><a href="https://saas.brahmexa.com/smb/workflows.html" target="_blank" rel="noopener">Workflows</a></li>
+          <li><a href="https://brahmando.com" target="_blank" rel="noopener">Brahmando</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Brahmexa</h4>
+        <ul>
+          <li><a href="https://brahmexa.com" target="_blank" rel="noopener">brahmexa.com</a></li>
+          <li><a href="https://saas.brahmexa.com/portal/" target="_blank" rel="noopener">Customer portal</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 Brahmexa</span>
+      <span>Democratizing Intelligence</span>
     </div>
   </div>
+</footer>
 
-  <script>
-    /* The fallback stays visible until the frame reports a load, so a blocked
-       or slow embed leaves the visitor with a working link rather than a void.
-       We cannot read into the frame (cross-origin) — load is all we get. */
-    (function () {
-      var frame = document.getElementById('smbFrame');
-      var box = document.getElementById('smb');
-      frame.addEventListener('load', function () { box.classList.add('is-loaded'); });
-      setTimeout(function () { box.classList.add('is-loaded'); }, 8000);
-    })();
-  </script>
+<script>
+  /* Cross-origin means we cannot inspect the frame; a load event is all we get.
+     If it never fires, show the direct link rather than an empty box. */
+  (function () {
+    var frame = document.getElementById('smbFrame');
+    var fallback = document.getElementById('smbFallback');
+    var loaded = false;
+    frame.addEventListener('load', function () { loaded = true; });
+    setTimeout(function () {
+      if (!loaded) { frame.hidden = true; fallback.hidden = false; }
+    }, 10000);
+  })();
+</script>
 
 </body>
 </html>
