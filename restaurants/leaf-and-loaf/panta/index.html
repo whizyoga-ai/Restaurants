@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="is" data-season="daylight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panta — Leaf &amp; Loaf, Mathöll Höfða</title>
+  <meta name="description" content="Pantaðu fyrirfram hjá Leaf &amp; Loaf í Mathöll Höfða. Veldu réttina, veldu afhendingartíma og greiddu við afgreiðsluborðið." />
+  <meta name="theme-color" content="#FBFAF7" />
+  <link rel="canonical" href="https://manailab.com/restaurants/leaf-and-loaf/panta/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="../assets/styles.css?v=20260804h" />
+</head>
+<body>
+
+<header class="masthead">
+  <a class="brand" href="../">
+    <span class="ll-mark" aria-hidden="true">L&amp;L</span>
+    <span>
+      <span class="brand__name">Leaf &amp; Loaf</span><br />
+      <span class="brand__place">Mathöll Höfða · Reykjavík</span>
+    </span>
+  </a>
+
+  <nav class="nav" aria-label="Primary">
+    <a href="../#menu-section" data-t="navMenu">Matseðill</a>
+    <a href="./" aria-current="page" data-t="navOrder">Panta</a>
+    <a href="../party/" data-t="navParty">Veislur</a>
+    <a href="../#find" data-t="navFind">Finndu okkur</a>
+  </nav>
+
+  <div class="tools">
+    <div class="viewpick" id="viewPick" data-open="false">
+      <button class="pill" id="viewBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="viewMenu">
+        <span id="viewBtnLabel">Dagsljós</span>
+      </button>
+      <div class="viewpick__menu" id="viewMenu" role="menu" aria-label="Choose a view"></div>
+    </div>
+    <button class="pill" id="langBtn" type="button" aria-label="Skipta um tungumál / Switch language">ENG</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero hero--party" id="top">
+    <div class="scene scene--fire"   aria-hidden="true"></div>
+    <div class="scene scene--aurora" aria-hidden="true"></div>
+    <div class="scene scene--paper"  aria-hidden="true"></div>
+    <div class="hero__media">
+      <img src="../assets/images/leaf_botanical_hero.jpg" alt="" />
+    </div>
+    <div class="hero__veil"></div>
+
+    <div class="hero__inner wrap">
+      <p class="eyebrow" data-t="eyebrow">Panta fyrirfram</p>
+      <h1 class="hero__title">
+        <span data-t="titleA">Útbúið eftir pöntun,</span><br />
+        <em data-t="titleB">tilbúið þegar þú kemur</em>
+      </h1>
+      <p class="lede" data-t="lede">
+        Veldu það sem þú vilt og hvenær þú sækir.
+      </p>
+    </div>
+  </section>
+
+  <section id="order-section">
+    <div class="wrap order">
+
+      <div class="order__pick">
+        <h2 class="order__h" data-t="pickTitle">Veldu réttina</h2>
+        <div id="items"></div>
+      </div>
+
+      <aside class="order__side">
+        <form class="cart" id="orderForm">
+          <h2 class="order__h" data-t="yourOrder">Pöntunin þín</h2>
+
+          <div id="cartLines"></div>
+
+          <div class="cart__total">
+            <span data-t="subtotal">Samtals</span>
+            <b id="cartTotal">—</b>
+          </div>
+          <p class="cart__vat" id="cartVat"></p>
+
+          <h3 class="cart__sub" data-t="whenTitle">Hvenær sækir þú?</h3>
+          <p class="note note--soft" id="closedNote" hidden data-t="closedNow">Það er lokað núna.</p>
+          <div class="field">
+            <label for="pickupTime" data-t="whenLabel">Afhendingartími</label>
+            <select id="pickupTime"></select>
+          </div>
+          <p class="hint" data-t="hoursNote">Afhending milli 11:30 og 21:00.</p>
+
+          <div class="field"><label for="custName" data-t="nameLabel">Nafn</label><input type="text" id="custName" required autocomplete="name" /></div>
+          <div class="field"><label for="custPhone" data-t="phoneLabel">Sími</label><input type="text" id="custPhone" inputmode="tel" autocomplete="tel" /></div>
+          <div class="field"><label for="custNotes" data-t="notesLabel">Athugasemdir</label><textarea id="custNotes" rows="3"></textarea></div>
+
+          <button class="pill pill--solid" id="sendOrder" type="submit" data-t="send"
+                  style="width:100%;justify-content:center;height:46px" disabled>Senda pöntun</button>
+
+          <p class="paynote" data-t="payNote">
+            Engin greiðsla fer fram hér.
+          </p>
+
+          <!-- The hall, where the other nine kitchens are. Every vendor there
+               runs its own ordering at <vendor>.is/panta, which is the
+               convention this page follows. -->
+          <p class="hallnote">
+            <a href="https://www.mathollhofda.is/" target="_blank" rel="noopener">
+              <span data-t="hallLink">Sjá alla Mathöll Höfða</span> ↗
+            </a>
+          </p>
+        </form>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot__bottom" style="margin-top:0;border-top:0">
+      <span><a href="../">Leaf &amp; Loaf</a></span>
+      <span>
+        <a class="by-brahmexa" href="https://brahmexa.com" target="_blank" rel="noopener">
+          <img src="../assets/brahmexa-logo.png" alt="" width="20" height="20" />
+          <span>Brahmexa</span>
+        </a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/views.js?v=20260804h"></script>
+<script src="../assets/illus.js?v=20260804h"></script>
+<script src="../assets/order.js?v=20260804h"></script>
+</body>
+</html>

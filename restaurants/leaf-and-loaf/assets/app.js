@@ -232,7 +232,7 @@ const T = {
   en: {
     langLabel: 'ÍSL',
     place: 'Mathöll Höfða · Reykjavík',
-    navMenu: 'Menu', navParty: 'Party orders', navOffice: 'Office lunch', navFind: 'Find us',
+    navMenu: 'Menu', navOrder: 'Order ahead', navParty: 'Party orders', navOffice: 'Office lunch', navFind: 'Find us',
     order: 'Order ahead',
     heroEyebrow: 'Fresh food, honestly made',
     heroTitleA: 'Leaves, loaves and', heroTitleB: 'nothing hiding',
@@ -282,7 +282,7 @@ const T = {
   is: {
     langLabel: 'ENG',
     place: 'Mathöll Höfða · Reykjavík',
-    navMenu: 'Matseðill', navParty: 'Veislur', navOffice: 'Hádegismatur', navFind: 'Finndu okkur',
+    navMenu: 'Matseðill', navOrder: 'Panta', navParty: 'Veislur', navOffice: 'Hádegismatur', navFind: 'Finndu okkur',
     order: 'Panta fyrirfram',
     heroEyebrow: 'Ferskur matur, heiðarlega gerður',
     heroTitleA: 'Salat, brauð og', heroTitleB: 'ekkert falið',
@@ -612,7 +612,7 @@ function dishNode(d) {
      view. Hidden by CSS everywhere except Eldur og Ís and Vetrarnótt. */
   const photoHtml = d.photo
     ? `<span class="dish__photo"><img src="${d.photo}" alt="${esc(c.name)}" loading="lazy" /></span>`
-    : '<span class="dish__photo dish__photo--none" aria-hidden="true"></span>';
+    : `<span class="dish__photo dish__photo--none" aria-hidden="true">${LL_ILLUS.forId(d.id)}</span>`;
 
   el.innerHTML = photoHtml + `
     <button class="dish__head" type="button" aria-expanded="false">

@@ -104,7 +104,7 @@ const total = p => p.parts.reduce((sum, part) => sum + part.n * part.price, 0);
 /* ------------------------------------------------------------------- i18n */
 const T = {
   en: {
-    navMenu: 'Menu', navParty: 'Party orders', navOffice: 'Office lunch', navFind: 'Find us',
+    navMenu: 'Menu', navOrder: 'Order ahead', navParty: 'Party orders', navOffice: 'Office lunch', navFind: 'Find us',
     back: 'Back to the restaurant',
     eyebrow: 'Veisluþjónusta',
     titleA: 'Is there a party', titleB: 'coming up?',
@@ -137,7 +137,7 @@ const T = {
     estimate: 'Indicative total',
   },
   is: {
-    navMenu: 'Matseðill', navParty: 'Veislur', navOffice: 'Hádegismatur', navFind: 'Finndu okkur',
+    navMenu: 'Matseðill', navOrder: 'Panta', navParty: 'Veislur', navOffice: 'Hádegismatur', navFind: 'Finndu okkur',
     back: 'Til baka á veitingastaðinn',
     eyebrow: 'Veisluþjónusta',
     titleA: 'Er veisla', titleB: 'framundan?',
@@ -220,7 +220,7 @@ function renderPlatters() {
 
     const media = p.photo
       ? `<span class="platter__photo"><img src="${p.photo}" alt="${esc(c.name)}" loading="lazy" /></span>`
-      : '<span class="platter__photo platter__photo--none" aria-hidden="true"></span>';
+      : `<span class="platter__photo platter__photo--none" aria-hidden="true">${LL_ILLUS.forId(p.id)}</span>`;
 
     const meta = [
       `${esc(t().serves)} ${esc(p.serves)}`,
