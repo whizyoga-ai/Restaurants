@@ -154,12 +154,43 @@ window.LL_ANSWERS = (function () {
       : `Forðastu þessa — þeir innihalda ${name}:\n\n${bad.map(i => `- ${nameOf(i, 'is')}`).join('\n') || '- engan'}\n\nÖruggir að því leyti:\n\n${ok.map(i => `- ${nameOf(i, 'is')}`).join('\n')}\n\n${t.estimate}`;
   }
 
-  function fullMenu(lang) {
-    return M().courses.map(course => {
-      const rows = M().items.filter(i => i.course === course.id)
-        .map(i => `- ${nameOf(i, lang)} — ${priceOf(i, lang)}`).join('\n');
-      return `**${course[lang][0]}**\n${rows}`;
-    }).join('\n\n');
+  /**
+   * The menu.
+   *
+   * `deep` gives the version someone gets when they ask about the menu rather
+   * than for it: what is in each dish, what it comes to, and what it is worth
+   * knowing about it — laid out by course instead of run together in a
+   * paragraph, which is what the model produced.
+   */
+  function fullMenu(lang, deep) {
+    const t = L[lang];
+    const blocks = M().courses.map(course => {
+      const list = M().items.filter(i => i.course === course.id);
+      const rows = list.map(i => {
+        if (!deep) return `- ${nameOf(i, lang)} — ${priceOf(i, lang)}`;
+        const bits = [
+          `**${nameOf(i, lang)}** — ${priceOf(i, lang)}`,
+          i[lang].ingredients,
+          i.price === null
+            ? (lang === 'en' ? `Roughly ${i.kcal} kcal.` : `Um ${i.kcal} kcal.`)
+            : (lang === 'en'
+                ? `~${i.kcal} kcal • ${i.fat} g fat • ${i.carbs} g carbs • ${i.protein} g protein`
+                : `~${i.kcal} kcal • ${i.fat} g fita • ${i.carbs} g kolvetni • ${i.protein} g prótein`),
+          lang === 'en' ? i.driverEn : i.driverIs,
+        ];
+        return bits.join('\n');
+      });
+      const label = deep ? `**${course[lang][0]}** — ${course[lang][1]}` : `**${course[lang][0]}**`;
+      return `${label}\n\n${rows.join('\n\n')}`;
+    });
+
+    if (!deep) return blocks.join('\n\n');
+
+    const tail = lang === 'en'
+      ? `Everything is made when you order it. Ask me what is gluten free, what has the most protein, or which parts of a dish are Icelandic and which are imported.`
+      : `Allt er útbúið eftir pöntun. Spurðu mig hvað er glútenlaust, hvað er próteinríkast, eða hvað í réttinum er íslenskt og hvað innflutt.`;
+
+    return [...blocks, tail, t.estimate].join('\n\n');
   }
 
   /* ------------------------------------------------------------- routing */
@@ -271,11 +302,70 @@ window.LL_ANSWERS = (function () {
     { test: q => has(q, 'fish allergy', 'shellfish', 'fiskur', 'fiskofnaemi'), run: (q, lang) => allergenAnswer('fish', lang) },
     { test: q => has(q, 'egg allergy', 'eggja'), run: (q, lang) => allergenAnswer('egg', lang) },
 
-    // --- the whole menu -------------------------------------------------- //
+    /* --- where the food comes from ------------------------------------- //
+       Iceland grows leaves, tomatoes, cucumbers and peppers year-round in
+       geothermal greenhouses and roots outdoors, and imports its grain, olives,
+       citrus and nuts. That is a genuinely interesting answer for a visitor and
+       a completely checkable one, so it is answered here rather than guessed at. */
     {
-      test: q => has(q, 'what do you have', 'the menu', 'show me the menu', 'whats on the menu',
-        'hvad er a bodstolum', 'matsedill', 'matseðill', 'hvad bjodid thid'),
-      run: (q, lang) => fullMenu(lang),
+      test: q => has(q, 'local', 'locally', 'icelandic ingredient', 'ingredient', 'imported', 'import', 'sourced', 'grown', 'where does the food come from',
+        'where is the food from', 'islenskt', 'íslenskt', 'innflutt', 'hvadan kemur'),
+      run: (q, lang) => {
+        const d = findDish(q, lang);
+        const head = lang === 'en'
+          ? 'Iceland grows leaves, tomatoes, cucumbers and peppers all year in geothermally heated greenhouses, and root vegetables outdoors. Grain, olives, citrus and nuts are imported. Dish by dish:'
+          : 'Ísland ræktar salat, tómata, gúrkur og papriku allt árið í jarðhitakyntum gróðurhúsum, og rótargrænmeti utandyra. Korn, ólífur, sítrus og hnetur eru innflutt. Réttur fyrir rétt:';
+        const one = i => `- **${i[lang].name}** — ${lang === 'en' ? i.originEn : i.originIs}`;
+        if (d) return `**${nameOf(d, lang)}**\n\n${lang === 'en' ? d.originEn : d.originIs}`;
+        return `${head}\n\n${M().items.map(one).join('\n')}`;
+      },
+    },
+
+    /* --- what should I have -------------------------------------------- //
+       Built from the data, not from an invented chef persona. Leaf & Loaf has
+       not told us what the kitchen recommends or what sells best, and making
+       that up would be exactly the kind of pleasant fiction this site has
+       avoided. What CAN be said honestly is which dish wins on each measure. */
+    {
+      test: q => has(q, 'recommend', 'what should i', 'best dish', 'popular', 'favourite', 'favorite', 'chef',
+        'maelid thid med', 'mælið þið með', 'vinsaelast', 'vinsælast', 'hvad aetti eg'),
+      run: (q, lang) => {
+        const most = [...M().items].sort((a, b) => b.protein - a.protein)[0];
+        const light = M().priced().sort((a, b) => a.kcal - b.kcal)[0];
+        const cheap = M().priced().sort((a, b) => a.price - b.price)[0];
+        const veg = M().items.find(i => i.diet.includes('vegetarian'));
+        const gf = M().items.find(i => !i.allergens.includes('gluten') && i.price !== null);
+
+        return lang === 'en'
+          ? [`Nobody here has told us what the kitchen's own pick is, so rather than invent one, here is what each dish actually wins on:`,
+             `- **After the gym or a long shift** — ${nameOf(most, 'en')}, about ${most.protein} g of protein.`,
+             `- **Something light** — ${nameOf(light, 'en')}, about ${light.kcal} kcal and mostly vegetables.`,
+             `- **Best value** — ${nameOf(cheap, 'en')} at ${isk(cheap.price)} ISK.`,
+             `- **Vegetarian** — ${nameOf(veg, 'en')}.`,
+             `- **Gluten free without asking** — ${nameOf(gf, 'en')}.`,
+             `- **The most Icelandic thing on the menu** — the Smoked Salmon Focaccia. Cold-smoked salmon is a staple here, and the leaves come out of a geothermal greenhouse down the road.`,
+            ].join('\n\n')
+          : [`Enginn hefur sagt okkur hvað eldhúsið mælir sjálft með, svo í stað þess að finna það upp: hér er hvað hver réttur vinnur á.`,
+             `- **Eftir æfingu eða langa vakt** — ${nameOf(most, 'is')}, um ${most.protein} g prótein.`,
+             `- **Eitthvað létt** — ${nameOf(light, 'is')}, um ${light.kcal} kcal og aðallega grænmeti.`,
+             `- **Besta verðið** — ${nameOf(cheap, 'is')} á ${isk(cheap.price)} ISK.`,
+             `- **Grænmetisréttur** — ${nameOf(veg, 'is')}.`,
+             `- **Glútenlaust án þess að spyrja** — ${nameOf(gf, 'is')}.`,
+             `- **Það íslenskasta á seðlinum** — Focaccia með reyktum laxi. Köldreyktur lax er hefð hér, og salatið kemur úr jarðhitakyntu gróðurhúsi.`,
+            ].join('\n\n');
+      },
+    },
+
+    /* --- the whole menu, in depth --------------------------------------- //
+       "Tell me about your menu" used to fall through to the model, which knew
+       the facts and ran all nine dishes into one paragraph. Matching on the
+       bare word now, since a question containing "menu" and no dish name has
+       only one thing it can mean. */
+    {
+      test: (q, lang) => !findDish(q, lang) && has(q,
+        'menu', 'what do you have', 'what do you serve', 'what food', 'dishes', 'eat here',
+        'matsed', 'matseðl', 'hvad er a bodstolum', 'hvad bjodid thid', 'rettir', 'rettur'),
+      run: (q, lang) => fullMenu(lang, true),
     },
 
     // --- hours and place ------------------------------------------------- //

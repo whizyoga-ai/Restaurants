@@ -22,6 +22,7 @@ window.LL_MENU = (function () {
     /* ---------------------------------------------------------- salads --- */
     {
       id: 'caesar', course: 'salads',
+      originEn: 'Icelandic: the chicken, the bacon and the greenhouse-grown leaves. Imported: the wheat in the croutons, the Parmesan, the lemon and the anchovy in the dressing.', originIs: 'Íslenskt: kjúklingurinn, beikonið og gróðurhúsasalatið. Innflutt: hveitið í brauðteningunum, Parmesan, sítrónan og ansjósan í dressingunni.',
       driverEn: 'The dressing, Parmesan and bacon carry most of the fat.', driverIs: 'Dressingin, Parmesan og beikon bera mest af fitunni.',
       photo: 'assets/images/dishes/salad-greens.jpg',
       price: 3290,
@@ -44,6 +45,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'quinoa-beet', course: 'salads',
+      originEn: 'Icelandic: the beetroot, grown outdoors, and the greenhouse leaves. Imported: quinoa from South America, the feta and the pistachios.', originIs: 'Íslenskt: rauðrófurnar, ræktaðar utandyra, og gróðurhúsasalatið. Innflutt: kínóa frá Suður-Ameríku, fetaosturinn og pistasíurnar.',
       driverEn: 'Pistachios, feta and the vinaigrette drive the fat; quinoa the carbohydrate.', driverIs: 'Pistasíur, feta og vinaigrette bera fituna; kínóa kolvetnin.',
       photo: 'assets/images/dishes/salad-bowls.jpg',
       price: 3250,
@@ -66,6 +68,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'mediterranean', course: 'salads',
+      originEn: 'Icelandic: the tomatoes, cucumber and peppers — all grown in geothermally heated greenhouses, which is why a fresh salad in January is not a contradiction here. Imported: the olives, the olive oil and the feta.', originIs: 'Íslenskt: tómatarnir, gúrkan og paprikurnar — allt ræktað í jarðhitakyntum gróðurhúsum, þess vegna er ferskt salat í janúar ekki mótsögn hér. Innflutt: ólífurnar, ólífuolían og fetaosturinn.',
       driverEn: 'Olive oil and feta. Otherwise it is mostly vegetables, which is why it is the lightest.', driverIs: 'Ólífuolía og feti. Að öðru leyti aðallega grænmeti, þess vegna er hann léttastur.',
       photo: 'assets/images/dishes/salad-table.jpg',
       price: 3150,
@@ -90,6 +93,7 @@ window.LL_MENU = (function () {
     /* -------------------------------------------------------- focaccia --- */
     {
       id: 'focaccia-salmon', course: 'focaccia',
+      originEn: 'Icelandic: the cold-smoked salmon, and the leaves on top. Imported: the wheat flour — Iceland grows very little grain, so the bread is baked here from flour that is not.', originIs: 'Íslenskt: köldreykti laxinn og salatið ofan á. Innflutt: hveitið — Ísland ræktar lítið korn, svo brauðið er bakað hér úr innfluttu hveiti.',
       driverEn: 'The focaccia carries nearly all the carbohydrate; the salmon the protein.', driverIs: 'Focaccia ber nánast öll kolvetnin; laxinn próteinið.',
       photo: 'assets/images/dishes/focaccia-salmon.jpg',
       price: 3200,
@@ -112,6 +116,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'focaccia-chicken', course: 'focaccia',
+      originEn: 'Icelandic: the chicken and the leaves. Imported: the wheat flour for the focaccia.', originIs: 'Íslenskt: kjúklingurinn og salatið. Innflutt: hveitið í focaccia.',
       driverEn: 'Bread for the carbohydrate, chicken for the protein — the highest of the three breads.', driverIs: 'Brauðið fyrir kolvetnin, kjúklingurinn fyrir próteinið — hæst af brauðunum þremur.',
       photo: 'assets/images/dishes/focaccia-sandwiches.jpg',
       price: 3050,
@@ -134,6 +139,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'focaccia-veg', course: 'focaccia',
+      originEn: 'Icelandic: the roasted vegetables, greenhouse-grown. Imported: the wheat flour.', originIs: 'Íslenskt: ofnbakaða grænmetið, ræktað í gróðurhúsi. Innflutt: hveitið.',
       driverEn: 'The bread accounts for most of it. The least expensive dish and the least protein of the breads.', driverIs: 'Brauðið stendur undir mestu. Ódýrasti rétturinn og minnst prótein af brauðunum.',
       photo: 'assets/images/dishes/focaccia-plain.jpg',
       price: 2900,
@@ -158,6 +164,7 @@ window.LL_MENU = (function () {
     /* ---------------------------------------------------------- drinks --- */
     {
       id: 'juice', course: 'drinks', photo: null,
+      originEn: 'Depends on the day. Icelandic greenhouse produce when it is in; citrus and tropical fruit are always imported.', originIs: 'Fer eftir deginum. Íslenskt gróðurhúsagrænmeti þegar það er í boði; sítrus og hitabeltisávextir eru alltaf innfluttir.',
       driverEn: 'Fruit sugars, nothing added.', driverIs: 'Ávaxtasykur, engu bætt við.',
       price: null,
       kcal: 120, protein: 2, carbs: 27, fat: 0,
@@ -173,6 +180,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'smoothie', course: 'drinks', photo: null,
+      originEn: 'Icelandic: the dairy, if you have it with a dairy base — Icelandic milk and skyr are excellent. The fruit and berries are mostly imported outside late summer.', originIs: 'Íslenskt: mjólkurvaran ef þú færð hann með mjólkurgrunni — íslensk mjólk og skyr eru frábær. Ávextir og ber eru að mestu innflutt utan síðsumars.',
       driverEn: 'Fruit and the base. A dairy base puts it higher than a plant one.', driverIs: 'Ávextir og grunnurinn. Mjólkurgrunnur hækkar hann umfram jurtagrunn.',
       price: null,
       kcal: 230, protein: 6, carbs: 40, fat: 4,
@@ -188,6 +196,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'coffee-tea', course: 'drinks', photo: null,
+      originEn: 'The coffee and tea are imported, as they are everywhere. The water is not, and in Iceland that matters more than usual.', originIs: 'Kaffið og teið eru innflutt, eins og alls staðar. Vatnið er það ekki, og á Íslandi skiptir það meira máli en víðast hvar.',
       driverEn: 'Black, or unsweetened tea. Milk and syrup add to it.', driverIs: 'Svart, eða ósætt te. Mjólk og síróp bæta við.',
       price: null,
       kcal: 10, protein: 0, carbs: 1, fat: 0,
