@@ -1217,7 +1217,8 @@ input[type="range"] { width: 100%; accent-color: var(--moss); }
 
 .llmsg__body p { margin: 0 0 .6em; }
 .llmsg__body p:last-child { margin-bottom: 0; }
-.llmsg__body ul { margin: .2em 0 .4em; padding-left: 1.1em; }
+.llmsg__body ul, .llmsg__body ol { margin: .3em 0 .5em; padding-left: 1.25em; }
+.llmsg__body ol { list-style: decimal; }
 .llmsg__body li { margin: .16em 0; }
 .llmsg__body strong { font-weight: 600; }
 .llmsg__body em { font-style: normal; font-size: .82em; color: var(--ink-3); display: block; margin-top: .5em; }

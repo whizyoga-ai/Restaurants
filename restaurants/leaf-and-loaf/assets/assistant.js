@@ -96,17 +96,31 @@
      screen. Everything is escaped BEFORE any markup is introduced, so no model
      output can inject HTML. */
   function format(text) {
-    const safe = esc(text);
+    let safe = esc(text);
+
+    /* The model sometimes emits a numbered list with no line breaks at all —
+       "1. Caesar… 2. Quinoa… 3. Mediterranean…" arrives as one paragraph and
+       renders as a wall. Break before an enumerator that follows sentence
+       text so it lays out like the list it was meant to be. */
+    safe = safe.replace(/(?!^)\s(\d{1,2})\.\s(?=[A-ZÁÉÍÓÚÝÞÆÖ])/g, '\n$1. ');
+
     const blocks = safe.split(/\n{2,}/);
     return blocks.map(block => {
-      const lines = block.split('\n');
-      const bullets = lines.filter(l => /^\s*[-•*]\s+/.test(l));
-      if (bullets.length && bullets.length === lines.filter(l => l.trim()).length) {
-        const items = lines.filter(l => l.trim())
-          .map(l => `<li>${bold(l.replace(/^\s*[-•*]\s+/, ''))}</li>`).join('');
-        return `<ul>${items}</ul>`;
+      const lines = block.split('\n').filter(l => l.trim());
+      if (!lines.length) return '';
+
+      const isBullet = l => /^\s*[-•*]\s+/.test(l);
+      const isNumber = l => /^\s*\d{1,2}[.)]\s+/.test(l);
+
+      if (lines.every(isBullet)) {
+        return `<ul>${lines.map(l => `<li>${bold(l.replace(/^\s*[-•*]\s+/, ''))}</li>`).join('')}</ul>`;
       }
-      return `<p>${bold(lines.join('<br>'))}</p>`;
+      if (lines.every(isNumber)) {
+        return `<ol>${lines.map(l => `<li>${bold(l.replace(/^\s*\d{1,2}[.)]\s+/, ''))}</li>`).join('')}</ol>`;
+      }
+      // italics used for the estimate caveat
+      const body = bold(lines.join('<br>')).replace(/_([^_]+)_/g, '<em>$1</em>');
+      return `<p>${body}</p>`;
     }).join('');
   }
   const bold = s => s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');

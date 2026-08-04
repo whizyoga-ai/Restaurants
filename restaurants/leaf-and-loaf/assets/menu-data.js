@@ -22,6 +22,7 @@ window.LL_MENU = (function () {
     /* ---------------------------------------------------------- salads --- */
     {
       id: 'caesar', course: 'salads',
+      driverEn: 'The dressing, Parmesan and bacon carry most of the fat.', driverIs: 'Dressingin, Parmesan og beikon bera mest af fitunni.',
       photo: 'assets/images/dishes/salad-greens.jpg',
       price: 3290,
       kcal: 620, protein: 38, carbs: 24, fat: 40,
@@ -43,6 +44,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'quinoa-beet', course: 'salads',
+      driverEn: 'Pistachios, feta and the vinaigrette drive the fat; quinoa the carbohydrate.', driverIs: 'Pistasíur, feta og vinaigrette bera fituna; kínóa kolvetnin.',
       photo: 'assets/images/dishes/salad-bowls.jpg',
       price: 3250,
       kcal: 520, protein: 16, carbs: 45, fat: 30,
@@ -64,6 +66,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'mediterranean', course: 'salads',
+      driverEn: 'Olive oil and feta. Otherwise it is mostly vegetables, which is why it is the lightest.', driverIs: 'Ólífuolía og feti. Að öðru leyti aðallega grænmeti, þess vegna er hann léttastur.',
       photo: 'assets/images/dishes/salad-table.jpg',
       price: 3150,
       kcal: 380, protein: 11, carbs: 18, fat: 29,
@@ -87,6 +90,7 @@ window.LL_MENU = (function () {
     /* -------------------------------------------------------- focaccia --- */
     {
       id: 'focaccia-salmon', course: 'focaccia',
+      driverEn: 'The focaccia carries nearly all the carbohydrate; the salmon the protein.', driverIs: 'Focaccia ber nánast öll kolvetnin; laxinn próteinið.',
       photo: 'assets/images/dishes/focaccia-salmon.jpg',
       price: 3200,
       kcal: 560, protein: 27, carbs: 52, fat: 26,
@@ -108,6 +112,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'focaccia-chicken', course: 'focaccia',
+      driverEn: 'Bread for the carbohydrate, chicken for the protein — the highest of the three breads.', driverIs: 'Brauðið fyrir kolvetnin, kjúklingurinn fyrir próteinið — hæst af brauðunum þremur.',
       photo: 'assets/images/dishes/focaccia-sandwiches.jpg',
       price: 3050,
       kcal: 590, protein: 34, carbs: 53, fat: 25,
@@ -129,6 +134,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'focaccia-veg', course: 'focaccia',
+      driverEn: 'The bread accounts for most of it. The least expensive dish and the least protein of the breads.', driverIs: 'Brauðið stendur undir mestu. Ódýrasti rétturinn og minnst prótein af brauðunum.',
       photo: 'assets/images/dishes/focaccia-plain.jpg',
       price: 2900,
       kcal: 470, protein: 13, carbs: 56, fat: 21,
@@ -152,6 +158,7 @@ window.LL_MENU = (function () {
     /* ---------------------------------------------------------- drinks --- */
     {
       id: 'juice', course: 'drinks', photo: null,
+      driverEn: 'Fruit sugars, nothing added.', driverIs: 'Ávaxtasykur, engu bætt við.',
       price: null,
       kcal: 120, protein: 2, carbs: 27, fat: 0,
       allergens: [],
@@ -166,6 +173,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'smoothie', course: 'drinks', photo: null,
+      driverEn: 'Fruit and the base. A dairy base puts it higher than a plant one.', driverIs: 'Ávextir og grunnurinn. Mjólkurgrunnur hækkar hann umfram jurtagrunn.',
       price: null,
       kcal: 230, protein: 6, carbs: 40, fat: 4,
       allergens: ['dairy'],          // unless a plant base is asked for
@@ -180,6 +188,7 @@ window.LL_MENU = (function () {
     },
     {
       id: 'coffee-tea', course: 'drinks', photo: null,
+      driverEn: 'Black, or unsweetened tea. Milk and syrup add to it.', driverIs: 'Svart, eða ósætt te. Mjólk og síróp bæta við.',
       price: null,
       kcal: 10, protein: 0, carbs: 1, fat: 0,
       allergens: [],

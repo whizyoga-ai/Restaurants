@@ -195,6 +195,36 @@ window.LL_ANSWERS = (function () {
       },
     },
 
+    /* --- nutrition for the WHOLE menu ---------------------------------- //
+       Asked for "nutritional values" with no dish named, this used to fall
+       through to the model, which had the right numbers from the knowledge
+       pack but ran all nine dishes together into one unbroken paragraph.
+       Same figures, laid out so they can be read. */
+    {
+      test: (q, lang) => !findDish(q, lang) && has(q,
+        'nutrition', 'nutritional', 'nutritious', 'calorie', 'kcal', 'macro', 'protein', 'carb', 'fat',
+        'naering', 'næring', 'naeringargildi', 'næringargildi', 'hitaeining', 'kolvetni', 'protein'),
+      run: (q, lang) => {
+        const head = lang === 'en'
+          ? 'Approximately, per standard serving:'
+          : 'Um það bil, á hvern venjulegan skammt:';
+        const rows = M().items.map(i => {
+          const n = i[lang].name;
+          const unit = lang === 'en' ? 'g' : 'g';
+          return `- **${n}** — ~${i.kcal} kcal • ${i.fat} ${unit} fat • ${i.carbs} ${unit} carbs • ${i.protein} ${unit} protein`;
+        });
+        const rowsIs = M().items.map(i =>
+          `- **${i.is.name}** — ~${i.kcal} kcal • ${i.fat} g fita • ${i.carbs} g kolvetni • ${i.protein} g prótein`);
+
+        const whyHead = lang === 'en' ? 'What drives each number:' : 'Hvað ræður hverri tölu:';
+        const why = M().items.map(i =>
+          `- **${i[lang].name}** — ${lang === 'en' ? i.driverEn : i.driverIs}`);
+
+        return [head, (lang === 'en' ? rows : rowsIs).join('\n'),
+                whyHead, why.join('\n'), L[lang].estimate].join('\n\n');
+      },
+    },
+
     // --- superlatives --------------------------------------------------- //
     {
       test: q => has(q, 'cheapest', 'least expensive', 'odyrast', 'ódýrast'),
