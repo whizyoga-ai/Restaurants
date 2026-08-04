@@ -60,6 +60,7 @@
       errOrigin: 'This assistant is not enabled for this address yet.',
       errServer: 'Something went wrong at our end. Please try again in a moment.',
       thinking: 'Thinking',
+      fromMenu: 'From the menu',
     },
     is: {
       launch: 'Spurðu um matseðilinn',
@@ -80,6 +81,7 @@
       errOrigin: 'Aðstoðin er ekki virk fyrir þetta vistfang enn.',
       errServer: 'Eitthvað fór úrskeiðis hjá okkur. Reyndu aftur eftir augnablik.',
       thinking: 'Hugsa',
+      fromMenu: 'Af matseðlinum',
     },
   };
 
@@ -286,7 +288,15 @@
   function addTurn(role, text, opts = {}) {
     const el = document.createElement('div');
     el.className = `llmsg llmsg--${role}` + (opts.error ? ' llmsg--error' : '');
-    el.innerHTML = `<div class="llmsg__body">${role === 'user' ? `<p>${esc(text)}</p>` : format(text)}</div>`;
+
+    /* Say where an answer came from. "From the menu" is a stronger claim than
+       anything the assistant can make, and a visitor deciding whether to trust
+       an allergen answer deserves to know which one they are reading. */
+    const tag = opts.source === 'menu'
+      ? `<span class="llmsg__src">${esc(t().fromMenu)}</span>` : '';
+
+    el.innerHTML =
+      `<div class="llmsg__body">${role === 'user' ? `<p>${esc(text)}</p>` : format(text)}${tag}</div>`;
     list.append(el);
     scroll();
     return el.querySelector('.llmsg__body');
@@ -321,7 +331,7 @@
       addSamples();
       return;
     }
-    turns.forEach(turn => addTurn(turn.r, turn.t));
+    turns.forEach(turn => addTurn(turn.r, turn.t, { source: turn.s }));
   }
 
   function reset() {
@@ -346,6 +356,23 @@
 
     input.value = '';
     autogrow();
+
+    /* Menu questions are answered from the menu, not by a model.
+       Asked in Icelandic what is in the Caesar, the model replied in English
+       and invented romaine and breaded chicken; the menu says iceberg,
+       spinach and roast chicken. Somebody may be asking because of a coeliac
+       diagnosis, so a confident wrong answer is a safety problem rather than
+       a quality one. Anything the data covers is returned straight from it —
+       instantly, in the asker's language, with no way to invent an
+       ingredient. Only what the data does not cover goes to the assistant. */
+    const local = window.LL_ANSWERS && LL_ANSWERS.tryAnswer(text, lang());
+    if (local) {
+      addTurn('bot', local, { source: 'menu' });
+      const kept = readConv(); kept.push({ r: 'bot', t: local, s: 'menu' }); writeConv(kept);
+      input.focus();
+      return;
+    }
+
     busy = true;
     sendBtn.disabled = true;
 

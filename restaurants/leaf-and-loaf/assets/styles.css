@@ -1198,6 +1198,17 @@ input[type="range"] { width: 100%; accent-color: var(--moss); }
 .llmsg__body ul { margin: .2em 0 .4em; padding-left: 1.1em; }
 .llmsg__body li { margin: .16em 0; }
 .llmsg__body strong { font-weight: 600; }
+.llmsg__body em { font-style: normal; font-size: .82em; color: var(--ink-3); display: block; margin-top: .5em; }
+
+/* Where the answer came from. "From the menu" is a stronger claim than the
+   assistant can make, and someone reading an allergen answer should know
+   which of the two they are looking at. */
+.llmsg__src {
+  display: inline-block; margin-top: 8px;
+  font-size: .64rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--moss); border: 1px solid var(--moss); border-radius: 999px; padding: 2px 9px;
+  opacity: .85;
+}
 
 .llthinking { display: inline-flex; gap: 4px; align-items: center; padding: 14px; }
 .llthinking span {

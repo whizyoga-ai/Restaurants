@@ -1,0 +1,310 @@
+/* ==========================================================================
+   Answers computed from the menu, before anything reaches a model.
+
+   WHY THIS EXISTS.
+
+   Asked in Icelandic what is in the Caesar, the local model replied in English
+   and invented romaine lettuce and breaded chicken. The menu says iceberg,
+   spinach and roast chicken. On a page where someone may be asking because of
+   a coeliac diagnosis or a nut allergy, a confident wrong answer is not a
+   quality problem, it is a safety one.
+
+   Every question that CAN be answered from the menu is answered from the menu:
+   deterministically, in the asker's language, instantly, and with no way to
+   invent an ingredient that is not in the data. Only what the data genuinely
+   does not cover — food in Iceland, what is worth seeing nearby, open
+   conversation — is passed to the assistant.
+
+   Nothing here paraphrases. Every figure is read out of LL_MENU.
+   ========================================================================== */
+
+'use strict';
+
+window.LL_ANSWERS = (function () {
+
+  const M = () => window.LL_MENU;
+
+  /* Accents stripped for MATCHING only — never for display. Someone typing
+     "glutenlaust" without the accent, or "kinoa" for "kínóa", is asking the
+     same question and should get the same answer. */
+  const norm = s => String(s || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[þ]/g, 'th').replace(/[ð]/g, 'd').replace(/[æ]/g, 'ae')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  /**
+   * Does the question contain this term, starting at a word boundary?
+   *
+   * Plain substring matching put "How much protein is in the quinoa bowl?"
+   * onto the coffee entry, because its match token "te" sits inside
+   * pro-TE-in. Requiring a word START fixes that.
+   *
+   * The end is deliberately left open rather than a full \b...\b: Icelandic
+   * inflects and compounds, so "gluten" has to match "glútenlausir" and
+   * "veisla" has to match "veislunni". Anchoring both ends would answer far
+   * fewer questions than it would protect.
+   */
+  const rx = new Map();
+  function startsWord(q, term) {
+    const t = norm(term);
+    if (!t) return false;
+    if (!rx.has(t)) {
+      const lit = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      /* Short tokens must match a WHOLE word. "te" is Icelandic for tea, and
+         with an open end it matched "tell" in "Tell me about Icelandic hot
+         dogs" — which then answered about coffee. Three characters or fewer
+         carry too little signal to be allowed a loose end. Longer tokens keep
+         the open end so "gluten" still finds "glútenlausir". */
+      rx.set(t, t.length <= 3
+        ? new RegExp('(^|[^a-z0-9])' + lit + '([^a-z0-9]|$)')
+        : new RegExp('(^|[^a-z0-9])' + lit));
+    }
+    return rx.get(t).test(q);
+  }
+
+  const has = (q, ...words) => words.some(w => startsWord(q, w));
+
+  const isk = n => (window.LL ? LL.isk(n) : String(n));
+
+  const L = {
+    en: {
+      estimate: '_Nutrition figures are kitchen estimates from the listed ingredients. If you have an allergy, please tell the counter before you order._',
+      contains: 'Contains', noAllergens: 'No listed allergens',
+      atCounter: 'priced at the counter',
+      allergenName: { gluten: 'gluten', dairy: 'dairy', nuts: 'nuts', fish: 'fish', egg: 'egg' },
+    },
+    is: {
+      estimate: '_Næringartölur eru áætlun eldhússins byggð á upptöldum hráefnum. Ef þú ert með ofnæmi, láttu vita við afgreiðsluborðið áður en þú pantar._',
+      contains: 'Inniheldur', noAllergens: 'Engir skráðir ofnæmisvaldar',
+      atCounter: 'verð við afgreiðslu',
+      allergenName: { gluten: 'glúten', dairy: 'mjólk', nuts: 'hnetur', fish: 'fisk', egg: 'egg' },
+    },
+  };
+
+  const priceOf = (item, lang) =>
+    item.price === null ? L[lang].atCounter : `${isk(item.price)} ISK`;
+
+  const nameOf = (item, lang) => item[lang].name;
+
+  /* --------------------------------------------------------- dish lookup */
+  function findDish(q, lang) {
+    const hits = M().items.filter(i => {
+      if (startsWord(q, i[lang].name)) return true;
+      if (startsWord(q, i.en.name) || startsWord(q, i.is.name)) return true;
+      return (i.match || []).some(m => startsWord(q, m));
+    });
+    // longest name wins, so "chicken focaccia" does not also match "focaccia"
+    return hits.sort((a, b) => norm(b[lang].name).length - norm(a[lang].name).length)[0] || null;
+  }
+
+  /* ------------------------------------------------------------- answers */
+
+  function dishCard(item, lang) {
+    const c = item[lang];
+    const t = L[lang];
+    const allerg = item.allergens.length
+      ? `${t.contains}: ${item.allergens.map(a => t.allergenName[a]).join(', ')}.`
+      : `${t.noAllergens}.`;
+
+    const nutrition = lang === 'en'
+      ? `Roughly **${item.kcal} kcal** — ${item.protein} g protein, ${item.carbs} g carbs, ${item.fat} g fat.`
+      : `Um það bil **${item.kcal} kcal** — ${item.protein} g prótein, ${item.carbs} g kolvetni, ${item.fat} g fita.`;
+
+    return [
+      `**${c.name}** — ${priceOf(item, lang)}`,
+      c.ingredients,
+      nutrition,
+      allerg,
+      t.estimate,
+    ].join('\n\n');
+  }
+
+  function dietList(key, lang) {
+    const t = L[lang];
+    if (key === 'gluten-free') {
+      const ok = M().items.filter(i => !i.allergens.includes('gluten'));
+      const no = M().items.filter(i => i.allergens.includes('gluten'));
+      return lang === 'en'
+        ? `Gluten free as served:\n\n${ok.map(i => `- ${nameOf(i, 'en')}`).join('\n')}\n\nEverything else contains gluten: ${no.map(i => nameOf(i, 'en')).join(', ')}. A focaccia cannot be made gluten free by leaving out the bread — the bread is the dish. Ask at the counter whether a gluten-free loaf is on that day.\n\n${t.estimate}`
+        : `Glútenlaust eins og það er borið fram:\n\n${ok.map(i => `- ${nameOf(i, 'is')}`).join('\n')}\n\nAllt annað inniheldur glúten: ${no.map(i => nameOf(i, 'is')).join(', ')}. Focaccia verður ekki glútenlaust með því að sleppa brauðinu — brauðið er rétturinn. Spurðu við borðið hvort glútenlaust brauð sé í boði þann daginn.\n\n${t.estimate}`;
+    }
+    if (key === 'vegetarian') {
+      const ok = M().items.filter(i => i.diet.includes('vegetarian') || i.diet.includes('vegan'));
+      return lang === 'en'
+        ? `Vegetarian:\n\n${ok.map(i => `- ${nameOf(i, 'en')} — ${priceOf(i, 'en')}`).join('\n')}\n\nThe Caesar is not: it has chicken, bacon, and a dressing that usually contains anchovy.`
+        : `Grænmetisréttir:\n\n${ok.map(i => `- ${nameOf(i, 'is')} — ${priceOf(i, 'is')}`).join('\n')}\n\nCaesar er það ekki: hann inniheldur kjúkling, beikon og dressingu sem inniheldur yfirleitt ansjósur.`;
+    }
+    if (key === 'vegan') {
+      return lang === 'en'
+        ? `No dish is fully vegan as listed — both vegetarian salads contain feta. The closest is the **Mediterranean without the feta**; ask at the counter whether they will leave it out. The juice and black coffee or herbal tea are vegan as they are.`
+        : `Enginn réttur er alveg vegan eins og hann er skráður — bæði grænmetissalötin innihalda fetaost. Næst kemst **Miðjarðarhafssalat án fetaosts**; spurðu við borðið hvort það sé hægt. Safinn og svart kaffi eða jurtate eru vegan eins og þau eru.`;
+    }
+    return null;
+  }
+
+  function allergenAnswer(allergen, lang) {
+    const t = L[lang];
+    const bad = M().items.filter(i => i.allergens.includes(allergen));
+    const ok = M().items.filter(i => !i.allergens.includes(allergen));
+    const name = t.allergenName[allergen];
+    return lang === 'en'
+      ? `Avoid these — they contain ${name}:\n\n${bad.map(i => `- ${nameOf(i, 'en')}`).join('\n') || '- none'}\n\nSafe on that count:\n\n${ok.map(i => `- ${nameOf(i, 'en')}`).join('\n')}\n\n${t.estimate}`
+      : `Forðastu þessa — þeir innihalda ${name}:\n\n${bad.map(i => `- ${nameOf(i, 'is')}`).join('\n') || '- engan'}\n\nÖruggir að því leyti:\n\n${ok.map(i => `- ${nameOf(i, 'is')}`).join('\n')}\n\n${t.estimate}`;
+  }
+
+  function fullMenu(lang) {
+    return M().courses.map(course => {
+      const rows = M().items.filter(i => i.course === course.id)
+        .map(i => `- ${nameOf(i, lang)} — ${priceOf(i, lang)}`).join('\n');
+      return `**${course[lang][0]}**\n${rows}`;
+    }).join('\n\n');
+  }
+
+  /* ------------------------------------------------------------- routing */
+  const RULES = [
+
+    // --- a named dish -------------------------------------------------- //
+    {
+      test: (q, lang) => findDish(q, lang) && has(q, 'what is in', 'whats in', 'ingredient', 'contain', 'tell me about',
+        'hvad er i', 'hvað er í', 'hraefni', 'hráefni', 'inniheldur', 'segdu mer'),
+      run: (q, lang) => dishCard(findDish(q, lang), lang),
+    },
+
+    // --- nutrition on a named dish ------------------------------------- //
+    {
+      test: (q, lang) => findDish(q, lang) && has(q, 'protein', 'calorie', 'kcal', 'carb', 'fat', 'nutrition',
+        'protein', 'hitaeining', 'kolvetni', 'fita', 'naering', 'næring'),
+      run: (q, lang) => {
+        const d = findDish(q, lang);
+        return lang === 'en'
+          ? `**${nameOf(d, 'en')}** — roughly **${d.kcal} kcal**, **${d.protein} g protein**, ${d.carbs} g carbohydrate, ${d.fat} g fat.\n\n${L.en.estimate}`
+          : `**${nameOf(d, 'is')}** — um það bil **${d.kcal} kcal**, **${d.protein} g prótein**, ${d.carbs} g kolvetni, ${d.fat} g fita.\n\n${L.is.estimate}`;
+      },
+    },
+
+    // --- price of a named dish ----------------------------------------- //
+    {
+      test: (q, lang) => findDish(q, lang) && has(q, 'how much', 'price', 'cost', 'hvad kostar', 'hvað kostar', 'verd', 'verð'),
+      run: (q, lang) => {
+        const d = findDish(q, lang);
+        return lang === 'en'
+          ? `**${nameOf(d, 'en')}** is **${priceOf(d, 'en')}**.`
+          : `**${nameOf(d, 'is')}** kostar **${priceOf(d, 'is')}**.`;
+      },
+    },
+
+    // --- superlatives --------------------------------------------------- //
+    {
+      test: q => has(q, 'cheapest', 'least expensive', 'odyrast', 'ódýrast'),
+      run: (q, lang) => {
+        const d = M().priced().sort((a, b) => a.price - b.price)[0];
+        return lang === 'en' ? `The least expensive dish is **${nameOf(d, 'en')}** at **${isk(d.price)} ISK**.`
+                             : `Ódýrasti rétturinn er **${nameOf(d, 'is')}** á **${isk(d.price)} ISK**.`;
+      },
+    },
+    {
+      test: q => has(q, 'most expensive', 'dyrast', 'dýrast'),
+      run: (q, lang) => {
+        const d = M().priced().sort((a, b) => b.price - a.price)[0];
+        return lang === 'en' ? `The most expensive dish is **${nameOf(d, 'en')}** at **${isk(d.price)} ISK**.`
+                             : `Dýrasti rétturinn er **${nameOf(d, 'is')}** á **${isk(d.price)} ISK**.`;
+      },
+    },
+    {
+      test: q => has(q, 'most protein', 'highest protein', 'mest protein', 'mest prótein'),
+      run: (q, lang) => {
+        const d = [...M().items].sort((a, b) => b.protein - a.protein)[0];
+        return lang === 'en' ? `**${nameOf(d, 'en')}** has the most, about **${d.protein} g**.\n\n${L.en.estimate}`
+                             : `**${nameOf(d, 'is')}** hefur mest, um **${d.protein} g**.\n\n${L.is.estimate}`;
+      },
+    },
+    {
+      test: q => has(q, 'fewest calorie', 'lowest calorie', 'lightest', 'faestar hitaeiningar', 'fæstar hitaeiningar', 'lettast', 'léttast'),
+      run: (q, lang) => {
+        const d = M().priced().sort((a, b) => a.kcal - b.kcal)[0];
+        return lang === 'en' ? `**${nameOf(d, 'en')}** is the lightest, about **${d.kcal} kcal**.\n\n${L.en.estimate}`
+                             : `**${nameOf(d, 'is')}** er léttastur, um **${d.kcal} kcal**.\n\n${L.is.estimate}`;
+      },
+    },
+
+    // --- dietary --------------------------------------------------------- //
+    { test: q => has(q, 'gluten'), run: (q, lang) => dietList('gluten-free', lang) },
+    { test: q => has(q, 'vegan'),  run: (q, lang) => dietList('vegan', lang) },
+    { test: q => has(q, 'vegetarian', 'graenmetis', 'grænmetis', 'meat free'),
+      run: (q, lang) => dietList('vegetarian', lang) },
+
+    // --- allergens ------------------------------------------------------- //
+    { test: q => has(q, 'nut allergy', 'nuts', 'hnetur', 'hnetuofnaemi'), run: (q, lang) => allergenAnswer('nuts', lang) },
+    { test: q => has(q, 'dairy', 'lactose', 'milk', 'mjolk', 'mjólk', 'laktosa'), run: (q, lang) => allergenAnswer('dairy', lang) },
+    { test: q => has(q, 'fish allergy', 'shellfish', 'fiskur', 'fiskofnaemi'), run: (q, lang) => allergenAnswer('fish', lang) },
+    { test: q => has(q, 'egg allergy', 'eggja'), run: (q, lang) => allergenAnswer('egg', lang) },
+
+    // --- the whole menu -------------------------------------------------- //
+    {
+      test: q => has(q, 'what do you have', 'the menu', 'show me the menu', 'whats on the menu',
+        'hvad er a bodstolum', 'matsedill', 'matseðill', 'hvad bjodid thid'),
+      run: (q, lang) => fullMenu(lang),
+    },
+
+    // --- hours and place ------------------------------------------------- //
+    {
+      test: q => has(q, 'open', 'hours', 'close', 'opnunartimi', 'opnunartími', 'opid', 'opið', 'lokad', 'lokað'),
+      run: (q, lang) => {
+        const v = M().venue;
+        return lang === 'en'
+          ? `Open **${v.opens}–${v.closes}, every day of the week**, inside ${v.hall} at ${v.street}, ${v.city}.`
+          : `Opið **${v.opens}–${v.closes} alla daga vikunnar**, inni í ${v.hall}, ${v.street}, ${v.city}.`;
+      },
+    },
+    {
+      test: q => has(q, 'where are you', 'address', 'find you', 'location', 'hvar eru thid', 'heimilisfang', 'stadsetning'),
+      run: (q, lang) => {
+        const v = M().venue;
+        return lang === 'en'
+          ? `We are a counter inside **${v.hall}**, ${v.street}, ${v.city} — one of about ten kitchens sharing the hall. Order at our counter and sit anywhere.`
+          : `Við erum afgreiðsluborð inni í **${v.hall}**, ${v.street}, ${v.city} — eitt af um tíu eldhúsum í höllinni. Pantaðu hjá okkur og sestu hvar sem er.`;
+      },
+    },
+
+    // --- ordering and catering ------------------------------------------- //
+    {
+      test: q => has(q, 'order ahead', 'collect', 'takeaway', 'take away', 'panta fyrirfram', 'saekja', 'sækja'),
+      run: (q, lang) => lang === 'en'
+        ? `Yes — choose your dishes and a collection time on the **order-ahead page**, and pay at the counter when you collect. Give us about 20 minutes; everything is made to order.`
+        : `Já — veldu réttina og afhendingartíma á **pöntunarsíðunni** og greiddu við borðið þegar þú sækir. Gefðu okkur um 20 mínútur; allt er útbúið eftir pöntun.`,
+    },
+    {
+      test: q => has(q, 'party', 'catering', 'platter', 'veisla', 'veislu', 'bakka'),
+      run: (q, lang) => lang === 'en'
+        ? `We put together focaccia boards and salad tables for parties — see the **party orders page**. Boards are priced straight from the menu with no party markup, and we ask for two working days.`
+        : `Við útbúum focacciabakka og salatborð fyrir veislur — sjá **veislusíðuna**. Bakkarnir eru verðlagðir beint af matseðlinum án álags, og við biðjum um tveggja virkra daga fyrirvara.`,
+    },
+  ];
+
+  /**
+   * Try to answer from the menu.
+   * Returns the answer text, or null when the question is genuinely outside
+   * the data and should go to the assistant.
+   */
+  function tryAnswer(question, lang) {
+    if (!window.LL_MENU) return null;
+    const q = norm(question);
+    if (!q) return null;
+    for (const rule of RULES) {
+      try {
+        if (rule.test(q, lang)) {
+          const a = rule.run(q, lang);
+          if (a) return a;
+        }
+      } catch (_) { /* a broken rule must never block the model fallback */ }
+    }
+    // A dish named with no other clue: show its card rather than guessing why.
+    const d = findDish(q, lang);
+    if (d && q.split(' ').length <= 6) return dishCard(d, lang);
+    return null;
+  }
+
+  return { tryAnswer, findDish, fullMenu, norm };
+})();
