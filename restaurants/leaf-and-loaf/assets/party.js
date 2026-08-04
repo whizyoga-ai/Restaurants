@@ -31,7 +31,7 @@ const avg = (...ns) => Math.round(ns.reduce((a, b) => a + b, 0) / ns.length);
 const PLATTERS = [
   {
     id: 'focaccia',
-    photo: 'assets/images/dishes/focaccia-sandwiches.jpg',
+    photo: '../assets/images/dishes/focaccia-sandwiches.jpg',
     parts: [{ n: 6, price: avg(PRICES.focSalmon, PRICES.focChicken, PRICES.focVeg) }],
     serves: '8–12',
     pieces: 24,
@@ -44,7 +44,7 @@ const PLATTERS = [
   },
   {
     id: 'salad',
-    photo: 'assets/images/dishes/salad-bowls.jpg',
+    photo: '../assets/images/dishes/salad-bowls.jpg',
     parts: [{ n: 9, price: avg(PRICES.caesar, PRICES.quinoa, PRICES.medi) }],
     serves: '9–12',
     pieces: null,
@@ -57,7 +57,7 @@ const PLATTERS = [
   },
   {
     id: 'counter',
-    photo: 'assets/images/dishes/salad-greens.jpg',
+    photo: '../assets/images/dishes/salad-greens.jpg',
     parts: [
       { n: 4, price: avg(PRICES.focSalmon, PRICES.focChicken, PRICES.focVeg) },
       { n: 6, price: avg(PRICES.caesar, PRICES.quinoa, PRICES.medi) },
@@ -73,7 +73,7 @@ const PLATTERS = [
   },
   {
     id: 'green',
-    photo: 'assets/images/dishes/focaccia-plain.jpg',
+    photo: '../assets/images/dishes/focaccia-plain.jpg',
     parts: [{ n: 6, price: PRICES.focVeg }],
     serves: '8–12',
     pieces: 24,
