@@ -1066,6 +1066,20 @@ input[type="range"] { width: 100%; accent-color: var(--moss); }
 
 #sendOrder:disabled { opacity: .45; cursor: default; }
 
+/* "To be integrated" — deliberately the most visible thing near the send
+   button during a demo, so nobody leaves the room believing the till is live. */
+.integnote {
+  margin-top: 16px; padding: 13px 15px;
+  border: 1px solid var(--rule-strong); border-radius: 10px;
+  background: var(--paper-2);
+}
+.integnote__tag {
+  display: inline-block; margin-bottom: 7px;
+  font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--berry); border: 1px solid var(--berry); border-radius: 999px; padding: 2px 10px;
+}
+.integnote p { font-size: .78rem; color: var(--ink-2); line-height: 1.55; }
+
 .hallnote { margin-top: 14px; text-align: center; font-size: .8rem; }
 .hallnote a { color: var(--moss); border-bottom: 1px solid transparent; }
 .hallnote a:hover { border-bottom-color: var(--moss); }
